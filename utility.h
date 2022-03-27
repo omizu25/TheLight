@@ -26,4 +26,20 @@ void NormalizeAngle(float *pAngle);
 //--------------------------------------------------
 bool Homing(D3DXVECTOR3 *pPosOut, const D3DXVECTOR3 &posNow, const D3DXVECTOR3 &posDest, float fSpeed);
 
+//--------------------------------------------------
+// 小数点のランダム
+// 引数1  : float fMax / 最大値
+// 引数2  : float fMin / 最小値
+// 返値  : float / ランダム値
+//--------------------------------------------------
+float FloatRandam(float fMax, float fMin);
+
+//--------------------------------------------------
+// 整数のランダム
+// 引数1  : int nMax / 最大値
+// 引数2  : int nMin / 最小値
+// 返値  : int / ランダム値
+//--------------------------------------------------
+int IntRandam(int nMax, int nMin);
+
 #endif // !_UTILITY_H_
