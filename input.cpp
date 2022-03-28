@@ -28,17 +28,18 @@ LPDIRECTINPUTDEVICE8 g_pDevKeyboard = NULL;			//入力デバイス（キーボード（コント
 BYTE g_aKeyState[NUM_KEY_MAX];						//キーボードのプレス情報
 BYTE g_aKeyStateTrigger[NUM_KEY_MAX];				//キーボードのトリガー情報
 
-													//ジョイパッド
+//ジョイパッド
 XINPUT_STATE g_JoyKeyState[PLAYER_MAX];				//ジョイパットのプレス情報
 XINPUT_STATE g_JoyKeyStateTrigger[PLAYER_MAX];		//ジョイパットのトリガー情報
 D3DXVECTOR3 g_JoyStickPos[PLAYER_MAX];				//ジョイスティックの傾き
-JOYKEY_CROSS g_OldJoyKeyStick[PLAYER_MAX][JOYKEY_RIGHT_LEFT_MAX];			//前回のスティックの位置
+JOYKEY g_OldJoyKeyStick[PLAYER_MAX][JOYKEY_RIGHT_LEFT_MAX];			//前回のスティックの位置
+FUNCTION_KEY g_OldFunctionKey;
 
-																			//-----------------------------------------------------------------------------
-																			//プロトタイプ宣言
-																			//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//プロトタイプ宣言
+//-----------------------------------------------------------------------------
 
-																			//キーボード
+//キーボード
 HRESULT InitKeyboard(HINSTANCE hInstance, HWND hWnd);	//初期化
 void UninitKeyboard(void);								//終了処理
 void UpdateKeyboard(void);								//更新処理
@@ -48,11 +49,11 @@ HRESULT InitJoypad(void);								//初期化
 void UninitJoypad(void);								//終了処理
 void UpdateJoypad(void);								//更新処理
 
-														//*************************************************************************************
-														//入力処理全体
-														//*************************************************************************************
+//*************************************************************************************
+//入力処理全体
+//*************************************************************************************
 
-														//入力処理全部の初期化
+//入力処理全部の初期化
 HRESULT InitInput(HINSTANCE hInstance, HWND hWnd)
 {
 	//キーボードの初期化処理
@@ -60,7 +61,7 @@ HRESULT InitInput(HINSTANCE hInstance, HWND hWnd)
 	{
 		return E_FAIL;
 	}
-
+	
 	//ジョイパッド初期化
 	InitJoypad();
 
@@ -294,52 +295,52 @@ int GetJoypadTriggerPedal(JOYKEY Key, int nPlayer)
 }
 
 //ジョイパッドスティックプレス８方向
-bool GetJoypadStickPress(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key, int nPlayer)
+bool GetJoypadStickPress(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY Key, int nPlayer)
 {
 	D3DXVECTOR3 pos = GetJoypadStick(RightLeft, nPlayer);	//現在の傾きの取得
 	pos.y *= -1.0f;//Yを分かりやすくするために＋－を反転
 
 	if (pos.y > 0.5f
-		&& JOYKEY_CROSS_UP == Key)
+		&& JOYKEY_STICK_UP == Key)
 	{
 		return true;
 	}
 	else if (pos.x > 0.5f
 		&& pos.y > 0.5f
-		&& JOYKEY_CROSS_UP_RIGHT == Key)
+		&& JOYKEY_STICK_UP_RIGHT == Key)
 	{
 		return true;
 	}
 	else if (pos.x > 0.5f
-		&& JOYKEY_CROSS_RIGHT == Key)
+		&& JOYKEY_STICK_RIGHT == Key)
 	{
 		return true;
 	}
 	else if (pos.x > 0.5f
 		&& pos.y < -0.5f
-		&& JOYKEY_CROSS_DOWN_RIGHT == Key)
+		&& JOYKEY_STICK_DOWN_RIGHT == Key)
 	{
 		return true;
 	}
 	else if (pos.y < -0.5f
-		&& JOYKEY_CROSS_DOWN == Key)
+		&& JOYKEY_STICK_DOWN == Key)
 	{
 		return true;
 	}
 	else if (pos.x < -0.5f
 		&& pos.y < -0.5f
-		&& JOYKEY_CROSS_DOWN_LEFT == Key)
+		&& JOYKEY_STICK_DOWN_LEFT == Key)
 	{
 		return true;
 	}
 	else if (pos.x < -0.5f
-		&& JOYKEY_CROSS_LEFT == Key)
+		&& JOYKEY_STICK_LEFT == Key)
 	{
 		return true;
 	}
 	else if (pos.x < -0.5f
 		&& pos.y > 0.5f
-		&& JOYKEY_CROSS_UP_LEFT == Key)
+		&& JOYKEY_STICK_UP_LEFT == Key)
 	{
 		return true;
 	}
@@ -347,7 +348,7 @@ bool GetJoypadStickPress(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key, int nPla
 }
 
 //ジョイパッドスティックトリガー８方向
-bool GetJoypadStickTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key, int nPlayer)
+bool GetJoypadStickTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY Key, int nPlayer)
 {
 	if (GetJoypadStickPress(RightLeft, Key, nPlayer)
 		&& Key != g_OldJoyKeyStick[nPlayer][RightLeft])
@@ -366,12 +367,12 @@ bool GetJoypadStickTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key, int nP
 		return false;
 	}
 
-	g_OldJoyKeyStick[nPlayer][RightLeft] = JOYKEY_CROSS_MAX;
+	g_OldJoyKeyStick[nPlayer][RightLeft] = JOYKEY_MAX;
 	return false;
 }
 
 //ジョイパッドスティックトリガー８方向の全プレイヤーの対象
-bool GetJoypadStickAllTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key)
+bool GetJoypadStickAllTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY Key)
 {
 	for (int nCnt = 0; nCnt < PLAYER_MAX; nCnt++)
 	{
@@ -393,5 +394,93 @@ bool GetJoypadAllTrigger(JOYKEY Key)
 			return true;
 		}
 	}
+	return false;
+}
+
+//移動系のキーまとめ
+bool GetMoveKeyPress(MOVE_KEY Key)
+{
+	if (Key == MOVE_KEY_UP)
+	{
+		if (GetJoypadStickPress(JOYKEY_LEFT_STICK, JOYKEY_STICK_UP, 0)
+			|| GetJoypadPress(JOYKEY_CROSS_UP, 0)
+			|| GetKeyboardPress(DIK_W)
+			|| GetKeyboardPress(DIK_UP))
+		{
+			return true;
+		}
+	}
+	else if (Key == MOVE_KEY_DOWN)
+	{
+		if (GetJoypadStickPress(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN, 0)
+			|| GetJoypadPress(JOYKEY_CROSS_DOWN, 0)
+			|| GetKeyboardPress(DIK_S)
+			|| GetKeyboardPress(DIK_DOWN))
+		{
+			return true;
+		}
+	}
+	else if (Key == MOVE_KEY_LEFT)
+	{
+		if (GetJoypadStickPress(JOYKEY_LEFT_STICK, JOYKEY_STICK_LEFT, 0)
+			|| GetJoypadPress(JOYKEY_CROSS_LEFT, 0)
+			|| GetKeyboardPress(DIK_A)
+			|| GetKeyboardPress(DIK_LEFT))
+		{
+			return true;
+		}
+	}
+	else if (Key == MOVE_KEY_RIGHT)
+	{
+		if (GetJoypadStickPress(JOYKEY_LEFT_STICK, JOYKEY_STICK_RIGHT, 0)
+			|| GetJoypadPress(JOYKEY_CROSS_RIGHT, 0)
+			|| GetKeyboardPress(DIK_D)
+			|| GetKeyboardPress(DIK_RIGHT))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+//機能系のキーまとめ
+bool GetFunctionKeyTrigger(FUNCTION_KEY Key)
+{
+	if (Key == FUNCTION_KEY_DESISION)
+	{
+		if (GetJoypadPress(JOYKEY_A, 0) || GetJoypadPress(JOYKEY_B, 0)
+			|| GetKeyboardPress(DIK_SPACE)
+			|| GetKeyboardPress(DIK_RETURN))
+		{
+			if (g_OldFunctionKey != Key)
+			{
+				g_OldFunctionKey = Key;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+	else if (Key == FUNCTION_KEY_PAUSE)
+	{
+		if (GetJoypadPress(JOYKEY_START, 0)
+			|| GetKeyboardPress(DIK_P))
+		{
+			if (g_OldFunctionKey != Key)
+			{
+				g_OldFunctionKey = Key;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
+	g_OldFunctionKey = FUNCTION_KEY_MAX;
 	return false;
 }
