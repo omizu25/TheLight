@@ -254,7 +254,7 @@ void SetPosRectangle(int nIdx, const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size)
 //--------------------------------------------------
 // ‰ñ“]‚·‚éˆÊ’u‚ÌÝ’è
 //--------------------------------------------------
-void SetRotationPosRectangle(int nIdx, const D3DXVECTOR3 &pos, const D3DXVECTOR3 &rot, float fWidth, float fHeight)
+void SetRotationPosRectangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float fWidth, float fHeight)
 {
 	assert(nIdx >= 0 && nIdx < MAX_RECTANGLE);
 
@@ -277,7 +277,7 @@ void SetRotationPosRectangle(int nIdx, const D3DXVECTOR3 &pos, const D3DXVECTOR3
 	D3DXMATRIX mtx, mtxTrans;
 
 	// ‰ñ“]‚Ì”½‰f
-	D3DXMatrixRotationZ(&mtx, -rot.z);
+	D3DXMatrixRotationZ(&mtx, -fRot);
 
 	// ˆÊ’u‚Ì”½‰f
 	D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, 0.0f);

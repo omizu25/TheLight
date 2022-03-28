@@ -37,14 +37,6 @@ typedef enum
 {
 	MENU_GAME = 0,	// ゲーム
 	MENU_TUTORIAL,	// チュートリアル
-	MENU_TEST_1,
-	MENU_TEST_2,
-	MENU_TEST_3,
-	MENU_TEST_4,
-	MENU_TEST_5,
-	MENU_TEST_6,
-	MENU_TEST_7,
-	MENU_TEST_8,
 	MENU_MAX
 }MENU;
 }// namespaceはここまで
@@ -57,7 +49,7 @@ namespace
 int		s_nIdxBG;		// 背景の矩形のインデックス
 int		s_nIdx;			// 矩形のインデックス
 int		s_nSelectMenu;	// 選ばれているメニュー
-int		s_nIdxUseMenu;	// 使っているメニューの番号
+int		s_nIdxMenu;		// メニューの配列のインデックス
 int		s_nIdxCursor;	// カーソルの配列のインデックス
 }// namespaceはここまで
 
@@ -117,14 +109,6 @@ void InitTitle(void)
 
 		menu.texture[MENU_GAME] = TEXTURE_NONE;
 		menu.texture[MENU_TUTORIAL] = TEXTURE_NONE;
-		menu.texture[MENU_TEST_1] = TEXTURE_NONE;
-		menu.texture[MENU_TEST_2] = TEXTURE_NONE;
-		menu.texture[MENU_TEST_3] = TEXTURE_NONE;
-		menu.texture[MENU_TEST_4] = TEXTURE_NONE;
-		menu.texture[MENU_TEST_5] = TEXTURE_NONE;
-		menu.texture[MENU_TEST_6] = TEXTURE_NONE;
-		menu.texture[MENU_TEST_7] = TEXTURE_NONE;
-		menu.texture[MENU_TEST_8] = TEXTURE_NONE;
 
 		FrameArgument Frame;
 		Frame.bUse = true;
@@ -132,7 +116,13 @@ void InitTitle(void)
 		Frame.texture = TEXTURE_NONE;
 
 		// メニューの設定
-		s_nIdxUseMenu = SetMenu(menu, Frame);
+		s_nIdxMenu = SetMenu(menu, Frame);
+
+		// 選択肢の色の設定
+		SetColorOption(s_nIdxMenu, GetColor(COLOR_RED), D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.5f));
+
+		// 選ばれていない選択肢の色の設定
+		SetColorDefaultOption(s_nIdxMenu, GetColor(COLOR_WHITE));
 	}
 
 	{// カーソル
@@ -255,16 +245,6 @@ void Input(void)
 
 		case MENU_TUTORIAL:	// チュートリアル
 			ChangeMode(MODE_TUTORIAL);
-			break;
-
-		case MENU_TEST_1:
-		case MENU_TEST_2:
-		case MENU_TEST_3:
-		case MENU_TEST_4:
-		case MENU_TEST_5:
-		case MENU_TEST_6:
-		case MENU_TEST_7:
-		case MENU_TEST_8:
 			break;
 
 		default:

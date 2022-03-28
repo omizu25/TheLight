@@ -20,6 +20,8 @@
 #include "bg.h"
 #include "cursor.h"
 #include "gauge.h"
+#include "effect.h"
+#include "color.h"
 
 #include <assert.h>
 
@@ -56,6 +58,9 @@ void InitGame(void)
 	// ポーズの初期化
 	InitPause();
 
+	// エフェクトの初期化
+	InitEffect();
+
 	//サウンド開始
 	//PlaySound(SOUND_LABEL_BGM);
 
@@ -91,6 +96,9 @@ void UninitGame(void)
 
 	// カーソルの終了
 	UninitCursor();
+
+	// エフェクトの終了
+	UninitEffect();
 }
 
 //--------------------------------------------------
@@ -154,6 +162,10 @@ void UpdateGame(void)
 
 	// ゲージの更新
 	UpdateGauge();
+
+	// エフェクトの更新
+	UpdateEffect();
+	SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), EFFECT_TYPE_001);
 }
 
 //--------------------------------------------------
