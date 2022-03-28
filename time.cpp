@@ -14,6 +14,7 @@
 #include "texture.h"
 #include "number.h"
 #include "color.h"
+#include "mode.h"
 
 //==================================================
 // 定義
@@ -21,8 +22,9 @@
 namespace
 {
 const int	ONE_SECOND = 60;		// 1秒
-const float	TIME_WIDTH = 100.0f;	// タイムの幅
-const float	TIME_HEIGHT = 200.0f;	// タイムの高さ
+const int	START_TIME = 30;		// タイムの始まりの値
+const float	TIME_WIDTH = 50.0f;		// タイムの幅
+const float	TIME_HEIGHT = 100.0f;	// タイムの高さ
 }// namespaceはここまで
 
 //==================================================
@@ -35,9 +37,9 @@ int	s_nTime;	// タイム
 int	s_nSecond;	// 1秒を計測
 }// namespaceはここまで
 
- //--------------------------------------------------
- // 初期化
- //--------------------------------------------------
+//--------------------------------------------------
+// 初期化
+//--------------------------------------------------
 void InitTime(void)
 {
 	s_nTime = 0;
@@ -47,8 +49,13 @@ void InitTime(void)
 	D3DXVECTOR3 size = D3DXVECTOR3(TIME_WIDTH, TIME_HEIGHT, 0.0f);
 	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, TIME_HEIGHT * 0.5f, 0.0f);
 
+	pos.x += DigitNumber(s_nTime) * (TIME_WIDTH * 0.5f);
+
 	// 数の設定
-	s_nIdxTime = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nTime, 5);
+	s_nIdxTime = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nTime, DigitNumber(s_nTime), false);
+
+	// タイムの設定
+	SetTime(START_TIME);
 }
 
 //--------------------------------------------------
@@ -70,7 +77,13 @@ void UpdateTime(void)
 	if ((s_nSecond % ONE_SECOND) == 0)
 	{// 1秒毎に
 		// 加算
-		AddTime(1);
+		AddTime(-1);
+
+		if (s_nTime <= 0)
+		{// 制限時間が来た
+			// モードの変更
+			ChangeMode(MODE_TITLE);
+		}
 	}
 }
 
@@ -92,6 +105,14 @@ void SetTime(int nTime)
 
 	// 数の変更
 	s_nIdxTime = ChangeNumber(s_nIdxTime, s_nTime);
+
+	D3DXVECTOR3 size = D3DXVECTOR3(TIME_WIDTH, TIME_HEIGHT, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, TIME_HEIGHT * 0.5f, 0.0f);
+
+	pos.x += DigitNumber(s_nTime) * (TIME_WIDTH * 0.5f);
+
+	// 位置の設定
+	SetPosNumber(s_nIdxTime, pos, size);
 }
 
 //--------------------------------------------------
@@ -104,4 +125,12 @@ void AddTime(int nValue)
 
 	// 数の変更
 	s_nIdxTime = ChangeNumber(s_nIdxTime, s_nTime);
+
+	D3DXVECTOR3 size = D3DXVECTOR3(TIME_WIDTH, TIME_HEIGHT, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, TIME_HEIGHT * 0.5f, 0.0f);
+
+	pos.x += DigitNumber(s_nTime) * (TIME_WIDTH * 0.5f);
+
+	// 位置の設定
+	SetPosNumber(s_nIdxTime, pos, size);
 }

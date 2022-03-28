@@ -32,6 +32,7 @@ typedef struct
 	int			nNumber[MAX_DIGIT];	// 数
 	int			nDigit;				// 桁数
 	int			nIdx[MAX_DIGIT];	// 矩形のインデックス
+	bool		bZero;				// 0を表示するかどうか
 	bool		bUse;				// 使用しているかどうか
 }Number;
 }// namesapceはここまで
@@ -109,7 +110,7 @@ void DrawNumber(void)
 //--------------------------------------------------
 // 設定
 //--------------------------------------------------
-int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &col, int nNumber, int nDigit)
+int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &col, int nNumber, int nDigit, bool bZero)
 {
 	for (int i = 0; i < MAX_NUMBER; i++)
 	{
@@ -125,7 +126,15 @@ int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &
 		pNumber->pos = pos;
 		pNumber->size = size;
 		pNumber->col = col;
-		pNumber->nDigit = nDigit;
+
+		if (bZero)
+		{// 0を表示する
+			pNumber->nDigit = nDigit;
+		}
+		else
+		{// 0を表示しない
+			pNumber->nDigit = DigitNumber(nNumber);
+		}
 
 		// 一桁ずつに分ける
 		OneDivideNumber(pNumber, nNumber);
@@ -133,12 +142,13 @@ int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &
 		for (int j = 0; j < pNumber->nDigit; j++)
 		{
 			// 矩形の設定
-			pNumber->nIdx[j] = SetRectangle(TEXTURE_Number_003);
+			pNumber->nIdx[j] = SetRectangle(TEXTURE_Number_004);
 
 			// 一桁ずつの設定
 			SetOneDigitNumber(pNumber, j);
 		}
 
+		pNumber->bZero = bZero;
 		pNumber->bUse = true;
 
 		return i;
@@ -193,18 +203,37 @@ int ChangeNumber(int nIdx, int nNumber)
 
 	/*↓ 使用している ↓*/
 
-	if (pNumber->nDigit < DigitNumber(nNumber))
-	{// 桁数が違う
-		// 使うのを止める
-		StopUseNumber(nIdx);
+	if (!pNumber->bZero)
+	{// 0を表示しない
+		if (pNumber->nDigit != DigitNumber(nNumber))
+		{// 桁数が違う
+			// 使うのを止める
+			StopUseNumber(nIdx);
 
-		// 設定
-		return SetNumber(pNumber->pos, pNumber->size, pNumber->col, nNumber, DigitNumber(nNumber));
+			// 設定
+			return SetNumber(pNumber->pos, pNumber->size, pNumber->col, nNumber, DigitNumber(nNumber), false);
+		}
+		else
+		{// 桁数が同じ
+			// 一桁ずつに分ける
+			OneDivideNumber(pNumber, nNumber);
+		}
 	}
 	else
-	{// 桁数が同じ
-		// 一桁ずつに分ける
-		OneDivideNumber(pNumber, nNumber);
+	{// 0を表示する
+		if (pNumber->nDigit < DigitNumber(nNumber))
+		{// 桁数が違う
+			// 使うのを止める
+			StopUseNumber(nIdx);
+
+			// 設定
+			return SetNumber(pNumber->pos, pNumber->size, pNumber->col, nNumber, DigitNumber(nNumber), true);
+		}
+		else
+		{// 桁数が同じ
+			// 一桁ずつに分ける
+			OneDivideNumber(pNumber, nNumber);
+		}
 	}
 
 	float fDivide = 1.0f / TEX_DIVIDE;

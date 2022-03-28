@@ -21,7 +21,7 @@ namespace
 const char *s_FileName[] =
 {// テクスチャのパス
 	"data/TEXTURE/Cursor_Right.png",	// カーソル
-	"data/TEXTURE/Number_003.png",		// 数
+	"data/TEXTURE/Number_004.png",		// 数
 };
 }// namespaceはここまで
 

@@ -34,6 +34,9 @@ void InitBG(void)
 
 	// 矩形の位置の設定
 	SetPosRectangle(s_nIdxBG, pos, size);
+
+	// 矩形の色の設定
+	SetColorRectangle(s_nIdxBG, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
 //--------------------------------------------------

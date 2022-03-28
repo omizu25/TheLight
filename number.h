@@ -42,9 +42,10 @@ void DrawNumber(void);
 // 引数3  : D3DXCOLOR &col / 色
 // 引数4  : int nNumber / 数
 // 引数5  : int nDigit / 桁数
+// 引数6  : bool bZero / 0を表示するかどうか
 // 返値  : int / 配列のインデックス
 //--------------------------------------------------
-int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &col, int nNumber, int nDigit);
+int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &col, int nNumber, int nDigit, bool bZero);
 
 //--------------------------------------------------
 // 位置の設定

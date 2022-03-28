@@ -14,8 +14,10 @@
 #include "title.h"
 #include "rectangle.h"
 #include "texture.h"
+#include "tutorial.h"
 
 #include <assert.h>
+#include <time.h>
 
 //==================================================
 // スタティック変数
@@ -31,6 +33,9 @@ MODE	s_modeNext = MODE_NONE;	// 次のモード
 //--------------------------------------------------
 void InitMode(void)
 {
+	//世界の種子の初期化
+	srand((unsigned int)time(NULL));
+
 	// テクスチャの読み込み
 	LoadTexture();
 
@@ -48,6 +53,9 @@ void UninitMode(void)
 
 	// ゲームの終了
 	UninitGame();
+
+	// チュートリアルの終了
+	UninitTutorial();
 
 	// テクスチャの終了
 	UninitTexture();
@@ -72,6 +80,7 @@ void UpdateMode(void)
 		break;
 
 	case MODE_TUTORIAL:	// チュートリアル
+		UpdateTutorial();
 		break;
 
 	case MODE_NONE:
@@ -100,6 +109,7 @@ void DrawMode(void)
 		break;
 
 	case MODE_TUTORIAL:	// チュートリアル
+		DrawTutorial();
 		break;
 
 	case MODE_NONE:
@@ -143,6 +153,7 @@ void SetMode(void)
 		break;
 
 	case MODE_TUTORIAL:	// チュートリアル
+		UninitTutorial();
 		break;
 
 	case MODE_NONE:
@@ -171,6 +182,7 @@ void SetMode(void)
 		break;
 
 	case MODE_TUTORIAL:	// チュートリアル
+		InitTutorial();
 		break;
 
 	case MODE_NONE:

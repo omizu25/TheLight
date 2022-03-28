@@ -23,6 +23,7 @@
 #include "effect.h"
 #include "color.h"
 #include "time.h"
+#include "score.h"
 
 #include <assert.h>
 
@@ -50,23 +51,23 @@ void InitGame(void)
 	// 数の初期化
 	InitNumber();
 
-	// メニューの初期化
-	InitMenu();
-
 	// タイムの初期化
 	InitTime();
 
-	// タイムの設定
-	SetTime(100);
+	// スコアの初期化
+	InitScore();
+
+	// エフェクトの初期化
+	InitEffect();
+
+	// メニューの初期化
+	InitMenu();
 
 	// カーソル初期化
 	InitCursor();
 
 	// ポーズの初期化
 	InitPause();
-
-	// エフェクトの初期化
-	InitEffect();
 
 	//サウンド開始
 	//PlaySound(SOUND_LABEL_BGM);
@@ -97,6 +98,9 @@ void UninitGame(void)
 
 	// タイムの終了
 	UninitTime();
+
+	// スコアの終了
+	UninitScore();
 
 	// ポーズの終了
 	UninitPause();
@@ -179,6 +183,9 @@ void UpdateGame(void)
 
 	// タイムの更新
 	UpdateTime();
+
+	// スコアの更新
+	UpdateScore();
 }
 
 //--------------------------------------------------

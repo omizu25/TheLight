@@ -13,7 +13,7 @@
 typedef enum
 {
 	TEXTURE_Cursor_Right = 0,	// カーソル
-	TEXTURE_Number_003,			// 数
+	TEXTURE_Number_004,			// 数
 	TEXTURE_MAX,
 	TEXTURE_NONE,			// 使用しない
 }TEXTURE;
