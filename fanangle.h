@@ -76,11 +76,9 @@ void SetColorFanangle(int nIdx, const D3DXCOLOR &color);
 
 //--------------------------------------------------
 // テクスチャ座標の設定
-// 引数1  : int nIdx / インデックス
-// 引数2  : D3DXVECTOR2 &texU / x = 左端, y = 右端
-// 引数3  : D3DXVECTOR2 &texV / x = 上端, y = 下端
+// 引数  : int nIdx / インデックス
 //--------------------------------------------------
-void SetTexFanangle(int nIdx, const D3DXVECTOR2 &texU, const D3DXVECTOR2 &texV);
+void SetTexFanangle(int nIdx);
 
 //--------------------------------------------------
 // 描画するかどうか

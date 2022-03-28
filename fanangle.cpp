@@ -191,7 +191,7 @@ int SetFanangleWithTex(LPDIRECT3DTEXTURE9 pTexture)
 		D3DXVECTOR2 texV = D3DXVECTOR2(0.0f, 1.0f);
 
 		// テクスチャ座標の設定
-		SetTexFanangle(i, texU, texV);
+		SetTexFanangle(i);
 
 		return i;
 	}
@@ -350,7 +350,7 @@ void SetColorFanangle(int nIdx, const D3DXCOLOR &color)
 //--------------------------------------------------
 // テクスチャ座標の設定
 //--------------------------------------------------
-void SetTexFanangle(int nIdx, const D3DXVECTOR2 &texU, const D3DXVECTOR2 &texV)
+void SetTexFanangle(int nIdx)
 {
 	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
 

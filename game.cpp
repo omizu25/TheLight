@@ -87,7 +87,7 @@ void InitGame(void)
 	s_nIdx = SetFanangle(TEXTURE_NONE);
 
 	// 矩形の位置の設定
-	SetRotationPosFanangle(s_nIdx, D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f),1.5f, 30.0f);
+	SetRotationPosFanangle(s_nIdx, D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f),D3DX_PI * 0.5f, 30.0f);
 
 	// 矩形の色の設定
 	SetColorFanangle(s_nIdx, GetColor(COLOR_RED));
