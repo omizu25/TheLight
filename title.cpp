@@ -116,6 +116,15 @@ void InitTitle(void)
 		menu.bSort = true;
 
 		menu.texture[MENU_GAME] = TEXTURE_NONE;
+		menu.texture[MENU_TUTORIAL] = TEXTURE_NONE;
+		menu.texture[MENU_TEST_1] = TEXTURE_NONE;
+		menu.texture[MENU_TEST_2] = TEXTURE_NONE;
+		menu.texture[MENU_TEST_3] = TEXTURE_NONE;
+		menu.texture[MENU_TEST_4] = TEXTURE_NONE;
+		menu.texture[MENU_TEST_5] = TEXTURE_NONE;
+		menu.texture[MENU_TEST_6] = TEXTURE_NONE;
+		menu.texture[MENU_TEST_7] = TEXTURE_NONE;
+		menu.texture[MENU_TEST_8] = TEXTURE_NONE;
 
 		FrameArgument Frame;
 		Frame.bUse = true;
