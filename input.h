@@ -28,10 +28,10 @@
 //キー種類(ジョイパッド)
 typedef enum
 {
-	JOYKEY_UP = 0,				//十字ボタン上
-	JOYKEY_DOWN,				//十字ボタン下
-	JOYKEY_LEFT,				//十字ボタン左
-	JOYKEY_RIGHT,				//十字ボタン右
+	JOYKEY_CROSS_UP = 0,		//十字ボタン上
+	JOYKEY_CROSS_DOWN,			//十字ボタン下
+	JOYKEY_CROSS_LEFT,			//十字ボタン左
+	JOYKEY_CROSS_RIGHT,			//十字ボタン右
 	JOYKEY_START,				//スタートボタン
 	JOYKEY_BACK,				//バックボタン
 	JOYKEY_LEFT_THUMB,			//左スティック押込み
@@ -44,22 +44,16 @@ typedef enum
 	JOYKEY_B,					//Bボタン
 	JOYKEY_X,					//Xボタン
 	JOYKEY_Y,					//Yボタン
+	JOYKEY_STICK_UP = 0,		//上	(8方向スティック)
+	JOYKEY_STICK_UP_RIGHT,		//右上	(8方向スティック)
+	JOYKEY_STICK_RIGHT,			//右	(8方向スティック)
+	JOYKEY_STICK_DOWN_RIGHT,	//右下	(8方向スティック)
+	JOYKEY_STICK_DOWN,			//下	(8方向スティック)
+	JOYKEY_STICK_DOWN_LEFT,		//左下	(8方向スティック)
+	JOYKEY_STICK_LEFT,			//左	(8方向スティック)
+	JOYKEY_STICK_UP_LEFT,		//左上	(8方向スティック)
 	JOYKEY_MAX
 }JOYKEY;
-
-//キー種類(8方向スティック)
-typedef enum
-{
-	JOYKEY_CROSS_UP = 0,					//上
-	JOYKEY_CROSS_UP_RIGHT,					//右上
-	JOYKEY_CROSS_RIGHT,						//右
-	JOYKEY_CROSS_DOWN_RIGHT,				//右下
-	JOYKEY_CROSS_DOWN,						//下
-	JOYKEY_CROSS_DOWN_LEFT,					//左下
-	JOYKEY_CROSS_LEFT,						//左
-	JOYKEY_CROSS_UP_LEFT,					//左上
-	JOYKEY_CROSS_MAX
-}JOYKEY_CROSS;
 
 //スティック識別(ジョイパッド)
 typedef enum
@@ -68,6 +62,24 @@ typedef enum
 	JOYKEY_LEFT_STICK,
 	JOYKEY_RIGHT_LEFT_MAX
 }JOYKEY_RIGHT_LEFT;
+
+//移動系のキーまとめ
+typedef enum
+{
+	MOVE_KEY_UP = 0,		//上キー
+	MOVE_KEY_DOWN,			//下キー
+	MOVE_KEY_RIGHT,			//右キー
+	MOVE_KEY_LEFT,			//左キー
+	MOVE_KEY_MAX
+}MOVE_KEY;
+
+//キータイプ
+typedef enum
+{
+	FUNCTION_KEY_DESISION = 0,		//決定キー
+	FUNCTION_KEY_PAUSE,				//ポーズキー
+	FUNCTION_KEY_MAX
+}FUNCTION_KEY;
 
 //----------------------------------------------------------------------------
 //プロトタイプ宣言
@@ -85,13 +97,16 @@ bool GetKeyboardTrigger(int nKey);						//キーボードトリガー処理
 bool GetKeyboardAllPress(void);							//キーボード全キープレス処理
 bool GetKeyboardAllTrigger(void);						//キーボード全キートリガー処理
 
-														//プロトタイプ宣言ジョイパット
+//プロトタイプ宣言ジョイパット
 bool GetJoypadPress(JOYKEY Key, int nPlayer);													//ジョイパッドプレス処理
 bool GetJoypadTrigger(JOYKEY Key, int nPlayer);													//ジョイパッドトリガー処理
 D3DXVECTOR3 GetJoypadStick(JOYKEY_RIGHT_LEFT RightLeft, int nPlayer);							//ジョイパッドスティック処理
 int GetJoypadTriggerPedal(JOYKEY Key, int nPlayer);												//ジョイパッドトリガーペダル処理
-bool GetJoypadStickPress(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key, int nPlayer);			//ジョイパッドスティックプレス８方向
-bool GetJoypadStickTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key, int nPlayer);			//ジョイパッドスティックトリガー８方向			
-bool GetJoypadStickAllTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key);					//ジョイパッドスティックトリガー８方向の全プレイヤーの対象
+bool GetJoypadStickPress(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY Key, int nPlayer);			//ジョイパッドスティックプレス８方向
+bool GetJoypadStickTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY Key, int nPlayer);			//ジョイパッドスティックトリガー８方向			
+bool GetJoypadStickAllTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY Key);					//ジョイパッドスティックトリガー８方向の全プレイヤーの対象
 bool GetJoypadAllTrigger(JOYKEY Key);															//ジョイパッドトリガーの全プレイヤーの対象
+
+bool GetMoveKeyPress(MOVE_KEY Key);									//移動系のキーまとめ
+bool GetFunctionKeyTrigger(FUNCTION_KEY Key);							//機能系のキーまとめ
 #endif
