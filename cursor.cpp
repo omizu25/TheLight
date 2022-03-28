@@ -30,9 +30,9 @@ const float	ROT_SPEED = -0.15f;	// 回転速度
 typedef struct
 {
 	D3DXVECTOR3	pos;		// 位置
-	D3DXVECTOR3	rot;		// 向き
 	int			nNumUse;	// 使用数
 	int			nIdx;		// 矩形のインデックス
+	float		fRot;		// 向き
 	float		fTop;		// 上端
 	float		fWidth;		// 幅
 	float		fHeight;	// 高さ
@@ -105,10 +105,10 @@ void UpdateCursor(void)
 
 		/*↓ 回転する ↓*/
 
-		pCursor->rot.z += ROT_SPEED;
+		pCursor->fRot += ROT_SPEED;
 
 		// 矩形の回転する位置の設定
-		SetRotationPosRectangle(pCursor->nIdx, pCursor->pos, pCursor->rot, pCursor->fWidth, pCursor->fHeight);
+		SetRotationPosRectangle(pCursor->nIdx, pCursor->pos, pCursor->fRot, pCursor->fWidth, pCursor->fHeight);
 	}
 }
 
@@ -139,7 +139,7 @@ int SetCursor(const CursorArgument &cursor)
 		/*↓ 使用していない ↓*/
 
 		pCursor->nNumUse = cursor.nNumUse;
-		pCursor->rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		pCursor->fRot = 0.0f;
 		pCursor->fInterval = (cursor.fBottom - cursor.fTop) / (cursor.nNumUse + 1);
 		pCursor->pos = D3DXVECTOR3(cursor.fPosX, cursor.fTop + (pCursor->fInterval * (cursor.nSelect + 1)), 0.0f);
 		pCursor->fWidth = cursor.fWidth;
@@ -153,7 +153,7 @@ int SetCursor(const CursorArgument &cursor)
 		pCursor->nIdx = SetRectangle(cursor.texture);
 
 		// 矩形の回転する位置の設定
-		SetRotationPosRectangle(pCursor->nIdx, pCursor->pos, pCursor->rot, cursor.fWidth, cursor.fHeight);
+		SetRotationPosRectangle(pCursor->nIdx, pCursor->pos, pCursor->fRot, cursor.fWidth, cursor.fHeight);
 
 		// 矩形の色の設定
 		SetColorRectangle(pCursor->nIdx, GetColor(COLOR_WHITE));
@@ -185,7 +185,7 @@ void ChangePosCursor(int nIdx, int nSelect)
 	pCursor->pos = D3DXVECTOR3(pCursor->pos.x, pCursor->fTop + (pCursor->fInterval * (nSelect + 1)), 0.0f);
 
 	// 矩形の回転する位置の設定
-	SetRotationPosRectangle(pCursor->nIdx, pCursor->pos, pCursor->rot, pCursor->fWidth, pCursor->fHeight);
+	SetRotationPosRectangle(pCursor->nIdx, pCursor->pos, pCursor->fRot, pCursor->fWidth, pCursor->fHeight);
 }
 
 //--------------------------------------------------
