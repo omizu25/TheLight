@@ -15,8 +15,11 @@
 #include "rectangle.h"
 #include "fanangle.h"
 #include "texture.h"
+#include "tutorial.h"
+#include "ranking.h"
 
 #include <assert.h>
+#include <time.h>
 
 //==================================================
 // スタティック変数
@@ -33,6 +36,9 @@ MODE	s_modeNext = MODE_NONE;	// 次のモード
 void InitMode(void)
 {
 	// テクスチャの読み込み
+	srand((unsigned int)time(NULL));
+
+	// テクスチャの読み込み
 	LoadTexture();
 
 	// 矩形の初期化
@@ -40,6 +46,9 @@ void InitMode(void)
 
 	// 円形の初期化
 	InitFanangle();
+
+	// ランキングのロード
+	LoadRanking();
 }
 
 //--------------------------------------------------
@@ -54,13 +63,19 @@ void UninitMode(void)
 	UninitGame();
 
 	// テクスチャの終了
-	UninitTexture();
+	UninitTutorial();
+
+	// 矩形の終了
+	SaveRanking();
 
 	// 矩形の終了
 	UninitRectangle();
 
 	// 円形の終了
 	UninitFanangle();
+
+	// テクスチャの終了
+	UninitTexture();
 }
 
 //--------------------------------------------------
@@ -79,6 +94,7 @@ void UpdateMode(void)
 		break;
 
 	case MODE_TUTORIAL:	// チュートリアル
+		UpdateTutorial();
 		break;
 
 	case MODE_NONE:
@@ -107,6 +123,7 @@ void DrawMode(void)
 		break;
 
 	case MODE_TUTORIAL:	// チュートリアル
+		DrawTutorial();
 		break;
 
 	case MODE_NONE:
@@ -150,6 +167,7 @@ void SetMode(void)
 		break;
 
 	case MODE_TUTORIAL:	// チュートリアル
+		UninitTutorial();
 		break;
 
 	case MODE_NONE:
@@ -178,6 +196,7 @@ void SetMode(void)
 		break;
 
 	case MODE_TUTORIAL:	// チュートリアル
+		InitTutorial();
 		break;
 
 	case MODE_NONE:

@@ -21,8 +21,8 @@
 //==================================================
 namespace
 {
-const char	*CLASS_NAME = "windowClass";				// ウインドウクラスの名前
-const char	*WINDOW_NAME = "フライングパワーディスク";	// ウインドウの名前 (キャプションに表示)
+const char	*CLASS_NAME = "windowClass";		// ウインドウクラスの名前
+const char	*WINDOW_NAME = "騒☆音★四☆神";	// ウインドウの名前 (キャプションに表示)
 }
 
 //==================================================

@@ -12,9 +12,8 @@
 //==================================================
 typedef enum
 {
-	TEXTURE_Number_0To9 = 0,	// 数字
-	TEXTURE_Cursor_Right,		// 右カーソル
-	TEXTURE_Cursor_Left,		// 左カーソル
+	TEXTURE_Cursor_Right = 0,	// カーソル
+	TEXTURE_Number_004,			// 数
 	TEXTURE_MAX,
 	TEXTURE_NONE,			// 使用しない
 }TEXTURE;

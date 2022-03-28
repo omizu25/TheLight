@@ -8,6 +8,11 @@
 #define _NUMBER_H_	//２重インクルード防止のマクロ定義
 
 //==================================================
+// インクルード
+//==================================================
+#include "texture.h"
+
+//==================================================
 // プロトタイプ宣言
 //==================================================
 //--------------------------------------------------
@@ -36,9 +41,11 @@ void DrawNumber(void);
 // 引数2  : D3DXVECTOR3 &size / サイズ
 // 引数3  : D3DXCOLOR &col / 色
 // 引数4  : int nNumber / 数
+// 引数5  : int nDigit / 桁数
+// 引数6  : bool bZero / 0を表示するかどうか
 // 返値  : int / 配列のインデックス
 //--------------------------------------------------
-int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &col, int nNumber);
+int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &col, int nNumber, int nDigit, bool bZero);
 
 //--------------------------------------------------
 // 位置の設定
@@ -75,5 +82,12 @@ int DigitNumber(int nNumber);
 // 引数2  : bool bDraw / 描画するかどうか
 //--------------------------------------------------
 void SetDrawNumber(int nIdx, bool bDraw);
+
+//--------------------------------------------------
+// テクスチャの変更
+// 引数1  : int nIdx / インデックス
+// 引数2  : TEXTURE texture / 列挙型 種類
+//--------------------------------------------------
+void ChangeTextureNumber(int nIdx, TEXTURE texture);
 
 #endif // !_NUMBER_H_

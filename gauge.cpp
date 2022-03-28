@@ -56,7 +56,7 @@ void ChangeLength(float *fLength, float fLengthDest);
 void InitGauge(void)
 {
 	// ƒƒ‚ƒŠ‚ÌƒNƒŠƒA
-	memset(&s_gauge[0], 0, sizeof(s_gauge));
+	memset(s_gauge, 0, sizeof(s_gauge));
 }
 
 //--------------------------------------------------

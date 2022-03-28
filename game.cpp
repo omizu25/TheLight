@@ -23,6 +23,9 @@
 #include "gauge.h"
 #include "effect.h"
 #include "color.h"
+#include "time.h"
+#include "score.h"
+#include "ranking.h"
 
 #include <assert.h>
 
@@ -52,16 +55,25 @@ void InitGame(void)
 	InitNumber();
 
 	// メニューの初期化
-	InitMenu();
+	InitTime();
 
 	// カーソル初期化
+	InitScore();
+
+	// ポーズの初期化
+	InitRanking();
+
+	// エフェクトの初期化
+	InitEffect();
+
+	//サウンド開始
+	InitMenu();
+
+	//PlaySound(SOUND_LABEL_BGM);
 	InitCursor();
 
 	// ポーズの初期化
 	InitPause();
-
-	// エフェクトの初期化
-	InitEffect();
 
 	//サウンド開始
 	//PlaySound(SOUND_LABEL_BGM);
@@ -97,6 +109,15 @@ void UninitGame(void)
 
 	// 数の終了
 	UninitNumber();
+
+	// ポーズの終了
+	UninitTime();
+
+	// スコアの終了
+	UninitScore();
+
+	// ランキングの終了
+	UninitRanking();
 
 	// ポーズの終了
 	UninitPause();
@@ -176,6 +197,15 @@ void UpdateGame(void)
 	// エフェクトの更新
 	UpdateEffect();
 	SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), EFFECT_TYPE_001);
+
+	// タイムの更新
+	UpdateTime();
+
+	// スコアの更新
+	UpdateScore();
+
+	// ランキングの更新
+	UpdateRanking();
 
 	if (GetKeyboardPress(DIK_RETURN))
 	{

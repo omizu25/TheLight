@@ -12,6 +12,8 @@
 #include "tutorial.h"
 #include "rectangle.h"
 #include "texture.h"
+#include "input.h"
+#include "mode.h"
 
 //==================================================
 // スタティック変数
@@ -35,6 +37,9 @@ void InitTutorial(void)
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdx, pos, size);
+
+		// 矩形の色の設定
+		SetColorRectangle(s_nIdx, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 	}
 }
 
@@ -52,6 +57,11 @@ void UninitTutorial(void)
 //--------------------------------------------------
 void UpdateTutorial(void)
 {
+	if (GetFunctionKeyTrigger(FUNCTION_KEY_DESISION))
+	{//決定キー(ENTERキー)が押されたかどうか
+		// モードの変更
+		ChangeMode(MODE_TITLE);
+	}
 }
 
 //--------------------------------------------------
@@ -59,5 +69,6 @@ void UpdateTutorial(void)
 //--------------------------------------------------
 void DrawTutorial(void)
 {
-	/* 矩形で描画してます */
+	// 矩形の描画
+	DrawRectangle();
 }

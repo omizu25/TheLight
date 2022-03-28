@@ -26,16 +26,17 @@ int	s_nIdxBG;	// 背景の矩形のインデックス
 //--------------------------------------------------
 void InitBG(void)
 {
-	{// 背景
-		// 矩形の設定
-		s_nIdxBG = SetRectangle(TEXTURE_NONE);
+	// 矩形の設定
+	s_nIdxBG = SetRectangle(TEXTURE_NONE);
 
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
-		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
+	D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 
-		// 矩形の位置の設定
-		SetPosRectangle(s_nIdxBG, pos, size);
-	}
+	// 矩形の位置の設定
+	SetPosRectangle(s_nIdxBG, pos, size);
+
+	// 矩形の色の設定
+	SetColorRectangle(s_nIdxBG, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
 //--------------------------------------------------
