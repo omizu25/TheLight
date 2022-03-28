@@ -201,8 +201,8 @@ void Input(void)
 		return;
 	}
 
-	if (GetKeyboardTrigger(DIK_W) || GetJoypadTrigger(JOYKEY_UP) || 
-		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_UP))
+	if (GetKeyboardTrigger(DIK_W) || GetJoypadTrigger(JOYKEY_UP,0) || 
+		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_CROSS_UP,0))
 	{// Wキーが押されたかどうか
 		// 選択肢の色の初期化
 		InitColorOption();
@@ -218,8 +218,8 @@ void Input(void)
 		// サウンドの再生
 		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
-	else if (GetKeyboardTrigger(DIK_S) || GetJoypadTrigger(JOYKEY_DOWN) || 
-		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_DOWN))
+	else if (GetKeyboardTrigger(DIK_S) || GetJoypadTrigger(JOYKEY_DOWN,0) || 
+		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_CROSS_DOWN,0))
 	{// Sキーが押されたかどうか
 		// 選択肢の色の初期化
 		InitColorOption();
@@ -236,8 +236,8 @@ void Input(void)
 		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
 
-	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START) ||
-		GetJoypadTrigger(JOYKEY_A) || GetJoypadTrigger(JOYKEY_B))
+	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START,0) ||
+		GetJoypadTrigger(JOYKEY_A,0) || GetJoypadTrigger(JOYKEY_B,0))
 	{//決定キー(ENTERキー)が押されたかどうか
 		switch (s_nSelectMenu)
 		{
