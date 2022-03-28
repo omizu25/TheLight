@@ -15,6 +15,7 @@
 #include "rectangle.h"
 #include "texture.h"
 #include "tutorial.h"
+#include "ranking.h"
 
 #include <assert.h>
 #include <time.h>
@@ -41,6 +42,9 @@ void InitMode(void)
 
 	// 矩形の初期化
 	InitRectangle();
+
+	// ランキングのロード
+	LoadRanking();
 }
 
 //--------------------------------------------------
@@ -57,11 +61,14 @@ void UninitMode(void)
 	// チュートリアルの終了
 	UninitTutorial();
 
-	// テクスチャの終了
-	UninitTexture();
+	// ランキングのセーブ
+	SaveRanking();
 
 	// 矩形の終了
 	UninitRectangle();
+
+	// テクスチャの終了
+	UninitTexture();
 }
 
 //--------------------------------------------------

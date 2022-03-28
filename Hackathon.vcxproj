@@ -161,6 +161,7 @@
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="pause.cpp" />
+    <ClCompile Include="ranking.cpp" />
     <ClCompile Include="rectangle.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="sound.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="mode.h" />
     <ClInclude Include="number.h" />
     <ClInclude Include="pause.h" />
+    <ClInclude Include="ranking.h" />
     <ClInclude Include="rectangle.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="sound.h" />

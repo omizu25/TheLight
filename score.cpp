@@ -17,6 +17,7 @@
 #include "mode.h"
 #include "input.h"
 #include "utility.h"
+#include "ranking.h"
 
 //==================================================
 // 定義
@@ -61,6 +62,9 @@ void UninitScore(void)
 {
 	// 使うのを止める
 	StopUseRectangle(s_nIdxScore);
+
+	// ランキングの設定
+	SetRanking();
 }
 
 //--------------------------------------------------
@@ -96,7 +100,6 @@ void SetScore(int nScore)
 
 //--------------------------------------------------
 // 加算
-// 引数  : int nValue / 加算する値
 //--------------------------------------------------
 void AddScore(int nValue)
 {
@@ -104,4 +107,12 @@ void AddScore(int nValue)
 
 	// 数の変更
 	s_nIdxScore = ChangeNumber(s_nIdxScore, s_nScore);
+}
+
+//--------------------------------------------------
+// 取得
+//--------------------------------------------------
+int GetScore(void)
+{
+	return s_nScore;
 }

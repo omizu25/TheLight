@@ -24,6 +24,7 @@
 #include "color.h"
 #include "time.h"
 #include "score.h"
+#include "ranking.h"
 
 #include <assert.h>
 
@@ -56,6 +57,9 @@ void InitGame(void)
 
 	// スコアの初期化
 	InitScore();
+
+	// ランキングの初期化
+	InitRanking();
 
 	// エフェクトの初期化
 	InitEffect();
@@ -101,6 +105,9 @@ void UninitGame(void)
 
 	// スコアの終了
 	UninitScore();
+
+	// ランキングの終了
+	UninitRanking();
 
 	// ポーズの終了
 	UninitPause();
@@ -186,6 +193,9 @@ void UpdateGame(void)
 
 	// スコアの更新
 	UpdateScore();
+
+	// ランキングの更新
+	UpdateRanking();
 }
 
 //--------------------------------------------------
