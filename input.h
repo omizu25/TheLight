@@ -1,109 +1,97 @@
-//==================================================
+//=============================================================================
 //
-// Hackathon ( input.h )
-// Author1  : KOZUNA HIROHITO
-// Author2  : ISOE JUKIA
-// Author3  : KATSUKI MIZUKI
+// 入力処理 [input.h]
+// Author1 : KOZUNA HIROHITO
 //
-//==================================================
-#ifndef _INPUT_H_		// このマクロ定義がされなかったら
-#define _INPUT_H_		// 2重インクルード防止のマクロ定義
+//=============================================================================
 
-//--------------------------------------------------
-// ライブラリのリンク 
-//--------------------------------------------------
-#pragma comment(lib,"dinput8.lib")		// 入力処理に必要 (キーボード)
-#pragma comment(lib,"xinput.lib")		// 入力処理に必要（ジョイパット）
+#ifndef _INPUT_H_		//このマクロ定義がされなかったら
+#define _INPUT_H_		//2重インクルード防止のマクロ定義
 
-//--------------------------------------------------
-// インクルード
-//--------------------------------------------------
+//----------------------------------------------------------------------------
+//ライブラリーファイルのリンク
+//----------------------------------------------------------------------------
+
+#pragma comment(lib,"dinput8.lib")//入力処理に必要(キーボード)
+#pragma comment(lib,"xinput.lib")//入力処理に必要（ジョイパット）
+
+//----------------------------------------------------------------------------
+//インクルードファイル
+//----------------------------------------------------------------------------
+
 #include "main.h"
 
-//--------------------------------------------------
-// 列挙型を定義
-//--------------------------------------------------
+//----------------------------------------------------------------------------
+//列挙型
+//----------------------------------------------------------------------------
 
-/*↓ キー種類(ジョイパッド) ↓*/
-
+//キー種類(ジョイパッド)
 typedef enum
 {
-	JOYKEY_UP = 0,			// 十字ボタン上
-	JOYKEY_DOWN,			// 十字ボタン下
-	JOYKEY_LEFT,			// 十字ボタン左
-	JOYKEY_RIGHT,			// 十字ボタン右
-	JOYKEY_START,			// スタートボタン
-	JOYKEY_BACK,			// バックボタン
-	JOYKEY_LEFT_THUMB,		// 左スティック押込み
-	JOYKEY_RIGHT_THUMB,		// 右スティック押込み
-	JOYKEY_LEFT_SHOULDER,	// L１ボタン
-	JOYKEY_RIGHT_SHOULDER,	// R１ボタン
-	JOYKEY_LEFT_TRIGGER,	// L２トリガー
-	JOYKEY_RIGHT_TRIGGER,	// R２トリガー
-	JOYKEY_A,				// Aボタン
-	JOYKEY_B,				// Bボタン
-	JOYKEY_X,				// Xボタン
-	JOYKEY_Y,				// Yボタン
-	JOYKEY_LEFT_STICK,		// 左スティック
-	JOYKEY_RIGHT_STICK,		// 右スティック
-	JOYKEY_MAX,
+	JOYKEY_UP = 0,				//十字ボタン上
+	JOYKEY_DOWN,				//十字ボタン下
+	JOYKEY_LEFT,				//十字ボタン左
+	JOYKEY_RIGHT,				//十字ボタン右
+	JOYKEY_START,				//スタートボタン
+	JOYKEY_BACK,				//バックボタン
+	JOYKEY_LEFT_THUMB,			//左スティック押込み
+	JOYKEY_RIGHT_THUMB,			//右スティック押込み
+	JOYKEY_LEFT_SHOULDER,		//L１ボタン
+	JOYKEY_RIGHT_SHOULDER,		//R１ボタン
+	JOYKEY_LEFT_TRIGGER,		//L２トリガー
+	JOYKEY_RIGHT_TRIGGER,		//R２トリガー
+	JOYKEY_A,					//Aボタン
+	JOYKEY_B,					//Bボタン
+	JOYKEY_X,					//Xボタン
+	JOYKEY_Y,					//Yボタン
+	JOYKEY_MAX
 }JOYKEY;
 
-/*↓ キー種類(マウス) ↓*/
-
+//キー種類(8方向スティック)
 typedef enum
 {
-	MOUSE_INPUT_LEFT,	// マウス左ボタン
-	MOUSE_INPUT_RIGHT,	// マウス右ボタン
-	MOUSE_INPUT_MIDDLE,	// マウス中央ボタン
-	MOUSE_INPUT_4,		// マウスボタン4
-	MOUSE_INPUT_5,		// マウスボタン5
-	MOUSE_INPUT_6,		// マウスボタン6
-	MOUSE_INPUT_7,		// マウスボタン7
-	MOUSE_INPUT_8,		// マウスボタン8
-	MOUSE_MAX
-}MOUSE;
+	JOYKEY_CROSS_UP = 0,					//上
+	JOYKEY_CROSS_UP_RIGHT,					//右上
+	JOYKEY_CROSS_RIGHT,						//右
+	JOYKEY_CROSS_DOWN_RIGHT,				//右下
+	JOYKEY_CROSS_DOWN,						//下
+	JOYKEY_CROSS_DOWN_LEFT,					//左下
+	JOYKEY_CROSS_LEFT,						//左
+	JOYKEY_CROSS_UP_LEFT,					//左上
+	JOYKEY_CROSS_MAX
+}JOYKEY_CROSS;
 
-//--------------------------------------------------
-// プロトタイプ宣言
-//--------------------------------------------------
+//スティック識別(ジョイパッド)
+typedef enum
+{
+	JOYKEY_RIGHT_STICK = 0,
+	JOYKEY_LEFT_STICK,
+	JOYKEY_RIGHT_LEFT_MAX
+}JOYKEY_RIGHT_LEFT;
 
-/*↓ 入力処理のプロトタイプ宣言 ↓*/
+//----------------------------------------------------------------------------
+//プロトタイプ宣言
+//----------------------------------------------------------------------------
 
-HRESULT InitInput(HINSTANCE hInstance, HWND hWnd);	// 入力処理全部の初期化
-void UninitInput(void);								// 入力処理全部の終了処理
-void UpdateInput(void);								// 入力処理全部の更新処理
-int GetMaxInput(void);								// 入力処理のプレイヤー数を取得
+//入力処理のプロトタイプ宣言
 
-/*↓ プロトタイプ宣言 (キーボード) ↓*/
+HRESULT InitInput(HINSTANCE hInstance, HWND hWnd);		//入力処理全部の初期化
+void UninitInput(void);									//入力処理全部の終了処理
+void UpdateInput(void);									//入力処理全部の更新処理
 
-bool GetKeyboardAllPress(void);		// キーボードの全キープレス処理
-bool GetKeyboardPress(int nKey);	// キーボードのプレス処理
-bool GetKeyboardAllTrigger(void);	// キーボードの全キートリガー処理
-bool GetKeyboardTrigger(int nKey);	// キーボードのトリガー処理
-bool GetKeyboardAllRelease(void);	// キーボードの全リリース処理
-bool GetKeyboardRelease(int nKey);	// キーボードのリリース処理
+														//プロトタイプ宣言キーボード
+bool GetKeyboardPress(int nKey);						//キーボードプレス処理
+bool GetKeyboardTrigger(int nKey);						//キーボードトリガー処理
+bool GetKeyboardAllPress(void);							//キーボード全キープレス処理
+bool GetKeyboardAllTrigger(void);						//キーボード全キートリガー処理
 
-/*↓ プロトタイプ宣言(ジョイパッド) ↓*/
-
-bool GetJoypadAllPress(void);											// ジョイパッドプレス処理(キー指定なし)
-bool GetJoypadPress(JOYKEY Key);										// ジョイパッドプレス処理(プレイヤー指定なし)
-bool GetJoypadIdxPress(JOYKEY Key, int nPlayer);						// ジョイパッドのプレス処理(プレイヤー指定あり)
-bool GetJoypadAllTrigger(void);											// ジョイパッドトリガー処理(キー指定なし)
-bool GetJoypadTrigger(JOYKEY Key);										// ジョイパッドトリガー処理(プレイヤー指定なし)
-bool GetJoypadIdxTrigger(JOYKEY Key, int nPlayer);						// ジョイパッドのトリガー処理(プレイヤー指定あり)
-D3DXVECTOR3 GetJoypadStick(JOYKEY Key, int nPlayer);					// ジョイパッドのスティック処理
-int GetJoypadTriggerPedal(JOYKEY Key, int nPlayer);						// ジョイパッドのトリガーペダル処理
-void JoypadVibration(int nTime, WORD nStrength, int nPlayer);			// ジョイパッドの振動制御
-bool IsJoyPadUse(int nPlayer);											// ジョイパッドの使用状況
-bool GetJoypadStickTrigger(JOYKEY Stick, JOYKEY Key);					// ジョイパッドのスティックのトリガー処理(プレイヤー指定なし)
-bool GetJoypadIdxStickTrigger(JOYKEY Stick, JOYKEY Key, int nPlayer);	// ジョイパッドのスティックのトリガー処理(プレイヤー指定あり)
-
-/*↓ プロトタイプ宣言(マウス) ↓*/
-
-bool GetMousePress(MOUSE mouse);	// マウスのプレス処理
-bool GetMouseTrigger(MOUSE mouse);	// マウスのトリガー処理
-D3DXVECTOR3 GetMouse(void);			// マウスの画面内の位置
-int GetMouseWheel(void);			// マウスのホイールの動き処理
-
-#endif // !_INPUT_H_
+														//プロトタイプ宣言ジョイパット
+bool GetJoypadPress(JOYKEY Key, int nPlayer);													//ジョイパッドプレス処理
+bool GetJoypadTrigger(JOYKEY Key, int nPlayer);													//ジョイパッドトリガー処理
+D3DXVECTOR3 GetJoypadStick(JOYKEY_RIGHT_LEFT RightLeft, int nPlayer);							//ジョイパッドスティック処理
+int GetJoypadTriggerPedal(JOYKEY Key, int nPlayer);												//ジョイパッドトリガーペダル処理
+bool GetJoypadStickPress(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key, int nPlayer);			//ジョイパッドスティックプレス８方向
+bool GetJoypadStickTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key, int nPlayer);			//ジョイパッドスティックトリガー８方向			
+bool GetJoypadStickAllTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY_CROSS Key);					//ジョイパッドスティックトリガー８方向の全プレイヤーの対象
+bool GetJoypadAllTrigger(JOYKEY Key);															//ジョイパッドトリガーの全プレイヤーの対象
+#endif
