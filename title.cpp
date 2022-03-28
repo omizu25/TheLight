@@ -36,6 +36,7 @@ const float	CURSOR_SIZE = 50.0f;	// カーソルのサイズ
 typedef enum
 {
 	MENU_GAME = 0,	// ゲーム
+	MENU_TUTORIAL,	// チュートリアル
 	MENU_MAX
 }MENU;
 }// namespaceはここまで
@@ -48,7 +49,7 @@ namespace
 int		s_nIdxBG;		// 背景の矩形のインデックス
 int		s_nIdx;			// 矩形のインデックス
 int		s_nSelectMenu;	// 選ばれているメニュー
-int		s_nIdxUseMenu;	// 使っているメニューの番号
+int		s_nIdxMenu;		// メニューの配列のインデックス
 int		s_nIdxCursor;	// カーソルの配列のインデックス
 }// namespaceはここまで
 
@@ -107,6 +108,7 @@ void InitTitle(void)
 		menu.bSort = true;
 
 		menu.texture[MENU_GAME] = TEXTURE_NONE;
+		menu.texture[MENU_TUTORIAL] = TEXTURE_NONE;
 
 		FrameArgument Frame;
 		Frame.bUse = true;
@@ -114,7 +116,13 @@ void InitTitle(void)
 		Frame.texture = TEXTURE_NONE;
 
 		// メニューの設定
-		s_nIdxUseMenu = SetMenu(menu, Frame);
+		s_nIdxMenu = SetMenu(menu, Frame);
+
+		// 選択肢の色の設定
+		SetColorOption(s_nIdxMenu, GetColor(COLOR_RED), D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.5f));
+
+		// 選ばれていない選択肢の色の設定
+		SetColorDefaultOption(s_nIdxMenu, GetColor(COLOR_WHITE));
 	}
 
 	{// カーソル
@@ -192,8 +200,8 @@ void Input(void)
 		return;
 	}
 
-	if (GetKeyboardTrigger(DIK_W) || GetJoypadTrigger(JOYKEY_UP) || 
-		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_UP))
+	if (GetKeyboardTrigger(DIK_W) || GetJoypadTrigger(JOYKEY_UP,0) || 
+		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_CROSS_UP,0))
 	{// Wキーが押されたかどうか
 		// 選択肢の色の初期化
 		InitColorOption();
@@ -209,8 +217,8 @@ void Input(void)
 		// サウンドの再生
 		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
-	else if (GetKeyboardTrigger(DIK_S) || GetJoypadTrigger(JOYKEY_DOWN) || 
-		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_DOWN))
+	else if (GetKeyboardTrigger(DIK_S) || GetJoypadTrigger(JOYKEY_DOWN,0) || 
+		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_CROSS_DOWN,0))
 	{// Sキーが押されたかどうか
 		// 選択肢の色の初期化
 		InitColorOption();
@@ -227,13 +235,17 @@ void Input(void)
 		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
 
-	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START) ||
-		GetJoypadTrigger(JOYKEY_A) || GetJoypadTrigger(JOYKEY_B))
+	if (GetKeyboardTrigger(DIK_RETURN) || GetJoypadTrigger(JOYKEY_START,0) ||
+		GetJoypadTrigger(JOYKEY_A,0) || GetJoypadTrigger(JOYKEY_B,0))
 	{//決定キー(ENTERキー)が押されたかどうか
 		switch (s_nSelectMenu)
 		{
 		case MENU_GAME:	// ゲーム
 			ChangeMode(MODE_GAME);
+			break;
+
+		case MENU_TUTORIAL:	// チュートリアル
+			ChangeMode(MODE_TUTORIAL);
 			break;
 
 		default:

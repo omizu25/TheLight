@@ -14,6 +14,7 @@
 #include "fade.h"
 #include "color.h"
 #include "rectangle.h"
+#include "utility.h"
 
 #include <assert.h>
 
@@ -23,8 +24,8 @@
 namespace
 {
 const int	MAX_MENU = 16;					// メニューの最大数
-const float	NORMAL_BLINK_SPEED = 0.01f;		// 通常時の点滅速度
-const float	DECISION_BLINK_SPEED = 0.1f;	// 決定時の点滅速度
+const float	NORMAL_CHANGE_SPEED = 0.01f;	// 通常時の変更速度
+const float	DECISION_CHANGE_SPEED = 0.1f;	// 決定時の変更速度
 const float	MIN_ALPHA = 0.5f;				// α値の最小値
 
 /*↓ 選択肢 ↓*/
@@ -41,13 +42,16 @@ typedef struct
 typedef struct
 {
 	D3DXVECTOR3	pos;				// 位置
+	D3DXCOLOR	colStart;			// 始まりの色
+	D3DXCOLOR	colEnd;				// 終わりの色
+	D3DXCOLOR	colDefault;			// 選ばれてない選択肢の色
 	Option		Option[MAX_OPTION];	// 選択肢の情報
 	int			nNumUse;			// 使用数
 	int			nIdx;				// 矩形のインデックス
 	float		fWidth;				// 幅
 	float		fHeight;			// 高さ
 	float		fInterval;			// 選択肢の間隔
-	float		fBlinkSpeed;		// 点滅速度
+	float		fChangeSpeed;		// 変更速度
 	bool		bFrame;				// 枠がいるかどうか [ true : いる false : いらない ]
 	bool		bDraw;				// 描画するかどうか
 	bool		bUse;				// 使用しているかどうか
@@ -62,7 +66,7 @@ namespace
 Menu	s_aMenu[MAX_MENU];	// メニューの情報
 int		s_nIdxMenu;			// 選ばれているメニューの番号
 int		s_nIdxOption;		// 選ばれている選択肢の番号
-int		s_nAlphaTime;		// α値変更用の時間
+int		s_nTime;		// α値変更用の時間
 }// namespaceはここまで
 
 //==================================================
@@ -80,7 +84,7 @@ void InitMenu(void)
 {
 	s_nIdxMenu = 0;
 	s_nIdxOption = 0;
-	s_nAlphaTime = 0;
+	s_nTime = 0;
 
 	// メモリのクリア
 	memset(s_aMenu, 0, sizeof(s_aMenu));
@@ -164,10 +168,13 @@ int SetMenu(const MenuArgument &menu, const FrameArgument &Frame)
 		float fPosY = menu.fTop + ((menu.fBottom - menu.fTop) * 0.5f);
 
 		pMenu->pos = D3DXVECTOR3(fPosX, fPosY, 0.0f);
+		pMenu->colStart = GetColor(COLOR_WHITE);
+		pMenu->colEnd = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
+		pMenu->colDefault = GetColor(COLOR_WHITE);
 		pMenu->nNumUse = menu.nNumUse;
 		pMenu->fWidth = menu.fRight - menu.fLeft;
 		pMenu->fHeight = menu.fBottom - menu.fTop;
-		pMenu->fBlinkSpeed = NORMAL_BLINK_SPEED;
+		pMenu->fChangeSpeed = NORMAL_CHANGE_SPEED;
 		pMenu->bFrame = Frame.bUse;
 		pMenu->bDraw = true;
 		pMenu->bUse = true;
@@ -238,14 +245,63 @@ int SetMenu(const MenuArgument &menu, const FrameArgument &Frame)
 }
 
 //--------------------------------------------------
+// 選択肢の色の設定
+//--------------------------------------------------
+void SetColorOption(int nIdx, const D3DXCOLOR &colStart, const D3DXCOLOR &colEnd)
+{
+	assert(nIdx >= 0 && nIdx < MAX_MENU);
+
+	Menu *pMenu = &s_aMenu[nIdx];
+
+	if (!pMenu->bUse)
+	{// 使用していない
+		return;
+	}
+
+	/*↓ 使用している ↓*/
+
+	pMenu->colStart = colStart;
+	pMenu->colEnd = colEnd;
+}
+
+//--------------------------------------------------
+// 選ばれていない選択肢の色の設定
+//--------------------------------------------------
+void SetColorDefaultOption(int nIdx, const D3DXCOLOR &colDefault)
+{
+	assert(nIdx >= 0 && nIdx < MAX_MENU);
+
+	Menu *pMenu = &s_aMenu[nIdx];
+
+	if (!pMenu->bUse)
+	{// 使用していない
+		return;
+	}
+
+	/*↓ 使用している ↓*/
+
+	pMenu->colDefault = colDefault;
+
+	// 選択肢の色の初期化
+	InitColorOption();
+}
+
+//--------------------------------------------------
 // 選択肢の色の初期化
 //--------------------------------------------------
 void InitColorOption(void)
 {
-	Option *pOption = &s_aMenu[s_nIdxMenu].Option[s_nIdxOption];
+	Menu *pMenu = &s_aMenu[s_nIdxMenu];
 
-	// 矩形の色の設定
-	SetColorRectangle(pOption->nIdx, GetColor(COLOR_WHITE));
+	for (int i = 0; i < pMenu->nNumUse; i++)
+	{
+		Option *pOption = &pMenu->Option[i];
+
+		pOption->col = pMenu->colDefault;
+
+		// 矩形の色の設定
+		SetColorRectangle(pOption->nIdx, pOption->col);
+	}
 }
 
 //--------------------------------------------------
@@ -256,7 +312,7 @@ void ChangeOption(int nIdx)
 	assert(nIdx >= 0 && nIdx < MAX_OPTION);
 
 	s_nIdxOption = nIdx;
-	s_nAlphaTime = 0;
+	s_nTime = 0;
 }
 
 //--------------------------------------------------
@@ -264,7 +320,7 @@ void ChangeOption(int nIdx)
 //--------------------------------------------------
 void DecisionOption(void)
 {
-	s_aMenu[s_nIdxMenu].fBlinkSpeed = DECISION_BLINK_SPEED;
+	s_aMenu[s_nIdxMenu].fChangeSpeed = DECISION_CHANGE_SPEED;
 }
 
 //--------------------------------------------------
@@ -276,7 +332,7 @@ void ResetMenu(int nIdx)
 
 	s_nIdxMenu = 0;
 	s_nIdxOption = 0;
-	s_nAlphaTime = 0;
+	s_nTime = 0;
 	
 	Menu *pMenu = &s_aMenu[nIdx];
 
@@ -338,9 +394,9 @@ void SetDrawMenu(int nIdx, bool bDraw)
 
 	pMenu->bDraw = bDraw;
 
-	pMenu->fBlinkSpeed = NORMAL_BLINK_SPEED;
+	pMenu->fChangeSpeed = NORMAL_CHANGE_SPEED;
 	s_nIdxOption = 0;
-	s_nAlphaTime = 0;
+	s_nTime = 0;
 }
 
 namespace
@@ -350,14 +406,15 @@ namespace
 //--------------------------------------------------
 void ChangeColor(Menu *pMenu)
 {
-	s_nAlphaTime++;
+	s_nTime++;
 
 	Option *pOption = &pMenu->Option[s_nIdxOption];
 
-	float fCurve = cosf((s_nAlphaTime * pMenu->fBlinkSpeed) * (D3DX_PI * 2.0f));
-	float fAlpha = (((fCurve + 1.0f) * 0.5f) * (1.0f - MIN_ALPHA)) + MIN_ALPHA;
-
-	pOption->col = D3DXCOLOR(1.0f, 1.0f, 1.0f, fAlpha);
+	float fCurve = CosCurve(s_nTime, pMenu->fChangeSpeed);
+	pOption->col.r = Curve(fCurve, pMenu->colStart.r, pMenu->colEnd.r);
+	pOption->col.g = Curve(fCurve, pMenu->colStart.g, pMenu->colEnd.g);
+	pOption->col.b = Curve(fCurve, pMenu->colStart.b, pMenu->colEnd.b);
+	pOption->col.a = Curve(fCurve, pMenu->colStart.a, pMenu->colEnd.a);
 
 	// 矩形の色の設定
 	SetColorRectangle(pOption->nIdx, pOption->col);

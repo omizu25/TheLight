@@ -71,6 +71,9 @@ void UpdateMode(void)
 		UpdateGame();
 		break;
 
+	case MODE_TUTORIAL:	// チュートリアル
+		break;
+
 	case MODE_NONE:
 		/* 処理なし */
 		break;
@@ -94,6 +97,9 @@ void DrawMode(void)
 
 	case MODE_GAME:		// ゲーム
 		DrawGame();
+		break;
+
+	case MODE_TUTORIAL:	// チュートリアル
 		break;
 
 	case MODE_NONE:
@@ -136,6 +142,9 @@ void SetMode(void)
 		UninitGame();
 		break;
 
+	case MODE_TUTORIAL:	// チュートリアル
+		break;
+
 	case MODE_NONE:
 		/* 処理なし */
 		break;
@@ -159,6 +168,9 @@ void SetMode(void)
 
 	case MODE_GAME:		// ゲーム
 		InitGame();
+		break;
+
+	case MODE_TUTORIAL:	// チュートリアル
 		break;
 
 	case MODE_NONE:

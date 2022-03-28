@@ -75,6 +75,21 @@ void DrawMenu(void);
 int SetMenu(const MenuArgument &menu, const FrameArgument &Frame);
 
 //--------------------------------------------------
+// 選択肢の色の設定
+// 引数1  : int nIdx / メニューのインデックス
+// 引数2  : D3DXCOLOR &colStart / 始まりの色
+// 引数3  : D3DXCOLOR &colEnd / 終わりの色
+//--------------------------------------------------
+void SetColorOption(int nIdx, const D3DXCOLOR &colStart, const D3DXCOLOR &colEnd);
+
+//--------------------------------------------------
+// 選ばれていない選択肢の色の設定
+// 引数1  : int nIdx / メニューのインデックス
+// 引数2  : D3DXCOLOR &colDefault / 選ばれてない選択肢の色
+//--------------------------------------------------
+void SetColorDefaultOption(int nIdx, const D3DXCOLOR &colDefault);
+
+//--------------------------------------------------
 // 選択肢の色の初期化
 //--------------------------------------------------
 void InitColorOption(void);

@@ -42,4 +42,29 @@ float FloatRandam(float fMax, float fMin);
 //--------------------------------------------------
 int IntRandam(int nMax, int nMin);
 
+//--------------------------------------------------
+// sinカーブの値が1.0f～0.0fで帰ってくる
+// 引数1  : int nTime / タイム
+// 引数2  : float fCycle / 周期
+// 返値  : float / 1.0f～0.0fのsinカーブ
+//--------------------------------------------------
+float SinCurve(int nTime, float fCycle);
+
+//--------------------------------------------------
+// cosカーブの値が1.0f～0.0fで帰ってくる
+// 引数1  : int nTime / タイム
+// 引数2  : float fCycle / 周期
+// 返値  : float / 1.0f～0.0fのcosカーブ
+//--------------------------------------------------
+float CosCurve(int nTime, float fCycle);
+
+//--------------------------------------------------
+// カーブの値が帰ってくる
+// 引数1  : float fCurve / カーブ
+// 引数2  : float fMax / 最大値
+// 引数3  : float fMin / 最小値
+// 返値  : float / カーブ
+//--------------------------------------------------
+float Curve(float fCurve, float fMax, float fMin);
+
 #endif // !_UTILITY_H_
