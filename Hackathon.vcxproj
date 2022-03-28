@@ -153,6 +153,7 @@
     <ClCompile Include="cursor.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="fanangle.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gauge.cpp" />
     <ClCompile Include="input.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="cursor.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="fade.h" />
+    <ClInclude Include="fanangle.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge.h" />
     <ClInclude Include="input.h" />

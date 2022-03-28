@@ -13,6 +13,7 @@
 #include "mode.h"
 #include "title.h"
 #include "rectangle.h"
+#include "fanangle.h"
 #include "texture.h"
 
 #include <assert.h>
@@ -36,6 +37,9 @@ void InitMode(void)
 
 	// 矩形の初期化
 	InitRectangle();
+
+	// 円形の初期化
+	InitFanangle();
 }
 
 //--------------------------------------------------
@@ -54,6 +58,9 @@ void UninitMode(void)
 
 	// 矩形の終了
 	UninitRectangle();
+
+	// 円形の終了
+	UninitFanangle();
 }
 
 //--------------------------------------------------

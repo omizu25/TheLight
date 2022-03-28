@@ -14,6 +14,7 @@
 #include "input.h"
 #include "sound.h"
 #include "rectangle.h"
+#include "fanangle.h"
 #include "pause.h"
 #include "menu.h"
 #include "number.h"
@@ -33,6 +34,7 @@ namespace
 GAMESTATE	s_gameState = GAMESTATE_NONE;	// ゲームの状態
 int			s_nCounterState;				// 状態管理カウンター
 bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false]
+int			s_nIdx;
 }// namesapceはここまで
 
 //--------------------------------------------------
@@ -69,6 +71,14 @@ void InitGame(void)
 	s_nCounterState = 0;	// カウンターの初期化
 
 	s_bPause = false;	// ポーズ解除
+
+	s_nIdx = SetFanangle(TEXTURE_NONE);
+
+	// 矩形の位置の設定
+	SetRotationPosFanangle(s_nIdx, D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f),1.5f, 30.0f);
+
+	// 矩形の色の設定
+	SetColorFanangle(s_nIdx, GetColor(COLOR_RED));
 }
 
 //--------------------------------------------------
@@ -166,6 +176,15 @@ void UpdateGame(void)
 	// エフェクトの更新
 	UpdateEffect();
 	SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), EFFECT_TYPE_001);
+
+	if (GetKeyboardPress(DIK_RETURN))
+	{
+		AddDrawFanangle(s_nIdx, -1);
+	}
+	if (GetKeyboardPress(DIK_BACKSPACE))
+	{
+		AddDrawFanangle(s_nIdx, 1);
+	}
 }
 
 //--------------------------------------------------
@@ -175,6 +194,9 @@ void DrawGame(void)
 {
 	// 矩形の描画
 	DrawRectangle();
+
+	// 円形の描画
+	DrawFanangle();
 }
 
 //--------------------------------------------------
