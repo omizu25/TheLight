@@ -16,8 +16,8 @@
 //------------------------------------
 typedef enum
 {
-	EFFECT_TYPE_PLAYER_JUMP = 0,		// プレイヤーの跳躍
-	EFFECT_TYPE_PLAYER_WALK,			// プレイヤーの移動
+	EFFECT_TYPE_000 = 0,		// プレイヤーの跳躍
+	EFFECT_TYPE_001,			// プレイヤーの移動
 	MAX_EFFECT_TYPE
 }EFFECT_TYPE;
 

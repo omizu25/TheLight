@@ -19,8 +19,6 @@
 // マクロ定義
 //-----------------------------------------
 #define MAX_EFFECT	(512)	// パーティクルの最大数
-#define MAX_TEX		(MAX_EFFECT)		// テクスチャの種類
-#define JUMP_TEX	"data/TEXTURE/jump.png"
 
 //-----------------------------------------
 // パーティクル構造体
@@ -42,10 +40,7 @@ typedef struct
 //-----------------------------------------
 // 静的変数
 //-----------------------------------------
-static LPDIRECT3DTEXTURE9 s_pTexture[MAX_EFFECT] = {};		// テクスチャへのポインタ
-static LPDIRECT3DVERTEXBUFFER9 s_pVtxBuff = NULL;	// 頂点バッファへのポインタ
 static Effect s_aEffect[MAX_EFFECT];
-static float s_fAngle;
 
 //=========================================
 // パーティクルの初期化処理
@@ -109,7 +104,7 @@ void UpdateEffect(void)
 
 		switch (pEffect->type)
 		{
-		case EFFECT_TYPE_PLAYER_JUMP:	// プレイヤーのジャンプパーティクル	// 列挙型に変更する。
+		case EFFECT_TYPE_000:	// プレイヤーのジャンプパーティクル	// 列挙型に変更する。
 			pEffect->nLife--;			// 体力の更新
 			pEffect->col.a -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
 			pEffect->fRaduus += 1.5f;	// 半径の拡大
@@ -118,8 +113,9 @@ void UpdateEffect(void)
 				pEffect->bUse = false;
 			}
 			break;
-		case  EFFECT_TYPE_PLAYER_WALK:		// プレイヤーの移動
+		case  EFFECT_TYPE_001:		// プレイヤーの移動
 			pEffect->nLife -= 1;
+			pEffect->col.a -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
 			if (pEffect->nLife <= 0)
 			{
 				pEffect->bUse = false;
@@ -207,6 +203,9 @@ void UpdateEffect(void)
 
 		// 矩形の位置の設定
 		SetPosRectangle(pEffect->nIdx, pEffect->pos, D3DXVECTOR3(pEffect->fRaduus, pEffect->fRaduus, 0.0f));
+
+		// 矩形の色の設定
+		SetColorRectangle(pEffect->nIdx, pEffect->col);
 	}
 }
 
@@ -223,24 +222,22 @@ void DrawEffect(void)
 void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type)
 {
 	Effect *pEffect;
-	int nCntParticle;
 
-	for (nCntParticle = 0; nCntParticle < MAX_EFFECT; nCntParticle++)
+	for (int i = 0; i < MAX_EFFECT; i++)
 	{
-		pEffect = &(s_aEffect[nCntParticle]);
+		pEffect = &(s_aEffect[i]);
 
 		if (pEffect->bUse)
 		{// パーティクルが使用されてる
 			continue;
 		}
 
-		// パーティクルが使用されていない
+		pEffect->bUse = true;
 		pEffect->type = type;
-//		pEffect->nIdx = SetRectangle(TEXTURE_NONE);
 
 		switch (type)
 		{
-		case EFFECT_TYPE_PLAYER_JUMP:	// プレイヤーのジャンプパーティクル
+		case EFFECT_TYPE_000:	// プレイヤーのジャンプパーティクル
 			// 矩形のテクスチャの変更
 			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_NONE);
 			pEffect->pos = pos;
@@ -253,13 +250,13 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type)
 			pEffect->nMaxLife = 25;
 			pEffect->nLife = pEffect->nMaxLife;
 			break;
-		case  EFFECT_TYPE_PLAYER_WALK:		// プレイヤーの移動
+		case  EFFECT_TYPE_001:		// プレイヤーの移動
 			pEffect->pos = pos;
 			pEffect->col = D3DXCOLOR(0.5f, 0.35f, 0.25f, 1.0f);
 			pEffect->rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			pEffect->move.x = cosf(FloatRandam(D3DX_PI, -D3DX_PI)) * FloatRandam(5.3f, 2.0f);
 			pEffect->move.y = sinf(FloatRandam(D3DX_PI, -D3DX_PI)) * FloatRandam(5.3f, 2.0f);
-			pEffect->fRaduus = 8.0f;
+			pEffect->fRaduus = 18.0f;
 			pEffect->nMaxLife = 25;
 			pEffect->nLife = pEffect->nMaxLife;
 			break;
@@ -268,14 +265,11 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type)
 			break;
 		}
 
-		pEffect->bUse = true;
-
-		D3DXVECTOR3 size = D3DXVECTOR3(pEffect->fRaduus, pEffect->fRaduus, 0.0f);
-
 		// 矩形を描画するかどうか
 		SetDrawRectangle(pEffect->nIdx, true);
 
 		// 矩形の位置の設定
+		D3DXVECTOR3 size = D3DXVECTOR3(pEffect->fRaduus, pEffect->fRaduus, 0.0f);
 		SetPosRectangle(pEffect->nIdx, pEffect->pos, size);
 
 		// 矩形の色の設定

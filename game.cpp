@@ -165,7 +165,7 @@ void UpdateGame(void)
 
 	// エフェクトの更新
 	UpdateEffect();
-	SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), EFFECT_TYPE_PLAYER_WALK);
+	SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), EFFECT_TYPE_001);
 }
 
 //--------------------------------------------------
