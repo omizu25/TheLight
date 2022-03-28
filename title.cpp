@@ -36,6 +36,15 @@ const float	CURSOR_SIZE = 50.0f;	// カーソルのサイズ
 typedef enum
 {
 	MENU_GAME = 0,	// ゲーム
+	MENU_TUTORIAL,	// チュートリアル
+	MENU_TEST_1,
+	MENU_TEST_2,
+	MENU_TEST_3,
+	MENU_TEST_4,
+	MENU_TEST_5,
+	MENU_TEST_6,
+	MENU_TEST_7,
+	MENU_TEST_8,
 	MENU_MAX
 }MENU;
 }// namespaceはここまで
@@ -234,6 +243,20 @@ void Input(void)
 		{
 		case MENU_GAME:	// ゲーム
 			ChangeMode(MODE_GAME);
+			break;
+
+		case MENU_TUTORIAL:	// チュートリアル
+			ChangeMode(MODE_TUTORIAL);
+			break;
+
+		case MENU_TEST_1:
+		case MENU_TEST_2:
+		case MENU_TEST_3:
+		case MENU_TEST_4:
+		case MENU_TEST_5:
+		case MENU_TEST_6:
+		case MENU_TEST_7:
+		case MENU_TEST_8:
 			break;
 
 		default:
