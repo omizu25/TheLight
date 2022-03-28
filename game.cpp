@@ -20,6 +20,7 @@
 #include "bg.h"
 #include "cursor.h"
 #include "gauge.h"
+#include "time.h"
 
 #include <assert.h>
 
@@ -49,6 +50,12 @@ void InitGame(void)
 
 	// メニューの初期化
 	InitMenu();
+
+	// タイムの初期化
+	InitTime();
+
+	// タイムの設定
+	SetTime(100);
 
 	// カーソル初期化
 	InitCursor();
@@ -82,6 +89,9 @@ void UninitGame(void)
 
 	// 数の終了
 	UninitNumber();
+
+	// タイムの終了
+	UninitTime();
 
 	// ポーズの終了
 	UninitPause();
@@ -154,6 +164,9 @@ void UpdateGame(void)
 
 	// ゲージの更新
 	UpdateGauge();
+
+	// タイムの更新
+	UpdateTime();
 }
 
 //--------------------------------------------------

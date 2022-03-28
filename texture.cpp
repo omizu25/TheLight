@@ -20,9 +20,8 @@ namespace
 {
 const char *s_FileName[] =
 {// テクスチャのパス
-	"data/TEXTURE/Number_0To9.png",		// 数字
-	"data/TEXTURE/Cursor_Right.png",	// 右カーソル
-	"data/TEXTURE/Cursor_Left.png",		// 左カーソル
+	"data/TEXTURE/Cursor_Right.png",	// カーソル
+	"data/TEXTURE/Number_003.png",		// 数
 };
 }// namespaceはここまで
 

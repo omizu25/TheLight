@@ -46,11 +46,11 @@ typedef enum
 //==================================================
 namespace
 {
-int		s_nIdxBG;		// 背景の矩形のインデックス
-int		s_nIdx;			// 矩形のインデックス
-int		s_nSelectMenu;	// 選ばれているメニュー
-int		s_nIdxMenu;		// メニューの配列のインデックス
-int		s_nIdxCursor;	// カーソルの配列のインデックス
+int	s_nIdxBG;		// 背景の矩形のインデックス
+int	s_nIdx;			// 矩形のインデックス
+int	s_nSelectMenu;	// 選ばれているメニュー
+int	s_nIdxMenu;		// メニューの配列のインデックス
+int	s_nIdxCursor;	// カーソルの配列のインデックス
 }// namespaceはここまで
 
 //==================================================

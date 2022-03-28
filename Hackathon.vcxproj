@@ -163,6 +163,7 @@
     <ClCompile Include="rectangle.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="texture.cpp" />
+    <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="utility.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="rectangle.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="texture.h" />
+    <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="utility.h" />

@@ -109,7 +109,7 @@ void DrawNumber(void)
 //--------------------------------------------------
 // 設定
 //--------------------------------------------------
-int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &col, int nNumber)
+int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &col, int nNumber, int nDigit)
 {
 	for (int i = 0; i < MAX_NUMBER; i++)
 	{
@@ -125,9 +125,7 @@ int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &
 		pNumber->pos = pos;
 		pNumber->size = size;
 		pNumber->col = col;
-
-		// 桁数
-		pNumber->nDigit = DigitNumber(nNumber);
+		pNumber->nDigit = nDigit;
 
 		// 一桁ずつに分ける
 		OneDivideNumber(pNumber, nNumber);
@@ -135,7 +133,7 @@ int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &
 		for (int j = 0; j < pNumber->nDigit; j++)
 		{
 			// 矩形の設定
-			pNumber->nIdx[j] = SetRectangle(TEXTURE_Number_0To9);
+			pNumber->nIdx[j] = SetRectangle(TEXTURE_Number_003);
 
 			// 一桁ずつの設定
 			SetOneDigitNumber(pNumber, j);
@@ -195,13 +193,13 @@ int ChangeNumber(int nIdx, int nNumber)
 
 	/*↓ 使用している ↓*/
 
-	if (pNumber->nDigit != DigitNumber(nNumber))
+	if (pNumber->nDigit < DigitNumber(nNumber))
 	{// 桁数が違う
 		// 使うのを止める
 		StopUseNumber(nIdx);
 
 		// 設定
-		return SetNumber(pNumber->pos, pNumber->size, pNumber->col, nNumber);
+		return SetNumber(pNumber->pos, pNumber->size, pNumber->col, nNumber, DigitNumber(nNumber));
 	}
 	else
 	{// 桁数が同じ
@@ -290,6 +288,29 @@ void SetDrawNumber(int nIdx, bool bDraw)
 	{
 		// 矩形の描画するかどうか
 		SetDrawRectangle(pNumber->nIdx[i], bDraw);
+	}
+}
+
+//--------------------------------------------------
+// テクスチャの変更
+//--------------------------------------------------
+void ChangeTextureNumber(int nIdx, TEXTURE texture)
+{
+	assert(nIdx >= 0 && nIdx < MAX_NUMBER);
+
+	Number *pNumber = &s_Number[nIdx];
+
+	if (!pNumber->bUse)
+	{// 使用していない
+		return;
+	}
+
+	/*↓ 使用している ↓*/
+
+	for (int i = 0; i < pNumber->nDigit; i++)
+	{
+		// 矩形の描画するかどうか
+		ChangeTextureRectangle(pNumber->nIdx[i], texture);
 	}
 }
 
