@@ -126,21 +126,25 @@ void UpdateLight(void)
 		s_nTime++;
 
 		if (s_nNowLight < s_nMaxLight)
-			s_nMaxLight++;			SetEffect(GetPosSelect(s_nIdxSelect, s_nNowLight - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nNowLight - 1));
-				// 描画のリセット
-				ResetDrawLight();
+		{
+			s_nNowLight++;
+			
+			// エフェクトの設定
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nNowLight - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nNowLight - 1));
+			
+			// 描画のリセット
+			ResetDrawLight();
+		}
+		else
+		{// 増え切った
+			for (int i = 0; i < MAX_LIGHT; i++)
+			{
+				// セレクトの描画するかどうか
+				SetDrawSelect(s_nIdxSelect, i, false);
 			}
-			else
-			{// 増え切った
-				for (int i = 0; i < MAX_LIGHT; i++)
-				{
-					// セレクトの描画するかどうか
-					SetDrawSelect(s_nIdxSelect, i, false);
-				}
 
-				// ゲーム状態の設定
-				SetGameState(GAMESTATE_PLAYER);
-			}
+			// ゲーム状態の設定
+			SetGameState(GAMESTATE_PLAYER);
 		}
 		break;
 
