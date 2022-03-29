@@ -19,6 +19,8 @@
 #include "sound.h"
 #include "texture.h"
 #include "cursor.h"
+#include "gauge.h"
+#include "utility.h"
 
 #include <assert.h>
 
@@ -50,6 +52,9 @@ int	s_nIdx;			// 矩形のインデックス
 int	s_nSelectMenu;	// 選ばれているメニュー
 int	s_nIdxMenu;		// メニューの配列のインデックス
 int	s_nIdxCursor;	// カーソルの配列のインデックス
+int	s_nGaugeIdxGray;	// ゲージのインデックスの保管
+float s_fGaugeAlpha;	// 現在のゲージのアルファ値
+int	s_nTime;		// タイム
 }// namespaceはここまで
 
 //==================================================
@@ -69,6 +74,13 @@ void InitTitle(void)
 	PlaySound(SOUND_LABEL_BGM_TITLE);
 
 	s_nSelectMenu = 0;
+	s_nTime = 0;
+	s_fGaugeAlpha = 0.3f;
+
+	// ゲージの設定(灰色)
+	s_nGaugeIdxGray = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
+	// ゲージの色の設定(灰色)
+	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlpha));
 
 	{// 背景
 		// 矩形の設定
@@ -86,7 +98,7 @@ void InitTitle(void)
 		s_nIdx = SetRectangle(TEXTURE_TITLE_LOGO);
 
 		D3DXVECTOR3 size = D3DXVECTOR3(TITLE_WIDTH, TITLE_HEIGHT, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.275f, SCREEN_HEIGHT * 0.5f, 0.0f);
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdx, pos, size);
@@ -175,6 +187,15 @@ void UpdateTitle(void)
 
 	// カーソルの更新
 	UpdateCursor();
+
+	s_nTime++;
+
+	float fCurve = CosCurve(s_nTime, 0.01f);
+	s_fGaugeAlpha = Curve(fCurve, 0.3f, 0.6f);
+
+	// ゲージの色の設定(灰色)
+	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlpha));
+
 }
 
 //--------------------------------------------------
