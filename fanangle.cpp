@@ -95,6 +95,7 @@ void DrawFanangle(void)
 			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 		}
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 
 		// 頂点バッファをデータストリームに設定
 		pDevice->SetStreamSource(0, pFanangle->pVtxBuff, 0, sizeof(VERTEX_2D));
@@ -121,6 +122,7 @@ void DrawFanangle(void)
 			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 		}
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	}
 }
 
@@ -182,7 +184,7 @@ int SetFanangleWithTex(LPDIRECT3DTEXTURE9 pTexture)
 		float fLength = 0.0f;
 
 		// 位置の設定
-		SetPosFanangle(i, pos, fLength);
+		SetPosFanangle(i, pos, fLength,true);
 
 		//色の設定
 		SetColorFanangle(i, GetColor(COLOR_WHITE));
@@ -221,7 +223,7 @@ void StopUseFanangle(int nIdx)
 //--------------------------------------------------
 // 位置の設定
 //--------------------------------------------------
-void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength)
+void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength, bool bSide)
 {
 	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
 
@@ -243,6 +245,7 @@ void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength)
 
 	// 頂点座標の設定
 	pVtx[0].pos = pos;
+	DEBUG_PRINT("%f	%f\n", pVtx[0].pos.x, pVtx[0].pos.y);
 
 	for (int i = 1; i < NUM_VERTEX; i++)
 	{
@@ -251,10 +254,21 @@ void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength)
 		// 角度の正規化
 		NormalizeAngle(&fRot);
 
-		// 頂点座標の設定
-		pVtx[i].pos.x = pos.x + cosf(fRot) * fLength;
-		pVtx[i].pos.y = pos.y + sinf(fRot) * fLength;
-		pVtx[i].pos.z = pos.z;
+		if (bSide)
+		{
+			// 頂点座標の設定
+			pVtx[i].pos.x = pos.x + cosf(fRot) * fLength;
+			pVtx[i].pos.y = pos.y + sinf(fRot) * fLength;
+			pVtx[i].pos.z = pos.z;
+		
+		}
+		else
+		{
+			// 頂点座標の設定
+			pVtx[i].pos.x = pos.x + cosf(fRot) * fLength;
+			pVtx[i].pos.y = pos.y + sinf(fRot) * fLength;
+			pVtx[i].pos.z = pos.z;
+		}
 
 		DEBUG_PRINT("%f	%f\n", pVtx[i].pos.x, pVtx[i].pos.y);
 	}
@@ -266,7 +280,7 @@ void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength)
 //--------------------------------------------------
 // 回転する位置の設定
 //--------------------------------------------------
-void SetRotationPosFanangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float fLength)
+void SetRotationPosFanangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float fLength, bool bSide)
 {
 	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
 
@@ -288,6 +302,7 @@ void SetRotationPosFanangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float 
 
 	// 頂点座標の設定
 	pVtx[0].pos = pos;
+	DEBUG_PRINT("%f	%f\n", pVtx[0].pos.x, pVtx[0].pos.y);
 
 	for (int i = 1; i < NUM_VERTEX; i++)
 	{
@@ -296,10 +311,21 @@ void SetRotationPosFanangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float 
 		// 角度の正規化
 		NormalizeAngle(&fRotData);
 
-		// 頂点座標の設定
-		pVtx[i].pos.x = pos.x + cosf(fRotData) * fLength;
-		pVtx[i].pos.y = pos.y + sinf(fRotData) * fLength;
-		pVtx[i].pos.z = pos.z;
+		if (bSide)
+		{
+			// 頂点座標の設定
+			pVtx[i].pos.x = pos.x + cosf(fRotData) * fLength;
+			pVtx[i].pos.y = pos.y + sinf(fRotData) * fLength;
+			pVtx[i].pos.z = pos.z;
+
+		}
+		else
+		{
+			// 頂点座標の設定
+			pVtx[i].pos.x = pos.x + sinf(fRotData) * fLength;
+			pVtx[i].pos.y = pos.y + cosf(fRotData) * fLength;
+			pVtx[i].pos.z = pos.z;
+		}
 
 		DEBUG_PRINT("%f	%f\n", pVtx[i].pos.x, pVtx[i].pos.y);
 	}
@@ -494,6 +520,9 @@ LPDIRECT3DVERTEXBUFFER9 GetVtxBuffFanangle(int nIdx)
 	return s_aFanangle[nIdx].pVtxBuff;
 }
 
+//--------------------------------------------------
+// 描画する円の量を設定
+//--------------------------------------------------
 void AddDrawFanangle(int nIdx, int nVolume)
 {
 	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
@@ -510,4 +539,13 @@ void AddDrawFanangle(int nIdx, int nVolume)
 	{
 		pFanangle->nMaxBuff = 0;
 	}
+}
+
+void ResetDrawFanangle(int nIdx)
+{
+	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+
+	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	
+	pFanangle->nMaxBuff = NUM_POLYGON;
 }

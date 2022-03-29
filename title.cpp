@@ -129,7 +129,7 @@ void InitTitle(void)
 
 		CursorArgument cursor;
 		cursor.nNumUse = MENU_MAX;
-		cursor.fPosX = SCREEN_WIDTH * 0.595f;
+		cursor.fPosX = SCREEN_WIDTH * 0.65f;
 		cursor.fTop = 0.0f;
 		cursor.fBottom = SCREEN_HEIGHT;
 		cursor.fWidth = CURSOR_SIZE;
