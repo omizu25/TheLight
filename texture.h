@@ -19,6 +19,7 @@ typedef enum
 	TEXTURE_TITLE_GamePopup,
 	TEXTURE_BackToTitle,
 	TEXTURE_ReturnToGame,
+	TEXTURE_Hackathon_Ring,
 	TEXTURE_BG_0,					// 背景
 	TEXTURE_BG_1,			// 背景
 	TEXTURE_BG_2,						// 背景
@@ -28,6 +29,8 @@ typedef enum
 	TEXTURE_effect_002,
 	TEXTURE_Number_Neon,		// ナンバー画像(ネオン)
 	TEXTURE_Method,
+	TEXTURE_YourScore,		//自己スコア
+	TEXTURE_BestScore,		//ベストスコア
 	TEXTURE_MAX,
 	TEXTURE_NONE,			// 使用しない
 }TEXTURE;

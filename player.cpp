@@ -24,6 +24,7 @@
 #include "player.h"
 #include "answer.h"
 #include "time.h"
+#include "bg.h"
 
 #include <assert.h>
 
@@ -140,6 +141,7 @@ void UpdatePlayer(void)
 
 		if (GetLightKeyTrigger(LIGHT_KEY_RED))
 		{// 赤
+			PlaySound(SOUND_LABEL_SE_FA);
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_RED;
 
 			// セレクトの色の設定
@@ -157,6 +159,9 @@ void UpdatePlayer(void)
 			// タイムの設定
 			SetTime(MAX_TIME);
 
+			// 矩形の色の設定
+			SetColorRectangle(GetBG(), GetColor(COLOR_RED));
+
 			s_nPlayer++;
 
 			// エフェクトの設定
@@ -164,6 +169,7 @@ void UpdatePlayer(void)
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_GREEN))
 		{// 緑
+			PlaySound(SOUND_LABEL_SE_MI);
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_GREEN;
 
 			// セレクトの色の設定
@@ -181,6 +187,9 @@ void UpdatePlayer(void)
 			// タイムの設定
 			SetTime(MAX_TIME);
 
+			// 矩形の色の設定
+			SetColorRectangle(GetBG(), GetColor(COLOR_GREEN));
+
 			s_nPlayer++;
 
 			// エフェクトの設定
@@ -188,6 +197,7 @@ void UpdatePlayer(void)
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_BLUE))
 		{// 青
+			PlaySound(SOUND_LABEL_SE_DO);
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_BLUE;
 
 			// セレクトの色の設定
@@ -205,6 +215,9 @@ void UpdatePlayer(void)
 			// タイムの設定
 			SetTime(MAX_TIME);
 
+			// 矩形の色の設定
+			SetColorRectangle(GetBG(), GetColor(COLOR_BLUE));
+
 			s_nPlayer++;
 
 			// エフェクトの設定
@@ -212,6 +225,7 @@ void UpdatePlayer(void)
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_YELLOW))
 		{// 黄色
+			PlaySound(SOUND_LABEL_SE_RE);
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_YELLOW;
 
 			// セレクトの色の設定
@@ -228,6 +242,9 @@ void UpdatePlayer(void)
 
 			// タイムの設定
 			SetTime(MAX_TIME);
+
+			// 矩形の色の設定
+			SetColorRectangle(GetBG(), GetColor(COLOR_YELLOW));
 
 			s_nPlayer++;
 

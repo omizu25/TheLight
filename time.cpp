@@ -15,6 +15,7 @@
 #include "number.h"
 #include "color.h"
 #include "mode.h"
+#include "fanangle.h"
 #include "answer.h"
 #include "game.h"
 
@@ -36,6 +37,7 @@ namespace
 int	s_nIdxTime;	// 数の配列のインデックス
 int	s_nTime;	// タイム
 int	s_nSecond;	// 1秒を計測
+D3DXCOLOR s_col;
 }// namespaceはここまで
 
 //--------------------------------------------------
@@ -53,7 +55,7 @@ void InitTime(void)
 	pos.x += DigitNumber(s_nTime) * (TIME_WIDTH * 0.5f);
 
 	// 数の設定
-	s_nIdxTime = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nTime, DigitNumber(s_nTime), false);
+	s_nIdxTime = SetFanangle(TEXTURE_NONE);
 }
 
 //--------------------------------------------------
@@ -73,13 +75,13 @@ void UpdateTime(void)
 	if (GetGameState() != GAMESTATE_PLAYER)
 	{
 		// 数を描画するかどうか
-		SetDrawNumber(s_nIdxTime, false);
+		SetDrawFanangle(s_nIdxTime, false);
 
 		return;
 	}
 
 	// 数を描画するかどうか
-	SetDrawNumber(s_nIdxTime, true);
+	SetDrawFanangle(s_nIdxTime, true);
 
 	if (GetAnswer())
 	{// 最大値
@@ -88,10 +90,33 @@ void UpdateTime(void)
 
 	s_nSecond++;
 
+	if ((s_nSecond % 3) == 0)
+	{
+		AddDrawFanangle(s_nIdxTime, -1);
+	}
+
 	if ((s_nSecond % ONE_SECOND) == 0)
 	{// 1秒毎に
 		// 加算
 		AddTime(-1);
+
+		switch (s_nTime)
+		{
+		case 5:
+			s_col = GetColor(COLOR_GREEN);
+			break;
+		case 4:
+		case 3:
+			s_col = GetColor(COLOR_YELLOW);
+			break;
+		case 2:
+		case 1:
+			s_col = GetColor(COLOR_RED);
+			break;
+		default:
+			break;
+		}
+		SetColorFanangle(s_nIdxTime, s_col);
 
 		if (s_nTime <= 0)
 		{// 制限時間が来た
@@ -117,16 +142,17 @@ void SetTime(int nTime)
 	s_nTime = nTime;
 	s_nSecond = 0;
 
-	// 数の変更
-	s_nIdxTime = ChangeNumber(s_nIdxTime, s_nTime);
-
-	D3DXVECTOR3 size = D3DXVECTOR3(TIME_WIDTH, TIME_HEIGHT, 0.0f);
 	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, TIME_HEIGHT * 0.5f, 0.0f);
 
-	pos.x += DigitNumber(s_nTime) * (TIME_WIDTH * 0.5f);
-
 	// 位置の設定
-	SetPosNumber(s_nIdxTime, pos, size);
+	SetRotationPosFanangle(s_nIdxTime, pos,D3DX_PI, 75.0f,false);
+
+	// リセット
+	ResetDrawFanangle(s_nIdxTime);
+
+	s_col = GetColor(COLOR_GREEN);
+
+	SetColorFanangle(s_nIdxTime, s_col);
 }
 
 //--------------------------------------------------
@@ -136,15 +162,12 @@ void SetTime(int nTime)
 void AddTime(int nValue)
 {
 	s_nTime += nValue;
+}
 
-	// 数の変更
-	s_nIdxTime = ChangeNumber(s_nIdxTime, s_nTime);
-
-	D3DXVECTOR3 size = D3DXVECTOR3(TIME_WIDTH, TIME_HEIGHT, 0.0f);
-	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, TIME_HEIGHT * 0.5f, 0.0f);
-
-	pos.x += DigitNumber(s_nTime) * (TIME_WIDTH * 0.5f);
-
-	// 位置の設定
-	SetPosNumber(s_nIdxTime, pos, size);
+//--------------------------------------------------
+// 取得
+//--------------------------------------------------
+int GetTime(void)
+{
+	return s_nTime;
 }

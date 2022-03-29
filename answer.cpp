@@ -17,6 +17,7 @@
 #include "light.h"
 #include "player.h"
 #include "game.h"
+#include "bg.h"
 
 //==================================================
 // 定義
@@ -70,8 +71,14 @@ void UpdateAnswer(void)
 				s_nTime = 0;
 				s_bAnswer = true;
 
+				// ゲーム画面の背景ゲージ(黄色)の増加
+				IncreaseGaugeGame();
+
 				// ゲーム状態の設定
 				SetGameState(GAMESTATE_RESET);
+
+				// 矩形の色の設定
+				SetColorRectangle(GetBG(), GetColor(COLOR_WHITE));
 			}
 			else
 			{

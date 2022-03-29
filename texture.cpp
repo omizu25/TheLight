@@ -27,6 +27,7 @@ const char *s_FileName[] =
 	"data/TEXTURE/Hackathon_GamePopup.png",		// タイトル
 	"data/TEXTURE/Hackathon_ReturnToGame.png",	// タイトル
 	"data/TEXTURE/Hackathon_BackToTitle.png",	// タイトル
+	"data/TEXTURE/Hackathon_Ring.png",			// タイトル
 	"data/TEXTURE/Bg000.png",					// 背景
 	"data/TEXTURE/Bg001.png",					// 背景
 	"data/TEXTURE/Bg002.png",					// 背景
@@ -36,6 +37,8 @@ const char *s_FileName[] =
 	"data/TEXTURE/effect/effect_003.jpg",		// エフェクト
 	"data/TEXTURE/Number_Neon.png",				// ナンバー画像(ネオン)
 	"data/TEXTURE/Method_of_operation_white.png",		// ナンバー画像(ネオン)
+	"data/TEXTURE/Hackathon_YourScore.png",		// 自己スコア
+	"data/TEXTURE/Hackathon_BestScore.png",		// ベストスコア
 };
 }// namespaceはここまで
 
