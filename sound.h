@@ -23,6 +23,7 @@ typedef enum
 	SOUND_LABEL_SE_RE,		// 選択音
 	SOUND_LABEL_SE_MI,		// 選択音
 	SOUND_LABEL_SE_FA,		// 選択音
+	SOUND_LABEL_SE_MISS,	// ミス音
 	SOUND_LABEL_MAX,
 } SOUND_LABEL;
 
