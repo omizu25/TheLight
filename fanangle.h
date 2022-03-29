@@ -56,7 +56,7 @@ void StopUseFanangle(int nIdx);
 // 引数2  : D3DXVECTOR3 &pos / 中心の位置
 // 引数3  : D3DXVECTOR3 &size / サイズ
 //--------------------------------------------------
-void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength);
+void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength,bool bSide);
 
 //--------------------------------------------------
 // 回転する位置の設定
@@ -65,7 +65,7 @@ void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength);
 // 引数3  : float fRot / 向き
 // 引数4  : float fLength / 長さ
 //--------------------------------------------------
-void SetRotationPosFanangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float fLength);
+void SetRotationPosFanangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float fLength, bool bSide);
 
 //--------------------------------------------------
 // 色の設定
@@ -127,6 +127,13 @@ LPDIRECT3DVERTEXBUFFER9 GetVtxBuffFanangle(int nIdx);
 // 引数  : int nIdx / インデックス
 // 返値  : LPDIRECT3DVERTEXBUFFER9 / 頂点バッファ
 //--------------------------------------------------
-void AddDrawFanangle(int nIdx,int nVolume);
+void AddDrawFanangle(int nIdx, int nVolume);
+
+//--------------------------------------------------
+// 頂点バッファの取得
+// 引数  : int nIdx / インデックス
+// 返値  : LPDIRECT3DVERTEXBUFFER9 / 頂点バッファ
+//--------------------------------------------------
+void ResetDrawFanangle(int nIdx);
 
 #endif // !_FANANGLE_H_
