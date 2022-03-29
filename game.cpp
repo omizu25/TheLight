@@ -43,6 +43,9 @@ int			s_nCounterState;				// 状態管理カウンター
 bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false]
 }// namesapceはここまで
 
+static int s_nGaugeIdx;			//ゲージのインデックスの保管
+static float s_fGaugeWidth;		//ゲージの幅（黄色）
+
 //--------------------------------------------------
 // 初期化
 //--------------------------------------------------
@@ -53,6 +56,9 @@ void InitGame(void)
 
 	// ゲージの設定
 	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
+
+	// ゲージの設定(黄色)
+	s_nGaugeIdx = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_YELLOW), 0.0f, SCREEN_HEIGHT, GAUGE_LEFT);
 
 	// 背景の初期化
 	InitBG();
@@ -178,8 +184,7 @@ void UpdateGame(void)
 {
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START,0))
 	{// Pキーが押された
-		if (s_gameState == GAMESTATE_SAMPLE ||
-			s_gameState == GAMESTATE_PLAYER)
+		if (s_gameState == GAMESTATE_PLAYER)
 		{// 通常状態の時
 			s_bPause = !s_bPause;
 
@@ -302,4 +307,13 @@ GAMESTATE GetGameState(void)
 void SetEnablePause(bool bPause)
 {
 	s_bPause = bPause;
+}
+
+//--------------------------------------------------
+// ゲーム画面の背景ゲージ(黄色)の増加
+//--------------------------------------------------
+void IncreaseGaugeGame(void)
+{
+	s_fGaugeWidth += SCREEN_WIDTH / 16.0f;
+	ChangeGauge(s_nGaugeIdx, s_fGaugeWidth, SCREEN_HEIGHT);
 }

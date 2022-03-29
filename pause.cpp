@@ -16,6 +16,7 @@
 #include "mode.h"
 #include "texture.h"
 #include "cursor.h"
+#include "sound.h"
 
 #include <assert.h>
 
@@ -24,15 +25,15 @@
 //==================================================
 namespace
 {
-const float		MENU_WIDTH = 300.0f;					// メニューの幅
-const float		MENU_HEIGHT = 100.0f;					// メニューの高さ
+const float		MENU_WIDTH = 350.0f;					// メニューの幅
+const float		MENU_HEIGHT = 125.0f;					// メニューの高さ
 const float		MENU_LEFT = SCREEN_WIDTH * 0.3f;		// メニューの左端
 const float		MENU_RIGHT = SCREEN_WIDTH * 0.7f;		// メニューの右端
 const float		MENU_TOP = SCREEN_HEIGHT * 0.35f;		// メニューの上端
 const float		MENU_BOTTOM = SCREEN_HEIGHT * 0.85f;	// メニューの下端
 const D3DXCOLOR	BG_COLOR(0.0f, 0.0f, 0.0f, 0.6f);		// 背景の色
 const D3DXCOLOR	FRAME_COLOR(0.5f, 0.5f, 1.0f, 1.0f);	// フレームの色
-const float		CURSOR_SIZE = 75.0f;					// カーソルのサイズ
+const float		CURSOR_SIZE = 50.0f;					// カーソルのサイズ
 
 typedef enum
 {
@@ -78,8 +79,8 @@ void InitPause(void)
 		menu.fHeight = MENU_HEIGHT;
 		menu.bSort = true;
 
-		menu.texture[MENU_GAME] = TEXTURE_NONE;
-		menu.texture[MENU_TITLE] = TEXTURE_NONE;
+		menu.texture[MENU_GAME] = TEXTURE_BackToTitle;
+		menu.texture[MENU_TITLE] = TEXTURE_ReturnToGame;
 
 		FrameArgument Frame;
 		Frame.bUse = true;
@@ -93,7 +94,7 @@ void InitPause(void)
 	{// カーソル
 		CursorArgument cursor;
 		cursor.nNumUse = MENU_MAX;
-		cursor.fPosX = SCREEN_WIDTH * 0.35f;
+		cursor.fPosX = SCREEN_WIDTH * 0.345f;
 		cursor.fTop = MENU_TOP;
 		cursor.fBottom = MENU_BOTTOM;
 		cursor.fWidth = CURSOR_SIZE;
@@ -203,6 +204,9 @@ void Input(void)
 
 		// カーソルの位置の変更
 		ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
+
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
 	else if (GetKeyboardTrigger(DIK_S) || GetKeyboardTrigger(DIK_NUMPAD2) ||
 		GetJoypadTrigger(JOYKEY_CROSS_DOWN,0) || GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN,0))
@@ -217,6 +221,9 @@ void Input(void)
 
 		// カーソルの位置の変更
 		ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
+
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
 
 	if (GetKeyboardTrigger(DIK_RETURN) || GetKeyboardTrigger(DIK_SPACE) ||
@@ -243,6 +250,9 @@ void Input(void)
 
 		// 選択肢の決定
 		DecisionOption();
+
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_ENTER);
 	}
 }
 }// namespaceはここまで
