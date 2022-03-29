@@ -90,9 +90,6 @@ void InitResult(void)
 	}
 
 	{// 今回のスコア
-		// スコアの初期化
-		InitScore();
-
 		s_nIdxUI[0] = SetRectangle(TEXTURE_YourScore);
 
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.25f, 0.0f);
@@ -106,12 +103,6 @@ void InitResult(void)
 	}
 
 	{// ベストスコア
-		// ランキングの設定
-		SetRanking();
-
-		// ランキングの初期化
-		InitRanking();
-
 		// 矩形の設定
 		s_nIdxUI[1] = SetRectangle(TEXTURE_BestScore);
 
@@ -125,6 +116,14 @@ void InitResult(void)
 		SetColorRectangle(s_nIdxUI[1], D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
+	// ランキングの初期化
+	InitRanking();
+
+	// スコアの初期化
+	InitScore();
+
+	// ランキングの設定
+	SetRanking();
 }
 
 //=============================================================================
@@ -148,6 +147,12 @@ void UpdateResult(void)
 {
 	// ゲージの更新
 	UpdateGauge();
+
+	// スコアの更新
+	UpdateScore();
+
+	// ランキングの更新
+	UpdateScore();
 
 	s_nTime++;
 
