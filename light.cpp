@@ -18,6 +18,7 @@
 #include "color.h"
 #include "sound.h"
 #include "texture.h"
+#include "utility.h"
 
 #include <assert.h>
 
@@ -55,6 +56,7 @@ COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
 //==================================================
 namespace
 {
+void ResetDrawLight(void);
 }// namespaceはここまで
 
 //--------------------------------------------------
@@ -83,12 +85,21 @@ void InitLight(void)
 
 		for (int i = 0; i < MAX_LIGHT; i++)
 		{
-			select.texture[i] = TEXTURE_NONE;
+			select.texture[i] = TEXTURE_effect_000;
 		}
 
 		// セレクトの設定
 		s_nIdxSelect = SetSelect(select);
 	}
+
+	for (int i = 0; i < MAX_LIGHT; i++)
+	{
+		// セレクトの色の設定
+		SetColorSelect(s_nIdxSelect, i, s_aColor[IntRandam(LIGHT_COLOR_MAX, 0)]);
+	}
+
+	// 描画のリセット
+	ResetDrawLight();
 }
 
 //--------------------------------------------------
@@ -103,6 +114,30 @@ void UninitLight(void)
 //--------------------------------------------------
 void UpdateLight(void)
 {
+	
+
+	if (GetKeyboardTrigger(DIK_W) || GetJoypadTrigger(JOYKEY_CROSS_UP, 0) ||
+		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_UP, 0))
+	{// Wキーが押されたかどうか
+		if (s_nLight < MAX_LIGHT)
+		{
+			s_nLight++;
+		}
+
+		// 描画のリセット
+		ResetDrawLight();
+	}
+	else if (GetKeyboardTrigger(DIK_S) || GetJoypadTrigger(JOYKEY_CROSS_DOWN, 0) ||
+		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN, 0))
+	{// Sキーが押されたかどうか
+		if (s_nLight > 0)
+		{
+			s_nLight--;
+		}
+
+		// 描画のリセット
+		ResetDrawLight();
+	}
 }
 
 //--------------------------------------------------
@@ -114,5 +149,21 @@ void DrawLight(void)
 
 namespace
 {
+//--------------------------------------------------
+// 描画のリセット
+//--------------------------------------------------
+void ResetDrawLight(void)
+{
+	for (int i = 0; i < MAX_LIGHT; i++)
+	{
+		// セレクトの描画するかどうか
+		SetDrawSelect(s_nIdxSelect, i, false);
+	}
 
+	for (int i = 0; i < s_nLight; i++)
+	{
+		// セレクトの描画するかどうか
+		SetDrawSelect(s_nIdxSelect, i, true);
+	}
+}
 }// namespaceはここまで
