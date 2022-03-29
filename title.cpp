@@ -49,14 +49,14 @@ typedef enum
 //==================================================
 namespace
 {
-int	s_nIdxMoon;		// 背景の矩形のインデックス
-int	s_nIdx;			// 矩形のインデックス
-int	s_nSelectMenu;	// 選ばれているメニュー
-int	s_nIdxMenu;		// メニューの配列のインデックス
-int	s_nIdxCursor;	// カーソルの配列のインデックス
+int	s_nIdxMoon;			// 背景の矩形のインデックス
+int	s_nIdx;				// 矩形のインデックス
+int	s_nSelectMenu;		// 選ばれているメニュー
+int	s_nIdxMenu;			// メニューの配列のインデックス
+int	s_nIdxCursor;		// カーソルの配列のインデックス
 int	s_nGaugeIdxGray;	// ゲージのインデックスの保管
 float s_fGaugeAlpha;	// 現在のゲージのアルファ値
-int	s_nTime;		// タイム
+int	s_nTime;			// タイム
 }// namespaceはここまで
 
 //==================================================
@@ -81,6 +81,7 @@ void InitTitle(void)
 
 	// ゲージの設定(灰色)
 	s_nGaugeIdxGray = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
+	
 	// ゲージの色の設定(灰色)
 	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlpha));
 

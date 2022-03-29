@@ -44,11 +44,11 @@ GAMESTATE	s_gameState = GAMESTATE_NONE;	// ゲームの状態
 int			s_nCounterState;				// 状態管理カウンター
 bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false]
 int			s_nIdxMoon;						// 背景の矩形のインデックス
+int			s_nTime;						// タイム
 int			s_nGaugeIdxGray;				// ゲージのインデックスの保管
 int			s_nGaugeIdxYellow;				// ゲージのインデックスの保管
-int			s_nTime;						// タイム
-float		s_fGaugeAlphaGray;				// 現在のゲージのアルファ値
-float		s_fGaugeAlphaYellow;			// 現在のゲージのアルファ値
+float		s_fGaugeAlphaGray;				// 現在の灰色ゲージのアルファ値
+float		s_fGaugeAlphaYellow;			// 現在の黄色ゲージのアルファ値
 float		s_fGaugeWidth;					// ゲージの幅（黄色）
 }// namesapceはここまで
 
@@ -60,11 +60,12 @@ void InitGame(void)
 	s_nTime = 0;
 	s_fGaugeAlphaGray = 0.3f;
 	s_fGaugeAlphaYellow = 0.3f;
+	s_fGaugeWidth = 0.0f;
 
 	// ゲージの初期化
 	InitGauge();
 
-	// ゲージの設定
+	// ゲージの設定(灰色)
 	s_nGaugeIdxGray = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
 
 	// ゲージの設定(黄色)
@@ -82,10 +83,9 @@ void InitGame(void)
 	D3DXCOLOR col = GetColor(COLOR_GRAY);
 	col.a = 0.75f;
 
-	s_fGaugeWidth = 0.0f;
-
 	// ゲージの設定
 	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.35f, 0.0f), col, SCREEN_WIDTH, 100.0f, GAUGE_LEFT);
+
 	// ゲージの設定
 	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), col, SCREEN_WIDTH, 100.0f, GAUGE_LEFT);
 
@@ -123,7 +123,7 @@ void InitGame(void)
 	InitTutorial();
 
 	{// 月
-	 // 矩形の設定
+		// 矩形の設定
 		s_nIdxMoon = SetRectangle(TEXTURE_BG_MOON);
 
 		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
@@ -133,7 +133,7 @@ void InitGame(void)
 		SetPosRectangle(s_nIdxMoon, pos, size);
 	}
 
-	//サウンド開始
+	// サウンド開始
 	PlaySound(SOUND_LABEL_BGM_GAME);
 
 	s_gameState = GAMESTATE_START;	// 何もしていない状態に設定
@@ -142,7 +142,7 @@ void InitGame(void)
 
 	s_bPause = false;	// ポーズ解除
 
-	{
+	{// 操作説明
 		int nIdx = SetRectangle(TEXTURE_Method);
 
 		D3DXVECTOR3 pos(SCREEN_WIDTH - 100.0f, 95.0f, 0.0f);
@@ -172,7 +172,7 @@ void UninitGame(void)
 	// 数の終了
 	UninitNumber();
 
-	// ポーズの終了
+	// タイムの終了
 	UninitTime();
 
 	// ポーズの終了
@@ -207,6 +207,16 @@ void UpdateGame(void)
 {
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START,0))
 	{// Pキーが押された
+		if (GetFade() != FADE_NONE)
+		{// フェードしてる
+			return;
+		}
+
+		if (GetAnswer())
+		{// 最大値になった
+			return;
+		}
+
 		if (s_gameState == GAMESTATE_PLAYER)
 		{// 通常状態の時
 			s_bPause = !s_bPause;

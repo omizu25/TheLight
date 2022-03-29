@@ -181,7 +181,7 @@ void UpdatePlayer(void)
 			SetTime(MAX_TIME);
 
 			// 矩形の色の設定
-			SetColorRectangle(GetBG(), GetColor(COLOR_RED));
+			SetColorRectangle(GetIdxBG(0), GetColor(COLOR_RED));
 
 			s_nPlayer++;
 
@@ -212,7 +212,7 @@ void UpdatePlayer(void)
 			SetTime(MAX_TIME);
 
 			// 矩形の色の設定
-			SetColorRectangle(GetBG(), GetColor(COLOR_GREEN));
+			SetColorRectangle(GetIdxBG(0), GetColor(COLOR_GREEN));
 
 			s_nPlayer++;
 
@@ -243,7 +243,7 @@ void UpdatePlayer(void)
 			SetTime(MAX_TIME);
 
 			// 矩形の色の設定
-			SetColorRectangle(GetBG(), GetColor(COLOR_BLUE));
+			SetColorRectangle(GetIdxBG(0), GetColor(COLOR_BLUE));
 
 			s_nPlayer++;
 
@@ -274,7 +274,7 @@ void UpdatePlayer(void)
 			SetTime(MAX_TIME);
 
 			// 矩形の色の設定
-			SetColorRectangle(GetBG(), GetColor(COLOR_YELLOW));
+			SetColorRectangle(GetIdxBG(0), GetColor(COLOR_YELLOW));
 
 			s_nPlayer++;
 

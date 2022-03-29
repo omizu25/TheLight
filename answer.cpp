@@ -61,13 +61,13 @@ void UninitAnswer(void)
 void UpdateAnswer(void)
 {
 	if (s_bMax)
-	{
+	{// 最大値になった
 		s_nTime++;
 
 		if (s_nTime >= MAX_TIME)
-		{
+		{// 時間が来た
 			if (s_bAnswer)
-			{
+			{// 正解
 				s_bMax = false;
 				s_nTime = 0;
 				s_bAnswer = true;
@@ -79,10 +79,10 @@ void UpdateAnswer(void)
 				SetGameState(GAMESTATE_RESET);
 
 				// 矩形の色の設定
-				SetColorRectangle(GetBG(), GetColor(COLOR_WHITE));
+				SetColorRectangle(GetIdxBG(0), GetColor(COLOR_WHITE));
 			}
 			else
-			{
+			{// 不正解
 				s_bMax = true;
 				s_nTime = 0;
 				s_bAnswer = false;
@@ -108,7 +108,7 @@ void DrawAnswer(void)
 void SetAnswer(int nNowLight)
 {
 	if (GetColorLight(nNowLight) == GetColorPlayer(nNowLight))
-	{
+	{// 正解
 		if ((GetPlayer() + 1) >= GetLight())
 		{// 最大になった
 			s_bMax = true;
@@ -117,7 +117,7 @@ void SetAnswer(int nNowLight)
 		}
 	}
 	else
-	{
+	{// 不正解
 		PlaySound(SOUND_LABEL_SE_MISS);
 		s_nTime = 0;
 		s_bMax = true;

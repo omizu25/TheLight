@@ -63,10 +63,10 @@ void UninitMode(void)
 	// ゲームの終了
 	UninitGame();
 
-	// テクスチャの終了
-	UninitTutorial();
+	// リザルトの終了
+	UninitResult();
 
-	// 矩形の終了
+	// ランキングのセーブ
 	SaveRanking();
 
 	// 矩形の終了

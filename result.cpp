@@ -77,12 +77,14 @@ void InitResult(void)
 	// ゲージの色の設定(黄色)
 	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
 	
+	// 背景の初期化
 	InitBG();
 
+	// エフェクトの初期化
 	InitEffect();
 
 	{// 月
-	 // 矩形の設定
+		// 矩形の設定
 		s_nIdxMoon = SetRectangle(TEXTURE_BG_MOON);
 
 		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
@@ -100,9 +102,6 @@ void InitResult(void)
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdxUI[0], pos, size);
-
-		// 矩形の色の設定
-		SetColorRectangle(s_nIdxUI[0], D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 	{// ベストスコア
@@ -114,9 +113,6 @@ void InitResult(void)
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdxUI[1], pos, size);
-
-		// 矩形の色の設定
-		SetColorRectangle(s_nIdxUI[1], D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 	// ランキングの初期化
@@ -141,6 +137,15 @@ void UninitResult(void)
 
 	// ゲージの終了
 	UninitGauge();
+
+	// ランキングの終了
+	UninitRanking();
+
+	// エフェクトの終了
+	UninitEffect();
+
+	// スコアの終了
+	InitScore();
 }
 
 //=============================================================================
@@ -151,7 +156,7 @@ void UpdateResult(void)
 	// ゲージの更新
 	UpdateGauge();
 
-	// エフェクト
+	// エフェクトの更新
 	UpdateEffect();
 
 	// スコアの更新
