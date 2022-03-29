@@ -126,8 +126,7 @@ void UpdateLight(void)
 		if (s_nNowLight < s_nMaxLight)
 		{
 			s_nNowLight++;
-			SetEffect(GetPosSelect(s_nIdxSelect, s_nLight), EFFECT_TYPE_000, D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.0f));
-			s_nLight++;
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nNowLight - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nNowLight - 1));
 		}
 		else
 		{
