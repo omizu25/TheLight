@@ -43,12 +43,12 @@ namespace
 GAMESTATE	s_gameState = GAMESTATE_NONE;	// ゲームの状態
 int			s_nCounterState;				// 状態管理カウンター
 bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false]
-int			s_nGaugeIdxGray;				//ゲージのインデックスの保管
-int			s_nGaugeIdxYellow;				//ゲージのインデックスの保管
+int			s_nGaugeIdxGray;				// ゲージのインデックスの保管
+int			s_nGaugeIdxYellow;				// ゲージのインデックスの保管
 int			s_nTime;						// タイム
 float		s_fGaugeAlphaGray;				// 現在のゲージのアルファ値
 float		s_fGaugeAlphaYellow;			// 現在のゲージのアルファ値
-float		s_fGaugeWidth;					//ゲージの幅（黄色）
+float		s_fGaugeWidth;					// ゲージの幅（黄色）
 }// namesapceはここまで
 
 //--------------------------------------------------
@@ -94,12 +94,6 @@ void InitGame(void)
 	// タイムの初期化
 	InitTime();
 
-	// スコア初期化
-	//InitScore();
-
-	// ランキングの初期化
-	//InitRanking();
-
 	// セレクトの初期化
 	InitSelect();
 
@@ -123,6 +117,9 @@ void InitGame(void)
 
 	// ポーズの初期化
 	InitPause();
+
+	// チュートリアルの初期化
+	InitTutorial();
 
 	//サウンド開始
 	PlaySound(SOUND_LABEL_BGM_GAME);
@@ -151,6 +148,9 @@ void UninitGame(void)
 	// サウンドの停止
 	StopSound();
 
+	// チュートリアルの終了
+	UninitTutorial();
+
 	// 背景の終了
 	UninitBG();
 
@@ -162,12 +162,6 @@ void UninitGame(void)
 
 	// ポーズの終了
 	UninitTime();
-
-	// スコアの終了
-	UninitScore();
-
-	// ランキングの終了
-	UninitRanking();
 
 	// ポーズの終了
 	UninitPause();
@@ -259,32 +253,8 @@ void UpdateGame(void)
 	// タイムの更新
 	UpdateTime();
 
-	// スコアの更新
-	//UpdateScore();
-
-	// ランキングの更新
-	//UpdateRanking();
-
-	switch (s_gameState)
-	{
-	case GAMESTATE_START:	// 開始状態
-		s_gameState = GAMESTATE_SAMPLE;	// 見本状態に設定
-		break;
-
-	case GAMESTATE_SAMPLE:	// 見本状態
-		break;
-
-	case GAMESTATE_PLAYER:	// プレイヤー状態
-		break;
-
-	case GAMESTATE_RESET:	// リセット状態
-		break;
-
-	case GAMESTATE_NONE:	// 何もしていない状態
-	default:
-		assert(false);
-		break;
-	}
+	// チュートリアルの更新
+	UpdateTutorial();
 
 	s_nTime++;
 
@@ -340,6 +310,14 @@ GAMESTATE GetGameState(void)
 void SetEnablePause(bool bPause)
 {
 	s_bPause = bPause;
+}
+
+//--------------------------------------------------
+// ポーズの有効無効取得
+//--------------------------------------------------
+bool GetEnablePause(void)
+{
+	return s_bPause;
 }
 
 //--------------------------------------------------

@@ -14,13 +14,23 @@
 #include "texture.h"
 #include "input.h"
 #include "mode.h"
+#include "game.h"
+
+//==================================================
+// 定義
+//==================================================
+namespace
+{
+const int	MAX_TIME = 120;		// タイムの最大値
+}// namespaceはここまで
 
 //==================================================
 // スタティック変数
 //==================================================
 namespace
 {
-int	s_nIdx;	// 背景の矩形のインデックス
+int	s_nIdx;		// 背景の矩形のインデックス
+int	s_nTime;	// タイム
 }// namespaceはここまで
 
  //--------------------------------------------------
@@ -33,14 +43,13 @@ void InitTutorial(void)
 		s_nIdx = SetRectangle(TEXTURE_TITLE_GamePopup);
 
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
-		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
+		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH * 0.8f, SCREEN_HEIGHT * 0.8f, 0.0f);
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdx, pos, size);
-
-		// 矩形の色の設定
-		SetColorRectangle(s_nIdx, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
+
+	s_nTime = 0;
 }
 
 //--------------------------------------------------
@@ -57,6 +66,23 @@ void UninitTutorial(void)
 //--------------------------------------------------
 void UpdateTutorial(void)
 {
+	if (GetGameState() != GAMESTATE_START)
+	{
+		return;
+	}
+	s_nTime++;
+
+	if (s_nTime >= MAX_TIME)
+	{
+		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.25f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.725f, size.y * 0.5f, 0.0f);
+
+		// 矩形の位置の設定
+		SetPosRectangle(s_nIdx, pos, size);
+
+		// ゲーム状態の設定
+		SetGameState(GAMESTATE_SAMPLE);
+	}
 }
 
 //--------------------------------------------------
