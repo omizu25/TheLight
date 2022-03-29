@@ -28,6 +28,6 @@ void InitEffect(void);
 void UninitEffect(void);
 void UpdateEffect(void);
 void DrawEffect(void);
-void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type);
+void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col);
 
 #endif // _EFFECT_H_
