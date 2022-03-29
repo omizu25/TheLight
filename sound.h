@@ -19,10 +19,6 @@ typedef enum
 	SOUND_LABEL_BGM_RESULT,		// リザルト
 	SOUND_LABEL_SE_ENTER,		// 決定音
 	SOUND_LABEL_SE_SELECT,		// 選択音
-	SOUND_LABEL_SE_DO,		// 選択音
-	SOUND_LABEL_SE_RE,		// 選択音
-	SOUND_LABEL_SE_MI,		// 選択音
-	SOUND_LABEL_SE_FA,		// 選択音
 	SOUND_LABEL_SE_MISS,	// ミス音
 	SOUND_LABEL_MAX,
 } SOUND_LABEL;
