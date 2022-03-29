@@ -17,6 +17,7 @@
 #include "texture.h"
 #include "tutorial.h"
 #include "ranking.h"
+#include "result.h"
 
 #include <assert.h>
 #include <time.h>
@@ -98,6 +99,7 @@ void UpdateMode(void)
 		break;
 
 	case MODE_RESULT:	// リザルト
+		UpdateResult();
 		break;
 
 	case MODE_NONE:
@@ -130,6 +132,7 @@ void DrawMode(void)
 		break;
 
 	case MODE_RESULT:	// リザルト
+		DrawResult();
 		break;
 
 	case MODE_NONE:
@@ -177,6 +180,7 @@ void SetMode(void)
 		break;
 
 	case MODE_RESULT:	// リザルト
+		UninitResult();
 		break;
 
 	case MODE_NONE:
@@ -209,6 +213,7 @@ void SetMode(void)
 		break;
 
 	case MODE_RESULT:	// リザルト
+		InitResult();
 		break;
 
 	case MODE_NONE:
