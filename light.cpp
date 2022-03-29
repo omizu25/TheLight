@@ -46,7 +46,8 @@ typedef enum
 //==================================================
 namespace
 {
-int		s_nLight;					// ライトの数
+int		s_nNowLight;				// ライトの現在数
+int		s_nMaxLight;				// ライトの最大数
 int		s_nSelect;					// 選ばれている
 int		s_nIdxSelect;				// メニューの配列のインデックス
 int		s_nTime;					// タイム
@@ -72,7 +73,8 @@ void InitLight(void)
 	s_aColor[LIGHT_COLOR_YELLOW] = COLOR_YELLOW;
 
 	s_nSelect = 0;
-	s_nLight = 0;
+	s_nNowLight = 0;
+	s_nMaxLight = 0;
 
 	{// メニュー
 		SelectArgument select;
@@ -120,9 +122,20 @@ void UpdateLight(void)
 
 	if (s_nTime % REPEAT_TIME == 0)
 	{
-		if (s_nLight < MAX_LIGHT)
+		if (s_nNowLight < s_nMaxLight)
 		{
-			s_nLight++;
+			s_nNowLight++;
+		}
+		else
+		{
+			s_nNowLight = 0;
+			s_nMaxLight++;
+
+			for (int i = 0; i < MAX_LIGHT; i++)
+			{
+				// セレクトの色の設定
+				SetColorSelect(s_nIdxSelect, i, s_aColor[IntRandam(LIGHT_COLOR_MAX, 0)]);
+			}
 		}
 
 		// 描画のリセット
@@ -150,7 +163,7 @@ void ResetDrawLight(void)
 		SetDrawSelect(s_nIdxSelect, i, false);
 	}
 
-	for (int i = 0; i < s_nLight; i++)
+	for (int i = 0; i < s_nNowLight; i++)
 	{
 		// セレクトの描画するかどうか
 		SetDrawSelect(s_nIdxSelect, i, true);

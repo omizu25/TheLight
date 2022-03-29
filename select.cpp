@@ -263,3 +263,16 @@ D3DXVECTOR3 GetPosSelect(int nIdxSelect, int nIdxOption)
 
 	return pOption->pos;
 }
+
+//--------------------------------------------------
+// ‘I‘ðŽˆ‚ÌF‚ðŽæ“¾
+//--------------------------------------------------
+D3DXCOLOR GetColSelect(int nIdxSelect, int nIdxOption)
+{
+	assert(nIdxSelect >= 0 && nIdxSelect < MAX_SELECT);
+	assert(nIdxOption >= 0 && nIdxOption < MAX_OPTION);
+
+	Option *pOption = &s_aSelect[nIdxSelect].Option[nIdxOption];
+
+	return pOption->col;
+}
