@@ -31,6 +31,7 @@
 namespace
 {
 const int	MAX_LIGHT = 16;		// ライトの最大数
+const int	MAX_TIME = 60;		// タイムの最大値
 const int	REPEAT_TIME = 30;	// タイムの繰り返し
 const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
 
@@ -54,6 +55,7 @@ int		s_nMaxLight;				// ライトの最大数
 int		s_nIdxSelect;				// メニューの配列のインデックス
 int		s_nTime;					// タイム
 int		s_nIdxColor[MAX_LIGHT];		// 色の番号
+bool	s_bMax;						// 増え切った
 COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
 }// namespaceはここまで
 
@@ -140,6 +142,7 @@ void UpdateLight(void)
 
 		if (s_nNowLight < s_nMaxLight)
 		{
+			s_bMax = false;
 			s_nNowLight++;
 			
 			// エフェクトの設定
@@ -150,17 +153,22 @@ void UpdateLight(void)
 		}
 		else
 		{// 増え切った
-			for (int i = 0; i < MAX_LIGHT; i++)
+			if (s_bMax)
 			{
-				// セレクトの描画するかどうか
-				SetDrawSelect(s_nIdxSelect, i, false);
+				for (int i = 0; i < MAX_LIGHT; i++)
+				{
+					// セレクトの描画するかどうか
+					SetDrawSelect(s_nIdxSelect, i, false);
+				}
+
+				// ゲーム状態の設定
+				SetGameState(GAMESTATE_PLAYER);
+
+				// 枠の設定
+				SetFramePlayer(0);
 			}
 
-			// ゲーム状態の設定
-			SetGameState(GAMESTATE_PLAYER);
-
-			// 枠の設定
-			SetFramePlayer(0);
+			s_bMax = true;
 		}
 		break;
 
@@ -250,5 +258,7 @@ void ResetDrawLight(void)
 		// セレクトの描画するかどうか
 		SetDrawSelect(s_nIdxSelect, i, true);
 	}
+
+	s_bMax = false;
 }
 }// namespaceはここまで
