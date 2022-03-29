@@ -17,6 +17,7 @@
 #include "light.h"
 #include "player.h"
 #include "game.h"
+#include "bg.h"
 
 //==================================================
 // 定義
@@ -72,6 +73,9 @@ void UpdateAnswer(void)
 
 				// ゲーム状態の設定
 				SetGameState(GAMESTATE_RESET);
+
+				// 矩形の色の設定
+				SetColorRectangle(GetBG(), GetColor(COLOR_WHITE));
 			}
 			else
 			{

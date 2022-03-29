@@ -24,6 +24,7 @@
 #include "player.h"
 #include "answer.h"
 #include "time.h"
+#include "bg.h"
 
 #include <assert.h>
 
@@ -157,6 +158,9 @@ void UpdatePlayer(void)
 			// タイムの設定
 			SetTime(MAX_TIME);
 
+			// 矩形の色の設定
+			SetColorRectangle(GetBG(), GetColor(COLOR_RED));
+
 			s_nPlayer++;
 
 			// エフェクトの設定
@@ -180,6 +184,9 @@ void UpdatePlayer(void)
 
 			// タイムの設定
 			SetTime(MAX_TIME);
+
+			// 矩形の色の設定
+			SetColorRectangle(GetBG(), GetColor(COLOR_GREEN));
 
 			s_nPlayer++;
 
@@ -205,6 +212,9 @@ void UpdatePlayer(void)
 			// タイムの設定
 			SetTime(MAX_TIME);
 
+			// 矩形の色の設定
+			SetColorRectangle(GetBG(), GetColor(COLOR_BLUE));
+
 			s_nPlayer++;
 
 			// エフェクトの設定
@@ -228,6 +238,9 @@ void UpdatePlayer(void)
 
 			// タイムの設定
 			SetTime(MAX_TIME);
+
+			// 矩形の色の設定
+			SetColorRectangle(GetBG(), GetColor(COLOR_YELLOW));
 
 			s_nPlayer++;
 
