@@ -43,6 +43,7 @@ namespace
 GAMESTATE	s_gameState = GAMESTATE_NONE;	// ゲームの状態
 int			s_nCounterState;				// 状態管理カウンター
 bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false]
+int			s_nIdxMoon;						// 背景の矩形のインデックス
 int			s_nGaugeIdxGray;				// ゲージのインデックスの保管
 int			s_nGaugeIdxYellow;				// ゲージのインデックスの保管
 int			s_nTime;						// タイム
@@ -120,6 +121,17 @@ void InitGame(void)
 
 	// チュートリアルの初期化
 	InitTutorial();
+
+	{// 月
+	 // 矩形の設定
+		s_nIdxMoon = SetRectangle(TEXTURE_BG_MOON);
+
+		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
+
+		// 矩形の位置の設定
+		SetPosRectangle(s_nIdxMoon, pos, size);
+	}
 
 	//サウンド開始
 	PlaySound(SOUND_LABEL_BGM_GAME);
@@ -271,6 +283,17 @@ void UpdateGame(void)
 	// ゲージの色の設定(黄色)
 	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
 
+	{// 月エフェクト
+		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
+		D3DXCOLOR col = GetColor(COLOR_WHITE);
+
+		col.b = 0.1f;
+
+		if (s_nTime % 45 == 0)
+		{
+			SetEffect(pos, EFFECT_TYPE_003, col);
+		}
+	}
 }
 
 //--------------------------------------------------

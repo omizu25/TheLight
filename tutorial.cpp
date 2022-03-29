@@ -48,6 +48,8 @@ void InitTutorial(void)
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdx, pos, size);
 	}
+
+	s_nTime = 0;
 }
 
 //--------------------------------------------------
@@ -72,8 +74,11 @@ void UpdateTutorial(void)
 
 	if (s_nTime >= MAX_TIME)
 	{
-		// 矩形の描画するかどうか
-		SetDrawRectangle(s_nIdx, false);
+		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.25f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.725f, size.y * 0.5f, 0.0f);
+
+		// 矩形の位置の設定
+		SetPosRectangle(s_nIdx, pos, size);
 
 		// ゲーム状態の設定
 		SetGameState(GAMESTATE_SAMPLE);

@@ -77,28 +77,6 @@ void DrawScore(void)
 }
 
 //--------------------------------------------------
-// ê›íË
-//--------------------------------------------------
-void SetScore(int nScore)
-{
-	s_nScore = nScore;
-
-	// êîÇÃïœçX
-	s_nIdxScore = ChangeNumber(s_nIdxScore, s_nScore);
-}
-
-//--------------------------------------------------
-// â¡éZ
-//--------------------------------------------------
-void AddScore(int nValue)
-{
-	s_nScore += nValue;
-
-	// êîÇÃïœçX
-	s_nIdxScore = ChangeNumber(s_nIdxScore, s_nScore);
-}
-
-//--------------------------------------------------
 // éÊìæ
 //--------------------------------------------------
 int GetScore(void)

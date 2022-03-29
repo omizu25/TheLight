@@ -143,6 +143,15 @@ void UpdateEffect(void)
 				pEffect->bUse = false;
 			}
 			break;
+		case EFFECT_TYPE_003:		// プレイヤーの移動
+			pEffect->nLife--;											// 体力の更新
+			pEffect->col.a -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
+			pEffect->fRaduus += 0.85f;	// 半径の拡大
+			if (pEffect->nLife <= 0)
+			{
+				pEffect->bUse = false;
+			}
+			break;
 		default:
 			break;
 		}
@@ -221,7 +230,7 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col)
 			pEffect->nLife = pEffect->nMaxLife;
 			break;
 		case  EFFECT_TYPE_002:		// プレイヤーの移動
-			// 矩形のテクスチャの変更
+									// 矩形のテクスチャの変更
 			SetAddRectangle(pEffect->nIdx, true);
 			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
 			pEffect->pos = pos;
@@ -229,6 +238,15 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col)
 			pEffect->col.a = 0.25f;
 			pEffect->fRaduus = 40.0f;
 			pEffect->nMaxLife = 10;
+			pEffect->nLife = pEffect->nMaxLife;
+			break;
+		case  EFFECT_TYPE_003:		// プレイヤーの移動
+			// 矩形のテクスチャの変更
+			SetAddRectangle(pEffect->nIdx, true);
+			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
+			pEffect->pos = pos;
+			pEffect->fRaduus = 40.0f;
+			pEffect->nMaxLife = 170;
 			pEffect->nLife = pEffect->nMaxLife;
 			break;
 		default:

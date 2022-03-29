@@ -52,7 +52,7 @@ void InitRanking(void)
 	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.5f, 0.0f);
 
 	// êîÇÃê›íË
-	s_nIdx = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nScore, DigitNumber(s_nScore), true);
+	s_nIdx = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nScore, DigitNumber(s_nScore), false);
 }
 
 //--------------------------------------------------
