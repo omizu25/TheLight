@@ -16,10 +16,12 @@ typedef enum
 	TEXTURE_Number_004,			// 数
 	TEXTURE_TITLE_LOGO,			// タイトルロゴ
 	TEXTURE_BG,					// 背景
+	TEXTURE_BG_STAR,			// 背景
 	TEXTURE_effect_000,
 	TEXTURE_effect_001,
 	TEXTURE_effect_002,
 	TEXTURE_Number_Neon,		// ナンバー画像(ネオン)
+	TEXTURE_Method,
 	TEXTURE_MAX,
 	TEXTURE_NONE,			// 使用しない
 }TEXTURE;
