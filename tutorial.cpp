@@ -14,6 +14,7 @@
 #include "texture.h"
 #include "input.h"
 #include "mode.h"
+#include "game.h"
 
 //==================================================
 // スタティック変数
@@ -37,9 +38,6 @@ void InitTutorial(void)
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdx, pos, size);
-
-		// 矩形の色の設定
-		SetColorRectangle(s_nIdx, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 }
 
@@ -57,6 +55,11 @@ void UninitTutorial(void)
 //--------------------------------------------------
 void UpdateTutorial(void)
 {
+	if (GetGameState() != GAMESTATE_START)
+	{
+		return;
+	}
+
 }
 
 //--------------------------------------------------
