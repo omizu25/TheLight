@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="answer.cpp" />
     <ClCompile Include="bg.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="cursor.cpp" />
@@ -173,9 +174,11 @@
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="ui.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="answer.h" />
     <ClInclude Include="bg.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="cursor.h" />
@@ -201,6 +204,7 @@
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
+    <ClInclude Include="ui.h" />
     <ClInclude Include="utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

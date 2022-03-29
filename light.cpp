@@ -158,6 +158,7 @@ void UpdateLight(void)
 	case GAMESTATE_RESET:	// リセット状態
 		s_nNowLight = 0;
 		s_nMaxLight++;
+		s_nTime = 0;
 
 		for (int i = 0; i < MAX_LIGHT; i++)
 		{
@@ -174,7 +175,6 @@ void UpdateLight(void)
 
 	case GAMESTATE_NONE:	// 何もしていない状態
 	case GAMESTATE_START:	// 開始状態
-	case GAMESTATE_ANSWER:	// 答え合わせ状態
 	case GAMESTATE_PLAYER:	// プレイヤー状態
 		break;
 
@@ -191,6 +191,14 @@ void UpdateLight(void)
 //--------------------------------------------------
 void DrawLight(void)
 {
+}
+
+//--------------------------------------------------
+// 取得
+//--------------------------------------------------
+int GetLight(void)
+{
+	return s_nMaxLight;
 }
 
 namespace

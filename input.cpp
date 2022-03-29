@@ -530,10 +530,15 @@ bool GetLightKeyTrigger(LIGHT_KEY Key)
 		return false;
 	}
 	else if (GetLightKeyPress(Key)
-		&& g_OldLightKey != Key)
+		&& g_OldLightKey == LIGHT_KEY_MAX)
 	{
 		g_OldLightKey = Key;
 		return true;
+	}
+	else if (GetLightKeyPress(Key)
+		&& g_OldLightKey != Key)
+	{
+		return false;
 	}
 
 	g_OldLightKey = LIGHT_KEY_MAX;							//前回のライトのキーの情報のリセット

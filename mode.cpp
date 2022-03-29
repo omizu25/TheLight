@@ -97,6 +97,9 @@ void UpdateMode(void)
 		UpdateTutorial();
 		break;
 
+	case MODE_RESULT:	// リザルト
+		break;
+
 	case MODE_NONE:
 		/* 処理なし */
 		break;
@@ -124,6 +127,9 @@ void DrawMode(void)
 
 	case MODE_TUTORIAL:	// チュートリアル
 		DrawTutorial();
+		break;
+
+	case MODE_RESULT:	// リザルト
 		break;
 
 	case MODE_NONE:
@@ -170,6 +176,9 @@ void SetMode(void)
 		UninitTutorial();
 		break;
 
+	case MODE_RESULT:	// リザルト
+		break;
+
 	case MODE_NONE:
 		/* 処理なし */
 		break;
@@ -197,6 +206,9 @@ void SetMode(void)
 
 	case MODE_TUTORIAL:	// チュートリアル
 		InitTutorial();
+		break;
+
+	case MODE_RESULT:	// リザルト
 		break;
 
 	case MODE_NONE:

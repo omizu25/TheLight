@@ -348,6 +348,35 @@ void SetColorFanangle(int nIdx, const D3DXCOLOR &color)
 }
 
 //--------------------------------------------------
+// 色の設定
+//--------------------------------------------------
+void SetColorCenterFanangle(int nIdx, const D3DXCOLOR & color)
+{
+	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+
+	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+
+	if (!pFanangle->bUse)
+	{// 使用していない
+		return;
+	}
+
+	/*↓ 使用している ↓*/
+
+	VERTEX_2D *pVtx = NULL;		// 頂点情報へのポインタ
+
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFanangle(nIdx);
+
+	// 頂点情報をロックし、頂点情報へのポインタを取得
+	pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	pVtx[0].col = color;
+
+	// 頂点バッファをアンロックする
+	pVtxBuff->Unlock();
+}
+
+//--------------------------------------------------
 // テクスチャ座標の設定
 //--------------------------------------------------
 void SetTexFanangle(int nIdx)
