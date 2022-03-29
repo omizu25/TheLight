@@ -19,6 +19,7 @@ typedef enum
 	TEXTURE_TITLE_GamePopup,
 	TEXTURE_BackToTitle,
 	TEXTURE_ReturnToGame,
+	TEXTURE_Hackathon_Ring,
 	TEXTURE_BG_0,					// îwåi
 	TEXTURE_BG_1,			// îwåi
 	TEXTURE_BG_2,						// îwåi
