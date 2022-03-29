@@ -178,8 +178,7 @@ void UpdateGame(void)
 {
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START,0))
 	{// PƒL[‚ª‰Ÿ‚³‚ê‚½
-		if (s_gameState == GAMESTATE_SAMPLE ||
-			s_gameState == GAMESTATE_PLAYER)
+		if (s_gameState == GAMESTATE_PLAYER)
 		{// ’Êíó‘Ô‚Ì
 			s_bPause = !s_bPause;
 
