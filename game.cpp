@@ -124,7 +124,7 @@ void InitGame(void)
 	//サウンド開始
 	PlaySound(SOUND_LABEL_BGM_GAME);
 
-	s_gameState = GAMESTATE_SAMPLE;	// 何もしていない状態に設定
+	s_gameState = GAMESTATE_START;	// 何もしていない状態に設定
 
 	s_nCounterState = 0;	// カウンターの初期化
 
