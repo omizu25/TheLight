@@ -19,6 +19,7 @@
 #include "sound.h"
 #include "texture.h"
 #include "utility.h"
+#include "game.h"
 
 #include <assert.h>
 
@@ -28,7 +29,7 @@
 namespace
 {
 const int	MAX_LIGHT = 16;		// ライトの最大数
-const int	REPEAT_TIME = 60;	// タイムの繰り返し
+const int	REPEAT_TIME = 30;	// タイムの繰り返し
 const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
 
 typedef enum
@@ -74,7 +75,7 @@ void InitLight(void)
 
 	s_nSelect = 0;
 	s_nNowLight = 0;
-	s_nMaxLight = 0;
+	s_nMaxLight = 1;
 
 	{// メニュー
 		SelectArgument select;
@@ -118,29 +119,60 @@ void UninitLight(void)
 //--------------------------------------------------
 void UpdateLight(void)
 {
-	s_nTime++;
-
-	if (s_nTime % REPEAT_TIME == 0)
+	switch (GetGameState())
 	{
-		if (s_nNowLight < s_nMaxLight)
-		{
-			s_nNowLight++;
-		}
-		else
-		{
-			s_nNowLight = 0;
-			s_nMaxLight++;
+	case GAMESTATE_SAMPLE:	// 見本状態
+		s_nTime++;
 
-			for (int i = 0; i < MAX_LIGHT; i++)
-			{
-				// セレクトの色の設定
-				SetColorSelect(s_nIdxSelect, i, s_aColor[IntRandam(LIGHT_COLOR_MAX, 0)]);
+		if (s_nTime % REPEAT_TIME == 0)
+		{
+			if (s_nNowLight < s_nMaxLight)
+			{// まだ増える
+				s_nNowLight++;
+
+				// 描画のリセット
+				ResetDrawLight();
 			}
+			else
+			{// 増え切った
+				for (int i = 0; i < MAX_LIGHT; i++)
+				{
+					// セレクトの描画するかどうか
+					SetDrawSelect(s_nIdxSelect, i, false);
+				}
+
+				// ゲーム状態の設定
+				SetGameState(GAMESTATE_PLAYER);
+			}
+		}
+		break;
+
+	case GAMESTATE_RESET:	// リセット状態
+		s_nNowLight = 0;
+		s_nMaxLight++;
+
+		for (int i = 0; i < MAX_LIGHT; i++)
+		{
+			// セレクトの色の設定
+			SetColorSelect(s_nIdxSelect, i, s_aColor[IntRandam(LIGHT_COLOR_MAX, 0)]);
 		}
 
 		// 描画のリセット
 		ResetDrawLight();
+		break;
+
+	case GAMESTATE_NONE:	// 何もしていない状態
+	case GAMESTATE_START:	// 開始状態
+	case GAMESTATE_ANSWER:	// 答え合わせ状態
+	case GAMESTATE_PLAYER:	// プレイヤー状態
+		break;
+
+	default:
+		assert(false);
+		break;
 	}
+
+	
 }
 
 //--------------------------------------------------

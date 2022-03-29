@@ -144,7 +144,8 @@ void UpdateGame(void)
 {
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START,0))
 	{// Pキーが押された
-		if (s_gameState == GAMESTATE_NORMAL)
+		if (s_gameState == GAMESTATE_SAMPLE ||
+			s_gameState == GAMESTATE_PLAYER)
 		{// 通常状態の時
 			s_bPause = !s_bPause;
 
@@ -178,16 +179,19 @@ void UpdateGame(void)
 	switch (s_gameState)
 	{
 	case GAMESTATE_START:	// 開始状態
-		s_gameState = GAMESTATE_NORMAL;	// 通常状態に設定
+		s_gameState = GAMESTATE_SAMPLE;	// 見本状態に設定
 		break;
 
-	case GAMESTATE_NORMAL:	// 通常状態
+	case GAMESTATE_SAMPLE:	// 見本状態
 		break;
 
-	case GAMESTATE_END:		// 終了状態
+	case GAMESTATE_PLAYER:	// プレイヤー状態
 		break;
 
-	case GAMESTATE_RESULT:	// リザルト状態
+	case GAMESTATE_ANSWER:	// 答え合わせ状態
+		break;
+
+	case GAMESTATE_RESET:	// リセット状態
 		break;
 
 	case GAMESTATE_NONE:	// 何もしていない状態
