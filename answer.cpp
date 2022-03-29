@@ -14,12 +14,16 @@
 #include "texture.h"
 #include "color.h"
 #include "mode.h"
+#include "light.h"
+#include "player.h"
+#include "game.h"
 
 //==================================================
 // 定義
 //==================================================
 namespace
 {
+const int	MAX_TIME = 60;	// タイムの最大値
 }// namespaceはここまで
 
  //==================================================
@@ -27,9 +31,9 @@ namespace
  //==================================================
 namespace
 {
-int	s_nIdxAnswer;	// 数の配列のインデックス
-int	s_nAnswer;	// タイム
-int	s_nSecond;	// 1秒を計測
+bool	s_bMax;		// 最大になったかどうか
+bool	s_bAnswer;	// あってるかどうか
+int		s_nTime;	// タイム
 }// namespaceはここまで
 
  //--------------------------------------------------
@@ -37,6 +41,9 @@ int	s_nSecond;	// 1秒を計測
  //--------------------------------------------------
 void InitAnswer(void)
 {
+	s_nTime = 0;
+	s_bMax = false;
+	s_bAnswer = false;
 }
 
 //--------------------------------------------------
@@ -44,8 +51,6 @@ void InitAnswer(void)
 //--------------------------------------------------
 void UninitAnswer(void)
 {
-	// 使うのを止める
-	StopUseRectangle(s_nIdxAnswer);
 }
 
 //--------------------------------------------------
@@ -53,6 +58,32 @@ void UninitAnswer(void)
 //--------------------------------------------------
 void UpdateAnswer(void)
 {
+	if (s_bMax)
+	{
+		s_nTime++;
+
+		if (s_nTime >= MAX_TIME)
+		{
+			if (s_bAnswer)
+			{
+				s_bMax = false;
+				s_nTime = 0;
+				s_bAnswer = true;
+
+				// ゲーム状態の設定
+				SetGameState(GAMESTATE_RESET);
+			}
+			else
+			{
+				s_bMax = true;
+				s_nTime = 0;
+				s_bAnswer = false;
+
+				// モードの変更
+				ChangeMode(MODE_RESULT);
+			}
+		}
+	}
 }
 
 //--------------------------------------------------
@@ -61,4 +92,35 @@ void UpdateAnswer(void)
 void DrawAnswer(void)
 {
 	/* 矩形で描画してます */
+}
+
+//--------------------------------------------------
+// 設定
+//--------------------------------------------------
+void SetAnswer(int nNowLight)
+{
+	if (GetColorLight(nNowLight) == GetColorPlayer(nNowLight))
+	{
+		if ((GetPlayer() + 1) >= GetLight())
+		{// 最大になった
+			s_bMax = true;
+			s_nTime = 0;
+			s_bAnswer = true;
+		}
+	}
+	else
+	{
+		s_nTime = 0;
+		s_bMax = true;
+		s_bAnswer = false;
+	}
+}
+
+//--------------------------------------------------
+// 取得
+// 返値  : bool / 最大値になったかどうか
+//--------------------------------------------------
+bool GetAnswer(void)
+{
+	return s_bMax;
 }
