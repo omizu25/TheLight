@@ -85,12 +85,6 @@ void InitGame(void)
 	s_bPause = false;	// ポーズ解除
 
 	s_nIdx = SetFanangle(TEXTURE_NONE);
-
-	// 矩形の位置の設定
-	SetRotationPosFanangle(s_nIdx, D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f),D3DX_PI * 0.5f, 30.0f);
-
-	// 矩形の色の設定
-	SetColorFanangle(s_nIdx, GetColor(COLOR_RED));
 }
 
 //--------------------------------------------------
@@ -196,7 +190,6 @@ void UpdateGame(void)
 
 	// エフェクトの更新
 	UpdateEffect();
-	SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), EFFECT_TYPE_001);
 
 	// タイムの更新
 	UpdateTime();
@@ -206,15 +199,6 @@ void UpdateGame(void)
 
 	// ランキングの更新
 	UpdateRanking();
-
-	if (GetKeyboardPress(DIK_RETURN))
-	{
-		AddDrawFanangle(s_nIdx, -1);
-	}
-	if (GetKeyboardPress(DIK_BACKSPACE))
-	{
-		AddDrawFanangle(s_nIdx, 1);
-	}
 }
 
 //--------------------------------------------------
