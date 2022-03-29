@@ -21,6 +21,8 @@
 #include "score.h"
 #include "ranking.h"
 #include "input.h"
+#include "bg.h"
+#include "effect.h"
 
 //=============================================================================
 // 定義
@@ -35,7 +37,7 @@ const int	MAX_TIME = 600;	// タイムの最大値
 //=============================================================================
 namespace
 {
-int	s_nIdxBG;				// 背景の矩形のインデックス
+int	s_nIdxMoon;				// 背景の矩形のインデックス
 int	s_nIdxUI[2];			// UIの矩形のインデックス
 int	s_nGaugeIdxGray;		// ゲージのインデックスの保管
 int	s_nGaugeIdxYellow;		// ゲージのインデックスの保管
@@ -75,18 +77,19 @@ void InitResult(void)
 	// ゲージの色の設定(黄色)
 	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
 	
-	{// 背景
-		// 矩形の設定
-		s_nIdxBG = SetRectangle(TEXTURE_BG);
+	InitBG();
 
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
+	InitEffect();
+
+	{// 月
+	 // 矩形の設定
+		s_nIdxMoon = SetRectangle(TEXTURE_BG_MOON);
+
 		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
 
 		// 矩形の位置の設定
-		SetPosRectangle(s_nIdxBG, pos, size);
-
-		// 矩形の色の設定
-		SetColorRectangle(s_nIdxBG, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		SetPosRectangle(s_nIdxMoon, pos, size);
 	}
 
 	{// 今回のスコア
@@ -135,7 +138,7 @@ void UninitResult(void)
 	StopSound();
 
 	// 使うのを止める
-	StopUseRectangle(s_nIdxBG);
+	StopUseRectangle(s_nIdxMoon);
 
 	// ゲージの終了
 	UninitGauge();
@@ -148,6 +151,9 @@ void UpdateResult(void)
 {
 	// ゲージの更新
 	UpdateGauge();
+
+	// エフェクト
+	UpdateEffect();
 
 	s_nTime++;
 
@@ -178,6 +184,18 @@ void UpdateResult(void)
 
 	// ゲージの色の設定(黄色)
 	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
+
+	{// 月エフェクト
+		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
+		D3DXCOLOR col = GetColor(COLOR_WHITE);
+
+		col.b = 0.1f;
+
+		if (s_nTime % 45 == 0)
+		{
+			SetEffect(pos, EFFECT_TYPE_003, col);
+		}
+	}
 }
 
 //=============================================================================

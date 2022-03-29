@@ -214,8 +214,7 @@ void UpdateTitle(void)
 	// エフェクト
 	UpdateEffect();
 
-//	D3DXVECTOR3 pos(140.0f + FloatRandam(20.0f, -20.0f), 80.0f + FloatRandam(10.0f, -10.0f), 0.0f);
-	{
+	{// 月エフェクト
 		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
 		D3DXCOLOR col = GetColor(COLOR_WHITE);
 
