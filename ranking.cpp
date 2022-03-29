@@ -27,8 +27,8 @@
 namespace
 {
 const int	MAX_RANKING = 1;						// ランキングの最大数
-const float	RANKING_WIDTH = 50.0f;					// ランキングの幅
-const float	RANKING_HEIGHT = 100.0f;				// ランキングの高さ
+const float	RANKING_WIDTH = 70.0f;					// ランキングの幅
+const float	RANKING_HEIGHT = 150.0f;				// ランキングの高さ
 const char *TEXT_NAME = "data/TEXT/Ranking.txt";	// テキスト名
 
 }// namespaceはここまで
@@ -48,8 +48,7 @@ int	s_nScore;	// スコア
 void InitRanking(void)
 {
 	D3DXVECTOR3 size = D3DXVECTOR3(RANKING_WIDTH, RANKING_HEIGHT, 0.0f);
-
-	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.5f, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.68f, SCREEN_HEIGHT * 0.5f, 0.0f);
 
 	// 数の設定
 	s_nIdx = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nScore, DigitNumber(s_nScore), false);

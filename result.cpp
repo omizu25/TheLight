@@ -96,7 +96,7 @@ void InitResult(void)
 		s_nIdxUI[0] = SetRectangle(TEXTURE_YourScore);
 
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.25f, 0.0f);
-		D3DXVECTOR3 size = D3DXVECTOR3(600.0f, 100.0f, 0.0f);
+		D3DXVECTOR3 size = D3DXVECTOR3(750.0f, 100.0f, 0.0f);
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdxUI[0], pos, size);
@@ -110,7 +110,7 @@ void InitResult(void)
 		s_nIdxUI[1] = SetRectangle(TEXTURE_BestScore);
 
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
-		D3DXVECTOR3 size = D3DXVECTOR3(600.0f, 100.0f, 0.0f);
+		D3DXVECTOR3 size = D3DXVECTOR3(750.0f, 100.0f, 0.0f);
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdxUI[1], pos, size);
@@ -158,7 +158,7 @@ void UpdateResult(void)
 	UpdateScore();
 
 	// ランキングの更新
-	UpdateScore();
+	UpdateRanking();
 
 	s_nTime++;
 
