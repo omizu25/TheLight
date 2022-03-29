@@ -68,7 +68,7 @@ void Input(void);
 void InitTitle(void)
 {
 	// ƒTƒEƒ“ƒh‚ÌÄ¶
-	//PlaySound(SOUND_LABEL_TITLE2);
+	PlaySound(SOUND_LABEL_BGM_TITLE);
 
 	s_nSelectMenu = 0;
 

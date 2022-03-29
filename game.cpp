@@ -98,7 +98,7 @@ void InitGame(void)
 	InitPlayer();
 
 	//サウンド開始
-	//PlaySound(SOUND_LABEL_BGM);
+	PlaySound(SOUND_LABEL_BGM_GAME);
 
 	s_gameState = GAMESTATE_START;	// 何もしていない状態に設定
 

@@ -33,9 +33,11 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 // 各音素材のパラメータ
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
-	{"data/BGM/yukiguni.wav", -1},	// タイトル
-	{"data/SE/Enter001.wav", 0},	// 決定音
-	{"data/SE/Select000.wav", 0},	// 選択音
+	{ "data/BGM/Title.wav", -1},	// タイトル
+	{ "data/BGM/Game.wav", -1 },	// タイトル
+	{ "data/BGM/Result.wav", -1 },	// タイトル
+	{ "data/SE/Enter001.wav", 0},	// 決定音
+	{ "data/SE/Select000.wav", 0},	// 選択音
 };
 
 //=============================================================================
