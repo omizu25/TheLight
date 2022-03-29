@@ -73,7 +73,7 @@ void InitTitle(void)
 
 	{// îwåi
 		// ãÈå`ÇÃê›íË
-		s_nIdxBG = SetRectangle(TEXTURE_NONE);
+		s_nIdxBG = SetRectangle(TEXTURE_BG);
 
 		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
@@ -84,7 +84,7 @@ void InitTitle(void)
 
 	{// ÉçÉS
 		// ãÈå`ÇÃê›íË
-		s_nIdx = SetRectangle(TEXTURE_NONE);
+		s_nIdx = SetRectangle(TEXTURE_TITLE_LOGO);
 
 		D3DXVECTOR3 size = D3DXVECTOR3(TITLE_WIDTH, TITLE_HEIGHT, 0.0f);
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, 0.0f);

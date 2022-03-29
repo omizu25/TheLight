@@ -60,7 +60,9 @@ void InitGame(void)
 	col.a = 0.75f;
 
 	// ゲージの設定
-	SetGauge(D3DXVECTOR3(0.0f,SCREEN_HEIGHT * 0.5f,0.0f), col,SCREEN_WIDTH,125.0f, GAUGE_LEFT);
+	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.35f, 0.0f), col, SCREEN_WIDTH, 125.0f, GAUGE_LEFT);
+	// ゲージの設定
+	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), col, SCREEN_WIDTH, 125.0f, GAUGE_LEFT);
 
 
 
@@ -92,11 +94,9 @@ void InitGame(void)
 	InitCursor();
 
 	// ポーズの初期化
-	//InitPause();
+	InitPause();
 
-	//サウンド開始
 	// プレイヤーの初期化
-	//PlaySound(SOUND_LABEL_BGM);
 	InitPlayer();
 
 	//サウンド開始
