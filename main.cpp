@@ -13,6 +13,7 @@
 #include "input.h"
 #include "mode.h"
 #include "sound.h"
+#include "game.h"
 
 #include <stdio.h>
 
@@ -428,6 +429,9 @@ static void DrawDebug(void)
 	/* ↓文字列の代入↓ */
 
 	sprintf(&aStr[nLength], "FPS  : %3d\n\n", s_nCountFPS);
+	nLength = (int)strlen(&aStr[0]);
+
+	sprintf(&aStr[nLength], "%3d\n\n", GetGameState());
 	nLength = (int)strlen(&aStr[0]);
 
 	// テキストの描画

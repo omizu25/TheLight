@@ -37,6 +37,7 @@ typedef enum
 {
 	MENU_GAME = 0,	// ゲーム
 	MENU_TUTORIAL,	// チュートリアル
+	MENU_RESULT,	// リザルト
 	MENU_MAX
 }MENU;
 }// namespaceはここまで
@@ -109,6 +110,7 @@ void InitTitle(void)
 
 		menu.texture[MENU_GAME] = TEXTURE_NONE;
 		menu.texture[MENU_TUTORIAL] = TEXTURE_NONE;
+		menu.texture[MENU_RESULT] = TEXTURE_NONE;
 
 		FrameArgument Frame;
 		Frame.bUse = true;
@@ -245,6 +247,10 @@ void Input(void)
 
 		case MENU_TUTORIAL:	// チュートリアル
 			ChangeMode(MODE_TUTORIAL);
+			break;
+
+		case MENU_RESULT:	// リザルト
+			ChangeMode(MODE_RESULT);
 			break;
 
 		default:

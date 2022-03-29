@@ -16,7 +16,6 @@ typedef enum
 	GAMESTATE_START,	// 開始状態
 	GAMESTATE_SAMPLE,	// 見本状態
 	GAMESTATE_PLAYER,	// プレイヤー入力状態
-	GAMESTATE_ANSWER,	// 答え合わせ状態
 	GAMESTATE_RESET,	// リセット状態
 	GAMESTATE_MAX
 }GAMESTATE;

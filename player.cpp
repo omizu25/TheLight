@@ -116,11 +116,14 @@ void UpdatePlayer(void)
 	case GAMESTATE_RESET:	// リセット状態
 		// 描画のリセット
 		ResetDrawPlayer();
+
+		// ゲーム状態の設定
+		SetGameState(GAMESTATE_SAMPLE);
 		break;
 
 	case GAMESTATE_PLAYER:	// プレイヤー状態
 		if (GetLightKeyTrigger(LIGHT_KEY_RED))
-		{
+		{// 赤
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_RED;
 
 			// セレクトの色の設定
@@ -133,9 +136,14 @@ void UpdatePlayer(void)
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+			if (s_nPlayer >= GetLight())
+			{
+				// ゲーム状態の設定
+				SetGameState(GAMESTATE_RESET);
+			}
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_GREEN))
-		{
+		{// 緑
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_GREEN;
 
 			// セレクトの色の設定
@@ -148,9 +156,14 @@ void UpdatePlayer(void)
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+			if (s_nPlayer >= GetLight())
+			{
+				// ゲーム状態の設定
+				SetGameState(GAMESTATE_RESET);
+			}
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_BLUE))
-		{
+		{// 青
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_BLUE;
 
 			// セレクトの色の設定
@@ -163,9 +176,14 @@ void UpdatePlayer(void)
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+			if (s_nPlayer >= GetLight())
+			{
+				// ゲーム状態の設定
+				SetGameState(GAMESTATE_RESET);
+			}
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_YELLOW))
-		{
+		{// 黄色
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_YELLOW;
 
 			// セレクトの色の設定
@@ -178,6 +196,11 @@ void UpdatePlayer(void)
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+			if (s_nPlayer >= GetLight())
+			{
+				// ゲーム状態の設定
+				SetGameState(GAMESTATE_RESET);
+			}
 		}
 
 		break;
@@ -185,7 +208,6 @@ void UpdatePlayer(void)
 	case GAMESTATE_SAMPLE:	// 見本状態
 	case GAMESTATE_NONE:	// 何もしていない状態
 	case GAMESTATE_START:	// 開始状態
-	case GAMESTATE_ANSWER:	// 答え合わせ状態
 		break;
 
 	default:
@@ -215,5 +237,7 @@ void ResetDrawPlayer(void)
 		// セレクトの描画するかどうか
 		SetDrawSelect(s_nIdxSelect, i, false);
 	}
+
+	s_nPlayer = 0;
 }
 }// namespaceはここまで

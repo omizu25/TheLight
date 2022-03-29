@@ -183,30 +183,6 @@ void UpdateGame(void)
 		return;
 	}
 
-	switch (s_gameState)
-	{
-	case GAMESTATE_START:	// 開始状態
-		s_gameState = GAMESTATE_SAMPLE;	// 見本状態に設定
-		break;
-
-	case GAMESTATE_SAMPLE:	// 見本状態
-		break;
-
-	case GAMESTATE_PLAYER:	// プレイヤー状態
-		break;
-
-	case GAMESTATE_ANSWER:	// 答え合わせ状態
-		break;
-
-	case GAMESTATE_RESET:	// リセット状態
-		break;
-
-	case GAMESTATE_NONE:	// 何もしていない状態
-	default:
-		assert(false);
-		break;
-	}
-
 	// ライトの更新
 	UpdateLight();
 
@@ -233,6 +209,27 @@ void UpdateGame(void)
 
 	// ランキングの更新
 	//UpdateRanking();
+
+	switch (s_gameState)
+	{
+	case GAMESTATE_START:	// 開始状態
+		s_gameState = GAMESTATE_SAMPLE;	// 見本状態に設定
+		break;
+
+	case GAMESTATE_SAMPLE:	// 見本状態
+		break;
+
+	case GAMESTATE_PLAYER:	// プレイヤー状態
+		break;
+
+	case GAMESTATE_RESET:	// リセット状態
+		break;
+
+	case GAMESTATE_NONE:	// 何もしていない状態
+	default:
+		assert(false);
+		break;
+	}
 }
 
 //--------------------------------------------------
