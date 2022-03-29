@@ -18,6 +18,7 @@
 #include "input.h"
 #include "utility.h"
 #include "ranking.h"
+#include "light.h"
 
 //==================================================
 // 定義
@@ -42,17 +43,13 @@ int	s_nScore;		// スコア
 //--------------------------------------------------
 void InitScore(void)
 {
-	s_nScore = 0;
-	s_nIdxScore = 0;
+	s_nScore = GetLight() - 1;
 
 	D3DXVECTOR3 size = D3DXVECTOR3(SCORE_WIDTH, SCORE_HEIGHT, 0.0f);
-	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH, SCORE_HEIGHT * 0.5f, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.25f, 0.0f);
 
 	// 数の設定
 	s_nIdxScore = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nScore, DigitNumber(s_nScore), false);
-
-	// スコアの設定
-	SetScore(0);
 }
 
 //--------------------------------------------------
@@ -62,9 +59,6 @@ void UninitScore(void)
 {
 	// 使うのを止める
 	StopUseRectangle(s_nIdxScore);
-
-	// ランキングの設定
-	SetRanking();
 }
 
 //--------------------------------------------------
@@ -72,11 +66,6 @@ void UninitScore(void)
 //--------------------------------------------------
 void UpdateScore(void)
 {
-	if (GetFunctionKeyTrigger(FUNCTION_KEY_DESISION))
-	{//決定キー(ENTERキー)が押されたかどうか
-		// スコアの加算
-		AddScore(100);
-	}
 }
 
 //--------------------------------------------------

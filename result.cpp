@@ -90,7 +90,9 @@ void InitResult(void)
 	}
 
 	{// 今回のスコア
-	 // 矩形の設定
+		// スコアの初期化
+		InitScore();
+
 		s_nIdxUI[0] = SetRectangle(TEXTURE_YourScore);
 
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.25f, 0.0f);
@@ -101,14 +103,16 @@ void InitResult(void)
 
 		// 矩形の色の設定
 		SetColorRectangle(s_nIdxUI[0], D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-		pos = D3DXVECTOR3(SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.25f, 0.0f);
-		size = D3DXVECTOR3(70.0f, 90.0f, 0.0f);
-		SetNumber(pos,size,GetColor(COLOR_WHITE),GetLight() - 1,1,false);
 	}
 
 	{// ベストスコア
-	 // 矩形の設定
+		// ランキングの設定
+		SetRanking();
+
+		// ランキングの初期化
+		InitRanking();
+
+		// 矩形の設定
 		s_nIdxUI[1] = SetRectangle(TEXTURE_BestScore);
 
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
@@ -119,10 +123,6 @@ void InitResult(void)
 
 		// 矩形の色の設定
 		SetColorRectangle(s_nIdxUI[1], D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
-		pos = D3DXVECTOR3(SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.5f, 0.0f);
-		size = D3DXVECTOR3(70.0f, 90.0f, 0.0f);
-		SetNumber(pos, size, GetColor(COLOR_WHITE), GetRanking(), 1, false);
 	}
 
 }
