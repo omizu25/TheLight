@@ -33,6 +33,7 @@ typedef struct
 	int			nIdx;		// 矩形のインデックス
 	float		fWidth;		// 幅
 	float		fHeight;	// 高さ
+	bool		bDraw;		// 描画するかどうか
 }Option;
 
 /*↓ メニュー ↓*/
@@ -45,7 +46,6 @@ typedef struct
 	float		fWidth;				// 幅
 	float		fHeight;			// 高さ
 	float		fInterval;			// 選択肢の間隔
-	bool		bDraw;				// 描画するかどうか
 	bool		bUse;				// 使用しているかどうか
 }Select;
 }// namespaceはここまで
@@ -136,7 +136,6 @@ int SetSelect(const SelectArgument &menu)
 		pSelect->nNumUse = menu.nNumUse;
 		pSelect->fWidth = menu.fRight - menu.fLeft;
 		pSelect->fHeight = menu.fBottom - menu.fTop;
-		pSelect->bDraw = true;
 		pSelect->bUse = true;
 
 		if (menu.bSort)
@@ -177,6 +176,8 @@ int SetSelect(const SelectArgument &menu)
 
 			// 矩形の色の設定
 			SetColorRectangle(pOption->nIdx, pOption->col);
+
+			pOption->bDraw = true;
 		}
 
 		return i;
@@ -184,6 +185,25 @@ int SetSelect(const SelectArgument &menu)
 
 	assert(false);
 	return -1;
+}
+
+//--------------------------------------------------
+// セレクトの色の設定
+// 引数1  : int nIdxSelect / セレクトのインデックス
+// 引数2  : int nIdxOption / 選択肢のインデックス
+// 引数3  : D3DXCOLOR &col / 色
+//--------------------------------------------------
+void SetColorSelect(int nIdxSelect, int nIdxOption, COLOR color)
+{
+	assert(nIdxSelect >= 0 && nIdxSelect < MAX_SELECT);
+	assert(nIdxOption >= 0 && nIdxOption < MAX_OPTION);
+
+	Option *pOption = &s_aSelect[nIdxSelect].Option[nIdxOption];
+
+	pOption->col = GetColor(color);
+
+	// 矩形の色の設定
+	SetColorRectangle(pOption->nIdx, pOption->col);
 }
 
 //--------------------------------------------------
@@ -218,28 +238,41 @@ void ResetSelect(int nIdx)
 //--------------------------------------------------
 // 描画するかどうか
 //--------------------------------------------------
-void SetDrawSelect(int nIdx, bool bDraw)
+void SetDrawSelect(int nIdxSelect, int nIdxOption, bool bDraw)
 {
-	assert(nIdx >= 0 && nIdx < MAX_SELECT);
+	assert(nIdxSelect >= 0 && nIdxSelect < MAX_SELECT);
+	assert(nIdxOption >= 0 && nIdxOption < MAX_OPTION);
 
-	Select *pSelect = &s_aSelect[nIdx];
+	Option *pOption = &s_aSelect[nIdxSelect].Option[nIdxOption];
 
-	if (!pSelect->bUse)
-	{// 使用していない
-		return;
-	}
+	// 矩形の描画するかどうか
+	SetDrawRectangle(pOption->nIdx, bDraw);
 
-	/*↓ 使用している ↓*/
+	pOption->bDraw = bDraw;
+}
 
-	for (int i = 0; i < pSelect->nNumUse; i++)
-	{
-		Option *pOption = &pSelect->Option[i];
+//--------------------------------------------------
+// 選択肢の位置を取得
+//--------------------------------------------------
+D3DXVECTOR3 GetPosSelect(int nIdxSelect, int nIdxOption)
+{
+	assert(nIdxSelect >= 0 && nIdxSelect < MAX_SELECT);
+	assert(nIdxOption >= 0 && nIdxOption < MAX_OPTION);
 
-		// 矩形の描画するかどうか
-		SetDrawRectangle(pOption->nIdx, bDraw);
+	Option *pOption = &s_aSelect[nIdxSelect].Option[nIdxOption];
 
-		pOption->col = GetColor(COLOR_WHITE);
-	}
+	return pOption->pos;
+}
 
-	pSelect->bDraw = bDraw;
+//--------------------------------------------------
+// 選択肢の色を取得
+//--------------------------------------------------
+D3DXCOLOR GetColSelect(int nIdxSelect, int nIdxOption)
+{
+	assert(nIdxSelect >= 0 && nIdxSelect < MAX_SELECT);
+	assert(nIdxOption >= 0 && nIdxOption < MAX_OPTION);
+
+	Option *pOption = &s_aSelect[nIdxSelect].Option[nIdxOption];
+
+	return pOption->col;
 }

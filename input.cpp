@@ -33,7 +33,8 @@ XINPUT_STATE g_JoyKeyState[PLAYER_MAX];				//ジョイパットのプレス情報
 XINPUT_STATE g_JoyKeyStateTrigger[PLAYER_MAX];		//ジョイパットのトリガー情報
 D3DXVECTOR3 g_JoyStickPos[PLAYER_MAX];				//ジョイスティックの傾き
 JOYKEY g_OldJoyKeyStick[PLAYER_MAX][JOYKEY_RIGHT_LEFT_MAX];			//前回のスティックの位置
-FUNCTION_KEY g_OldFunctionKey;
+FUNCTION_KEY g_OldFunctionKey;										//前回の機能キーの情報
+LIGHT_KEY g_OldLightKey = LIGHT_KEY_MAX;							//前回のライトのキーの情報
 
 //-----------------------------------------------------------------------------
 //プロトタイプ宣言
@@ -403,6 +404,7 @@ bool GetMoveKeyPress(MOVE_KEY Key)
 	if (Key == MOVE_KEY_UP)
 	{
 		if (GetJoypadStickPress(JOYKEY_LEFT_STICK, JOYKEY_STICK_UP, 0)
+			|| GetJoypadStickPress(JOYKEY_RIGHT_STICK, JOYKEY_STICK_UP, 0)
 			|| GetJoypadPress(JOYKEY_CROSS_UP, 0)
 			|| GetKeyboardPress(DIK_W)
 			|| GetKeyboardPress(DIK_UP))
@@ -413,6 +415,7 @@ bool GetMoveKeyPress(MOVE_KEY Key)
 	else if (Key == MOVE_KEY_DOWN)
 	{
 		if (GetJoypadStickPress(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN, 0)
+			|| GetJoypadStickPress(JOYKEY_RIGHT_STICK, JOYKEY_STICK_DOWN, 0)
 			|| GetJoypadPress(JOYKEY_CROSS_DOWN, 0)
 			|| GetKeyboardPress(DIK_S)
 			|| GetKeyboardPress(DIK_DOWN))
@@ -423,6 +426,7 @@ bool GetMoveKeyPress(MOVE_KEY Key)
 	else if (Key == MOVE_KEY_LEFT)
 	{
 		if (GetJoypadStickPress(JOYKEY_LEFT_STICK, JOYKEY_STICK_LEFT, 0)
+			|| GetJoypadStickPress(JOYKEY_RIGHT_STICK, JOYKEY_STICK_LEFT, 0)
 			|| GetJoypadPress(JOYKEY_CROSS_LEFT, 0)
 			|| GetKeyboardPress(DIK_A)
 			|| GetKeyboardPress(DIK_LEFT))
@@ -433,6 +437,7 @@ bool GetMoveKeyPress(MOVE_KEY Key)
 	else if (Key == MOVE_KEY_RIGHT)
 	{
 		if (GetJoypadStickPress(JOYKEY_LEFT_STICK, JOYKEY_STICK_RIGHT, 0)
+			|| GetJoypadStickPress(JOYKEY_RIGHT_STICK, JOYKEY_STICK_RIGHT, 0)
 			|| GetJoypadPress(JOYKEY_CROSS_RIGHT, 0)
 			|| GetKeyboardPress(DIK_D)
 			|| GetKeyboardPress(DIK_RIGHT))
@@ -482,5 +487,55 @@ bool GetFunctionKeyTrigger(FUNCTION_KEY Key)
 	}
 
 	g_OldFunctionKey = FUNCTION_KEY_MAX;
+	return false;
+}
+
+//ライトの色選択キーのプレス
+bool GetLightKeyPress(LIGHT_KEY Key)
+{
+	if (Key == LIGHT_KEY_RED
+		&& (GetMoveKeyPress(MOVE_KEY_RIGHT) || GetJoypadPress(JOYKEY_B, 0)))
+	{
+		return true;
+	}
+	else if (Key == LIGHT_KEY_GREEN
+		&& (GetMoveKeyPress(MOVE_KEY_DOWN) || GetJoypadPress(JOYKEY_A, 0)))
+	{
+		return true;
+	}
+	else if (Key == LIGHT_KEY_BLUE
+		&& (GetMoveKeyPress(MOVE_KEY_LEFT) || GetJoypadPress(JOYKEY_X, 0)))
+	{
+		return true;
+	}
+	else if (Key == LIGHT_KEY_YELLOW
+		&& (GetMoveKeyPress(MOVE_KEY_UP) || GetJoypadPress(JOYKEY_Y, 0)))
+	{
+		return true;
+	}
+	return false;
+}
+
+//ライトの色選択キーのトリガー
+bool GetLightKeyTrigger(LIGHT_KEY Key)
+{
+	if (!GetLightKeyPress(Key)
+		&& g_OldLightKey != Key)
+	{
+		return false;
+	}
+	else if (GetLightKeyPress(Key)
+		&& g_OldLightKey == Key)
+	{
+		return false;
+	}
+	else if (GetLightKeyPress(Key)
+		&& g_OldLightKey != Key)
+	{
+		g_OldLightKey = Key;
+		return true;
+	}
+
+	g_OldLightKey = LIGHT_KEY_MAX;							//前回のライトのキーの情報のリセット
 	return false;
 }

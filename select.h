@@ -12,6 +12,7 @@
 //==================================================
 #include "texture.h"
 #include "menu.h"
+#include "color.h"
 
 //==================================================
 // 構造体
@@ -62,16 +63,41 @@ void DrawSelect(void);
 int SetSelect(const SelectArgument &menu);
 
 //--------------------------------------------------
+// セレクトの色の設定
+// 引数1  : int nIdxSelect / セレクトのインデックス
+// 引数2  : int nIdxOption / 選択肢のインデックス
+// 引数3  : COLOR color / 色
+//--------------------------------------------------
+void SetColorSelect(int nIdxSelect, int nIdxOption, COLOR color);
+
+//--------------------------------------------------
 // メニューのリセット
-// 引数  : int nIdx / メニューのインデックス
+// 引数  : int nIdx / セレクトのインデックス
 //--------------------------------------------------
 void ResetSelect(int nIdx);
 
 //--------------------------------------------------
 // 描画するかどうか
-// 引数1  : int nIdx / メニューのインデックス
-// 引数2  : bool bDraw / 描画するかどうか
+// 引数1  : int nIdxSelect / セレクトのインデックス
+// 引数2  : int nIdxOption / 選択肢のインデックス
+// 引数3  : bool bDraw / 描画するかどうか
 //--------------------------------------------------
-void SetDrawSelect(int nIdx, bool bDraw);
+void SetDrawSelect(int nIdxSelect, int nIdxOption, bool bDraw);
+
+//--------------------------------------------------
+// 選択肢の位置を取得
+// 引数1  : int nIdxSelect / セレクトのインデックス
+// 引数2  : int nIdxOption / 選択肢のインデックス
+// 返値  : D3DXVECTOR3 / 選択肢の位置
+//--------------------------------------------------
+D3DXVECTOR3 GetPosSelect(int nIdxSelect, int nIdxOption);
+
+//--------------------------------------------------
+// 選択肢の色を取得
+// 引数1  : int nIdxSelect / セレクトのインデックス
+// 引数2  : int nIdxOption / 選択肢のインデックス
+// 返値  : D3DXCOLOR / 選択肢の色
+//--------------------------------------------------
+D3DXCOLOR GetColSelect(int nIdxSelect, int nIdxOption);
 
 #endif // !_SELECT_H_

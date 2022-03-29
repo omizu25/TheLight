@@ -28,6 +28,7 @@
 #include "ranking.h"
 #include "light.h"
 #include "select.h"
+#include "player.h"
 
 #include <assert.h>
 
@@ -82,6 +83,9 @@ void InitGame(void)
 	// ライトの初期化
 	InitLight();
 
+	// プレイヤーの初期化
+	InitPlayer();
+
 	//サウンド開始
 	//PlaySound(SOUND_LABEL_BGM);
 
@@ -135,6 +139,9 @@ void UninitGame(void)
 
 	// ライトの終了
 	UninitLight();
+
+	// プレイヤーの終了
+	UninitPlayer();
 }
 
 //--------------------------------------------------
@@ -144,7 +151,8 @@ void UpdateGame(void)
 {
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START,0))
 	{// Pキーが押された
-		if (s_gameState == GAMESTATE_NORMAL)
+		if (s_gameState == GAMESTATE_SAMPLE ||
+			s_gameState == GAMESTATE_PLAYER)
 		{// 通常状態の時
 			s_bPause = !s_bPause;
 
@@ -178,16 +186,19 @@ void UpdateGame(void)
 	switch (s_gameState)
 	{
 	case GAMESTATE_START:	// 開始状態
-		s_gameState = GAMESTATE_NORMAL;	// 通常状態に設定
+		s_gameState = GAMESTATE_SAMPLE;	// 見本状態に設定
 		break;
 
-	case GAMESTATE_NORMAL:	// 通常状態
+	case GAMESTATE_SAMPLE:	// 見本状態
 		break;
 
-	case GAMESTATE_END:		// 終了状態
+	case GAMESTATE_PLAYER:	// プレイヤー状態
 		break;
 
-	case GAMESTATE_RESULT:	// リザルト状態
+	case GAMESTATE_ANSWER:	// 答え合わせ状態
+		break;
+
+	case GAMESTATE_RESET:	// リセット状態
 		break;
 
 	case GAMESTATE_NONE:	// 何もしていない状態
@@ -199,6 +210,9 @@ void UpdateGame(void)
 	// ライトの更新
 	UpdateLight();
 
+	// プレイヤーの更新
+	UpdatePlayer();
+
 	// ゲージの更新
 	UpdateGauge();
 
@@ -209,7 +223,7 @@ void UpdateGame(void)
 	UpdateMenu();
 
 	// エフェクトの更新
-	//UpdateEffect();
+	UpdateEffect();
 
 	// タイムの更新
 	//UpdateTime();
