@@ -47,11 +47,22 @@ bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false
 //--------------------------------------------------
 void InitGame(void)
 {
+	// ゲージの初期化
+	InitGauge();
+
+	// ゲージの設定
+	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
+
 	// 背景の初期化
 	InitBG();
 
-	// ゲージの初期化
-	InitGauge();
+	D3DXCOLOR col = GetColor(COLOR_GRAY);
+	col.a = 0.75f;
+
+	// ゲージの設定
+	SetGauge(D3DXVECTOR3(0.0f,SCREEN_HEIGHT * 0.5f,0.0f), col,SCREEN_WIDTH,125.0f, GAUGE_LEFT);
+
+
 
 	// 数の初期化
 	InitNumber();
@@ -65,11 +76,14 @@ void InitGame(void)
 	// ランキングの初期化
 	//InitRanking();
 
-	// エフェクトの初期化
-	InitEffect();
-
 	// セレクトの初期化
 	InitSelect();
+
+	// ライトの初期化
+	InitLight();
+
+	// エフェクトの初期化
+	InitEffect();
 
 	// メニューの初期化
 	InitMenu();
@@ -80,10 +94,9 @@ void InitGame(void)
 	// ポーズの初期化
 	//InitPause();
 
-	// ライトの初期化
-	InitLight();
-
+	//サウンド開始
 	// プレイヤーの初期化
+	//PlaySound(SOUND_LABEL_BGM);
 	InitPlayer();
 
 	//サウンド開始
@@ -186,7 +199,7 @@ void UpdateGame(void)
 	// ライトの更新
 	UpdateLight();
 
-	// プレイヤーの更新
+	// ゲージの更新
 	UpdatePlayer();
 
 	// ゲージの更新

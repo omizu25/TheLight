@@ -17,6 +17,7 @@ typedef enum
 	TEXTURE_BG,					// 背景
 	TEXTURE_effect_000,
 	TEXTURE_effect_001,
+	TEXTURE_effect_002,
 	TEXTURE_Number_Neon,		// ナンバー画像(ネオン)
 	TEXTURE_MAX,
 	TEXTURE_NONE,			// 使用しない

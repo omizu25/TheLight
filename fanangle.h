@@ -75,6 +75,13 @@ void SetRotationPosFanangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float 
 void SetColorFanangle(int nIdx, const D3DXCOLOR &color);
 
 //--------------------------------------------------
+// 中心色の設定
+// 引数1  : int nIdx / インデックス
+// 引数2  : D3DXCOLOR &color / 色
+//--------------------------------------------------
+void SetColorCenterFanangle(int nIdx, const D3DXCOLOR &color);
+
+//--------------------------------------------------
 // テクスチャ座標の設定
 // 引数  : int nIdx / インデックス
 //--------------------------------------------------

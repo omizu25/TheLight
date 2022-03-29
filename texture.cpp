@@ -25,6 +25,7 @@ const char *s_FileName[] =
 	"data/TEXTURE/Bg.png",		// 数
 	"data/TEXTURE/effect/effect_000.png",		// エフェクト
 	"data/TEXTURE/effect/effect_001.jpg",		// エフェクト
+	"data/TEXTURE/effect/effect_003.jpg",		// エフェクト
 	"data/TEXTURE/Number_Neon.png",		// ナンバー画像(ネオン)
 };
 }// namespaceはここまで

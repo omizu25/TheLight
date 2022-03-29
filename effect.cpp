@@ -41,7 +41,6 @@ typedef struct
 
 }
 
-
 //-----------------------------------------
 // 静的変数
 //-----------------------------------------
@@ -118,11 +117,8 @@ void UpdateEffect(void)
 		{
 		case EFFECT_TYPE_000:
 			pEffect->nLife--;											// 体力の更新
-			pEffect->col.a -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
-			pEffect->col.r -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
-			pEffect->col.g -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
-			pEffect->col.b -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
-			pEffect->fRaduus += 1.5f;	// 半径の拡大
+			pEffect->col.a -= (float)0.5f / pEffect->nMaxLife;			// 透明度の更新
+			pEffect->fRaduus += 1.75f;	// 半径の拡大
 			if (pEffect->nLife <= 0)
 			{
 				pEffect->bUse = false;
@@ -131,7 +127,7 @@ void UpdateEffect(void)
 		case EFFECT_TYPE_001:		// プレイヤーの移動
 			pEffect->nLife--;											// 体力の更新
 			pEffect->col.a -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
-			pEffect->fRaduus += 1.5f;	// 半径の拡大
+			pEffect->fRaduus += 1.75f;	// 半径の拡大
 			if (pEffect->nLife <= 0)
 			{
 				pEffect->bUse = false;
@@ -147,76 +143,6 @@ void UpdateEffect(void)
 				pEffect->bUse = false;
 			}
 			break;
-			//case EFFECT_TYPE_PLAYER_AIR:			// プレイヤーの空中軌道
-		//	pEffect->nLife--;
-		//	pEffect->col.a -= (float)0.5f / pEffect->nMaxLife;
-		//	if (pEffect->nLife <= 0)
-		//	{
-		//		pEffect->bUse = false;
-		//	}
-		//	break;
-		//case EFFECT_TYPE_PLAYER_DEATH:
-		//	break;
-		//case EFFECT_TYPE_SPLITBALL_ATTACK:
-		//	pEffect->fRaduus -= 2.0f;
-		//	if (pEffect->fRaduus <= 0.0f)
-		//	{
-		//		pEffect->bUse = false;
-		//	}
-		//	break;
-		//case EFFECT_TYPE_BALL_HOMING00_ATTACK:	// 甘い追従をする円の攻撃 
-		//									// 体力の更新
-		//	pEffect->nLife--;
-		//	if (pEffect->nLife <= 0)
-		//	{
-		//		pEffect->bUse = false;
-		//	}
-		//	// 透明度の更新
-		//	pEffect->col.g -= (float)1 / pEffect->nMaxLife;
-		//	pEffect->col.a -= (float)0.5f / pEffect->nMaxLife;
-		//	break;
-		//case EFFECT_TYPE_BALL_HOMING01_ATTACK:	// 追従をする円の攻撃 
-		//									// 体力の更新
-		//	pEffect->nLife--;
-		//	if (pEffect->nLife <= 0)
-		//	{
-		//		pEffect->bUse = false;
-		//	}
-		//	// 透明度の更新
-		//	pEffect->col.g -= (float)1 / pEffect->nMaxLife;
-		//	pEffect->col.r -= (float)1 / pEffect->nMaxLife;
-		//	pEffect->col.a -= (float)0.5f / pEffect->nMaxLife;
-		//	break;
-		//case EFFECT_TYPE_GOSTRAIGHT_DIE:	// 直進する長方形死亡時
-		//	pEffect->fRaduus -= 0.15f;
-		//	if (pEffect->fRaduus <= 0.0f)
-		//	{
-		//		pEffect->bUse = false;
-		//	}
-		//	break;
-		//case EFFECT_TYPE_BALL_HOMING00_DIE:		// 甘い追従をする円の死亡時
-		//	pEffect->col.a -= (float)0.5f / pEffect->nMaxLife;
-		//	pEffect->fRaduus -= 0.05f;
-		//	if (pEffect->fRaduus <= 0.0f)
-		//	{
-		//		pEffect->bUse = false;
-		//	}
-		//	break;
-		//case EFFECT_TYPE_BALL_HOMING01_DIE:		// 追従をする円の死亡時
-		//	pEffect->col.a -= (float)0.5f / pEffect->nMaxLife;
-		//	pEffect->fRaduus -= 0.05f;
-		//	if (pEffect->fRaduus <= 0.0f)
-		//	{
-		//		pEffect->bUse = false;
-		//	}
-		//	break;
-		//case EFFECT_TYPE_SERECT_DECISION:		// 決定時発生するパーティクル
-		//	pEffect->col.a -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
-		//	if (pEffect->col.a <= 0.0f)
-		//	{
-		//		pEffect->bUse = false;
-		//	}
-		//	break;
 		default:
 			break;
 		}
@@ -274,14 +200,13 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col)
 		case EFFECT_TYPE_000:	// プレイヤーのジャンプパーティクル
 			// 矩形のテクスチャの変更
 			SetAddRectangle(pEffect->nIdx, true);
-			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
+			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_002);
+			////SetAddRectangle(pEffect->nIdx, true);
+			////ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
 			pEffect->pos = pos;
-			pEffect->col.a = 0.95f;
-			pEffect->col.r += 1.0f;
-			pEffect->col.g += 1.0f;
-			pEffect->col.b += 1.0f;
-			pEffect->fRaduus = 40.0f;
-			pEffect->nMaxLife = 60;
+			pEffect->col.a = 1.0f;
+			pEffect->fRaduus = 50.0f;
+			pEffect->nMaxLife = 30;
 			pEffect->nLife = pEffect->nMaxLife;
 			//SetEffect(pEffect->pos,EFFECT_TYPE_001,GetColor(COLOR_WHITE));
 			break;
@@ -292,7 +217,7 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col)
 			pEffect->pos = pos;
 			pEffect->col.a = 0.95f;
 			pEffect->fRaduus = 30.0f;
-			pEffect->nMaxLife = 60;
+			pEffect->nMaxLife = 30;
 			pEffect->nLife = pEffect->nMaxLife;
 			break;
 		case  EFFECT_TYPE_002:		// プレイヤーの移動
