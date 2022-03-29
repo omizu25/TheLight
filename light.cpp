@@ -53,6 +53,7 @@ namespace
 int		s_nNowLight;				// ライトの現在数
 int		s_nMaxLight;				// ライトの最大数
 int		s_nIdxSelect;				// メニューの配列のインデックス
+int		s_nIdxFrame;				// 枠の配列のインデックス
 int		s_nTime;					// タイム
 int		s_nIdxColor[MAX_LIGHT];		// 色の番号
 bool	s_bMax;						// 増え切った
@@ -79,6 +80,32 @@ void InitLight(void)
 
 	s_nNowLight = 0;
 	s_nMaxLight = 1;
+
+	{// 枠
+		SelectArgument select;
+		select.nNumUse = MAX_LIGHT;
+		select.fLeft = 0.0f;
+		select.fRight = SCREEN_WIDTH;
+		select.fTop = SCREEN_HEIGHT * 0.35f;
+		select.fBottom = SCREEN_HEIGHT * 0.35f;
+		select.fWidth = LIGHT_SIZE;
+		select.fHeight = LIGHT_SIZE;
+		select.bSort = false;
+
+		for (int i = 0; i < MAX_LIGHT; i++)
+		{
+			select.texture[i] = TEXTURE_Hackathon_Ring;
+		}
+
+		// セレクトの設定
+		s_nIdxFrame = SetSelect(select);
+	}
+
+	for (int i = 0; i < MAX_LIGHT; i++)
+	{
+		// セレクトの描画するかどうか
+		SetDrawSelect(s_nIdxFrame, i, false);
+	}
 
 	{// メニュー
 		SelectArgument select;
@@ -159,6 +186,12 @@ void UpdateLight(void)
 				{
 					// セレクトの描画するかどうか
 					SetDrawSelect(s_nIdxSelect, i, false);
+				}
+
+				for (int i = 0; i < s_nNowLight; i++)
+				{
+					// セレクトの描画するかどうか
+					SetDrawSelect(s_nIdxFrame, i, true);
 				}
 
 				// ゲーム状態の設定
@@ -257,6 +290,12 @@ void ResetDrawLight(void)
 	{
 		// セレクトの描画するかどうか
 		SetDrawSelect(s_nIdxSelect, i, true);
+	}
+
+	for (int i = 0; i < MAX_LIGHT; i++)
+	{
+		// セレクトの描画するかどうか
+		SetDrawSelect(s_nIdxFrame, i, false);
 	}
 
 	s_bMax = false;
