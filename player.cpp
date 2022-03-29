@@ -319,7 +319,7 @@ int GetPlayer(void)
 //--------------------------------------------------
 int GetColorPlayer(int nNowLight)
 {
-	assert(nNowLight >= 0 && nNowLight < MAX_LIGHT);
+	assert(nNowLight >= 0 && nNowLight <= MAX_LIGHT);
 
 	return s_nIdxColor[nNowLight];
 }
@@ -329,7 +329,7 @@ int GetColorPlayer(int nNowLight)
 //--------------------------------------------------
 void SetFramePlayer(int nNowLight)
 {
-	assert(nNowLight >= 0 && nNowLight < MAX_LIGHT);
+	assert(nNowLight >= 0 && nNowLight <= MAX_LIGHT);
 
 	if (GetAnswer())
 	{// Å‘å’l

@@ -210,6 +210,12 @@ void UpdateLight(void)
 		s_nMaxLight++;
 		s_nTime = 0;
 
+		if (s_nMaxLight > MAX_LIGHT)
+		{
+			// ƒ‚[ƒh‚Ì•ÏX
+			ChangeMode(MODE_RESULT);
+		}
+
 		for (int i = 0; i < MAX_LIGHT; i++)
 		{
 			s_nIdxColor[i] = IntRandam(LIGHT_COLOR_MAX, 0);
