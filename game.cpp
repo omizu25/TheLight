@@ -29,6 +29,7 @@
 #include "light.h"
 #include "select.h"
 #include "player.h"
+#include "answer.h"
 
 #include <assert.h>
 
@@ -84,6 +85,12 @@ void InitGame(void)
 	// ライトの初期化
 	InitLight();
 
+	// プレイヤーの初期化
+	InitPlayer();
+
+	// アンサーの初期化
+	InitAnswer();
+
 	// エフェクトの初期化
 	InitEffect();
 
@@ -95,9 +102,6 @@ void InitGame(void)
 
 	// ポーズの初期化
 	InitPause();
-
-	// プレイヤーの初期化
-	InitPlayer();
 
 	//サウンド開始
 	//PlaySound(SOUND_LABEL_BGM);
@@ -155,6 +159,9 @@ void UninitGame(void)
 
 	// プレイヤーの終了
 	UninitPlayer();
+
+	// アンサーの終了
+	UninitAnswer();
 }
 
 //--------------------------------------------------
@@ -199,8 +206,11 @@ void UpdateGame(void)
 	// ライトの更新
 	UpdateLight();
 
-	// ゲージの更新
+	// プレイヤーの更新
 	UpdatePlayer();
+
+	// アンサーの更新
+	UpdateAnswer();
 
 	// ゲージの更新
 	UpdateGauge();
