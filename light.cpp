@@ -20,6 +20,7 @@
 #include "texture.h"
 #include "utility.h"
 #include "game.h"
+#include "effect.h"
 
 #include <assert.h>
 
@@ -124,12 +125,8 @@ void UpdateLight(void)
 	case GAMESTATE_SAMPLE:	// 見本状態
 		s_nTime++;
 
-		if (s_nTime % REPEAT_TIME == 0)
-		{
-			if (s_nNowLight < s_nMaxLight)
-			{// まだ増える
-				s_nNowLight++;
-
+		if (s_nNowLight < s_nMaxLight)
+			s_nMaxLight++;			SetEffect(GetPosSelect(s_nIdxSelect, s_nNowLight - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nNowLight - 1));
 				// 描画のリセット
 				ResetDrawLight();
 			}
