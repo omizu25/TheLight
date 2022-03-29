@@ -14,7 +14,9 @@ typedef enum
 {
 	TEXTURE_Cursor_Right = 0,	// ÉJÅ[É\Éã
 	TEXTURE_Number_004,			// êî
-	TEXTURE_TITLE_LOGO,			// É^ÉCÉgÉãÉçÉS	TEXTURE_BG_0,					// îwåi
+	TEXTURE_TITLE_LOGO,			// É^ÉCÉgÉãÉçÉS	
+	TEXTURE_TITLE_UI,
+	TEXTURE_BG_0,					// îwåi
 	TEXTURE_BG_1,			// îwåi
 	TEXTURE_BG_2,						// îwåi
 	TEXTURE_BG,						// îwåi
