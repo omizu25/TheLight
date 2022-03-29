@@ -10,6 +10,7 @@
 //-----------------------------------------------------------------------------
 
 #include "input.h"
+#include "game.h"
 
 //-----------------------------------------------------------------------------
 //マクロ定義
@@ -36,6 +37,8 @@ JOYKEY g_OldJoyKeyStick[PLAYER_MAX][JOYKEY_RIGHT_LEFT_MAX];			//前回のスティック
 FUNCTION_KEY g_OldFunctionKey;										//前回の機能キーの情報
 LIGHT_KEY g_OldLightKey = LIGHT_KEY_MAX;							//前回のライトのキーの情報
 
+int g_nKeyCnt;
+
 //-----------------------------------------------------------------------------
 //プロトタイプ宣言
 //-----------------------------------------------------------------------------
@@ -57,6 +60,8 @@ void UpdateJoypad(void);								//更新処理
 //入力処理全部の初期化
 HRESULT InitInput(HINSTANCE hInstance, HWND hWnd)
 {
+	g_nKeyCnt = 0;
+
 	//キーボードの初期化処理
 	if (FAILED(InitKeyboard(hInstance, hWnd)))
 	{
@@ -82,11 +87,18 @@ void UninitInput(void)
 //入力処理全部の更新処理
 void UpdateInput(void)
 {
+	if (GetEnablePause())
+	{
+		g_nKeyCnt = 20;
+	}
+
 	//キーボードの更新処理
 	UpdateKeyboard();
 
 	//ジョイパッド更新処理
 	UpdateJoypad();
+
+	g_nKeyCnt--;
 }
 
 
@@ -519,6 +531,11 @@ bool GetLightKeyPress(LIGHT_KEY Key)
 //ライトの色選択キーのトリガー
 bool GetLightKeyTrigger(LIGHT_KEY Key)
 {
+	if (g_nKeyCnt > 0)
+	{
+		return false;
+	}
+
 	if (!GetLightKeyPress(Key)
 		&& g_OldLightKey != Key)
 	{
