@@ -98,7 +98,6 @@ void InitLight(void)
 		s_nIdxSelect = SetSelect(select);
 	}
 
-
 	for (int i = 0; i < MAX_LIGHT; i++)
 	{
 		s_nIdxColor[i] = IntRandam(LIGHT_COLOR_MAX, 0);
@@ -114,7 +113,7 @@ void InitLight(void)
 	SetColorSelect(s_nIdxSelect, 0, s_aColor[s_nIdxColor[0]]);
 
 	// •`‰æ‚ÌƒŠƒZƒbƒg
-	//ResetDrawLight();
+	ResetDrawLight();
 }
 
 //--------------------------------------------------
