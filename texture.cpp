@@ -22,6 +22,7 @@ const char *s_FileName[] =
 {// テクスチャのパス
 	"data/TEXTURE/Cursor_Right.png",	// カーソル
 	"data/TEXTURE/Number_004.png",		// 数
+	"data/TEXTURE/Number_Neon.png",		// ナンバー画像(ネオン)
 };
 }// namespaceはここまで
 
