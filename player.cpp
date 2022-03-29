@@ -96,7 +96,7 @@ void InitPlayer(void)
 	}
 
 	// 描画のリセット
-	//ResetDrawPlayer();
+	ResetDrawPlayer();
 }
 
 //--------------------------------------------------
@@ -114,16 +114,71 @@ void UpdatePlayer(void)
 	switch (GetGameState())
 	{
 	case GAMESTATE_RESET:	// リセット状態
-		s_nPlayer = 0;
-
-		for (int i = 0; i < MAX_LIGHT; i++)
-		{
-			// セレクトの色の設定
-			SetColorSelect(s_nIdxSelect, i, s_aColor[IntRandam(LIGHT_COLOR_MAX, 0)]);
-		}
-
 		// 描画のリセット
 		ResetDrawPlayer();
+		break;
+
+	case GAMESTATE_PLAYER:	// プレイヤー状態
+		if (GetLightKeyTrigger(LIGHT_KEY_RED))
+		{
+			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_RED;
+
+			// セレクトの色の設定
+			SetColorSelect(s_nIdxSelect, s_nPlayer, s_aColor[s_nIdxColor[s_nPlayer]]);
+
+			// セレクトの描画するかどうか
+			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
+
+			s_nPlayer++;
+
+			// エフェクトの設定
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+		}
+		else if (GetLightKeyTrigger(LIGHT_KEY_GREEN))
+		{
+			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_GREEN;
+
+			// セレクトの色の設定
+			SetColorSelect(s_nIdxSelect, s_nPlayer, s_aColor[s_nIdxColor[s_nPlayer]]);
+
+			// セレクトの描画するかどうか
+			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
+
+			s_nPlayer++;
+
+			// エフェクトの設定
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+		}
+		else if (GetLightKeyTrigger(LIGHT_KEY_BLUE))
+		{
+			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_BLUE;
+
+			// セレクトの色の設定
+			SetColorSelect(s_nIdxSelect, s_nPlayer, s_aColor[s_nIdxColor[s_nPlayer]]);
+
+			// セレクトの描画するかどうか
+			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
+
+			s_nPlayer++;
+
+			// エフェクトの設定
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+		}
+		else if (GetLightKeyTrigger(LIGHT_KEY_YELLOW))
+		{
+			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_YELLOW;
+
+			// セレクトの色の設定
+			SetColorSelect(s_nIdxSelect, s_nPlayer, s_aColor[s_nIdxColor[s_nPlayer]]);
+
+			// セレクトの描画するかどうか
+			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
+
+			s_nPlayer++;
+
+			// エフェクトの設定
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+		}
 
 		break;
 
@@ -131,7 +186,6 @@ void UpdatePlayer(void)
 	case GAMESTATE_NONE:	// 何もしていない状態
 	case GAMESTATE_START:	// 開始状態
 	case GAMESTATE_ANSWER:	// 答え合わせ状態
-	case GAMESTATE_PLAYER:	// プレイヤー状態
 		break;
 
 	default:
