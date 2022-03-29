@@ -108,7 +108,7 @@ void InitTitle(void)
 		menu.fHeight = MENU_HEIGHT;
 		menu.bSort = true;
 
-		menu.texture[MENU_GAME] = TEXTURE_NONE;
+		menu.texture[MENU_GAME] = TEXTURE_TITLE_UI;
 		menu.texture[MENU_TUTORIAL] = TEXTURE_NONE;
 		menu.texture[MENU_RESULT] = TEXTURE_NONE;
 

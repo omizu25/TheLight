@@ -15,6 +15,7 @@ typedef enum
 	TEXTURE_Cursor_Right = 0,	// カーソル
 	TEXTURE_Number_004,			// 数
 	TEXTURE_TITLE_LOGO,			// タイトルロゴ
+	TEXTURE_TITLE_UI,			// タイトルロゴ
 	TEXTURE_BG,					// 背景
 	TEXTURE_BG_STAR,			// 背景
 	TEXTURE_effect_000,
