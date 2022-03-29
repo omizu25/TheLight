@@ -250,3 +250,16 @@ void SetDrawSelect(int nIdxSelect, int nIdxOption, bool bDraw)
 
 	pOption->bDraw = bDraw;
 }
+
+//--------------------------------------------------
+// ‘I‘ðŽˆ‚ÌˆÊ’u‚ðŽæ“¾
+//--------------------------------------------------
+D3DXVECTOR3 GetPosSelect(int nIdxSelect, int nIdxOption)
+{
+	assert(nIdxSelect >= 0 && nIdxSelect < MAX_SELECT);
+	assert(nIdxOption >= 0 && nIdxOption < MAX_OPTION);
+
+	Option *pOption = &s_aSelect[nIdxSelect].Option[nIdxOption];
+
+	return pOption->pos;
+}

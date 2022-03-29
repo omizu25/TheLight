@@ -28,6 +28,7 @@
 namespace
 {
 const int	MAX_LIGHT = 16;		// ライトの最大数
+const int	REPEAT_TIME = 60;	// タイムの繰り返し
 const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
 
 typedef enum
@@ -48,6 +49,7 @@ namespace
 int		s_nLight;					// ライトの数
 int		s_nSelect;					// 選ばれている
 int		s_nIdxSelect;				// メニューの配列のインデックス
+int		s_nTime;					// タイム
 COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
 }// namespaceはここまで
 
@@ -70,7 +72,7 @@ void InitLight(void)
 	s_aColor[LIGHT_COLOR_YELLOW] = COLOR_YELLOW;
 
 	s_nSelect = 0;
-	s_nLight = 1;
+	s_nLight = 0;
 
 	{// メニュー
 		SelectArgument select;
@@ -114,25 +116,13 @@ void UninitLight(void)
 //--------------------------------------------------
 void UpdateLight(void)
 {
-	
+	s_nTime++;
 
-	if (GetKeyboardTrigger(DIK_W) || GetJoypadTrigger(JOYKEY_CROSS_UP, 0) ||
-		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_UP, 0))
-	{// Wキーが押されたかどうか
+	if (s_nTime % REPEAT_TIME == 0)
+	{
 		if (s_nLight < MAX_LIGHT)
 		{
 			s_nLight++;
-		}
-
-		// 描画のリセット
-		ResetDrawLight();
-	}
-	else if (GetKeyboardTrigger(DIK_S) || GetJoypadTrigger(JOYKEY_CROSS_DOWN, 0) ||
-		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN, 0))
-	{// Sキーが押されたかどうか
-		if (s_nLight > 0)
-		{
-			s_nLight--;
 		}
 
 		// 描画のリセット

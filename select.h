@@ -84,4 +84,12 @@ void ResetSelect(int nIdx);
 //--------------------------------------------------
 void SetDrawSelect(int nIdxSelect, int nIdxOption, bool bDraw);
 
+//--------------------------------------------------
+// 選択肢の位置を取得
+// 引数1  : int nIdxSelect / セレクトのインデックス
+// 引数2  : int nIdxOption / 選択肢のインデックス
+// 返値  : D3DXVECTOR3 / 選択肢の位置
+//--------------------------------------------------
+D3DXVECTOR3 GetPosSelect(int nIdxSelect, int nIdxOption);
+
 #endif // !_SELECT_H_
