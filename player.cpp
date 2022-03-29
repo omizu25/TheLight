@@ -132,6 +132,9 @@ void UpdatePlayer(void)
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
 
+			// ライトの描画設定
+			SetDrawLight(s_nPlayer);
+
 			s_nPlayer++;
 
 			// エフェクトの設定
@@ -151,6 +154,9 @@ void UpdatePlayer(void)
 
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
+
+			// ライトの描画設定
+			SetDrawLight(s_nPlayer);
 
 			s_nPlayer++;
 
@@ -172,6 +178,9 @@ void UpdatePlayer(void)
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
 
+			// ライトの描画設定
+			SetDrawLight(s_nPlayer);
+
 			s_nPlayer++;
 
 			// エフェクトの設定
@@ -192,10 +201,14 @@ void UpdatePlayer(void)
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
 
+			// ライトの描画設定
+			SetDrawLight(s_nPlayer);
+
 			s_nPlayer++;
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+			
 			if (s_nPlayer >= GetLight())
 			{
 				// ゲーム状態の設定
@@ -223,6 +236,14 @@ void UpdatePlayer(void)
 //--------------------------------------------------
 void DrawPlayer(void)
 {
+}
+
+//--------------------------------------------------
+// 取得
+//--------------------------------------------------
+int GetPlayer(void)
+{
+	return s_nPlayer;
 }
 
 namespace
