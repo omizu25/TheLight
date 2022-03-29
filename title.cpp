@@ -21,6 +21,8 @@
 #include "cursor.h"
 #include "gauge.h"
 #include "utility.h"
+#include "effect.h"
+#include "bg.h"
 
 #include <assert.h>
 
@@ -82,16 +84,11 @@ void InitTitle(void)
 	// ゲージの色の設定(灰色)
 	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlpha));
 
-	{// 背景
-		// 矩形の設定
-		s_nIdxBG = SetRectangle(TEXTURE_BG);
+	// 背景
+	InitBG();
 
-		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
-
-		// 矩形の位置の設定
-		SetPosRectangle(s_nIdxBG, pos, size);
-	}
+	// エフェクト
+	InitEffect();
 
 	{// ロゴ
 		// 矩形の設定
@@ -169,6 +166,12 @@ void UninitTitle(void)
 	// カーソルの終了
 	UninitCursor();
 
+	// エフェクト
+	UninitEffect();
+
+	// 背景
+	UninitBG();
+
 	// 使うのを止める
 	StopUseRectangle(s_nIdxBG);
 	StopUseRectangle(s_nIdx);
@@ -196,6 +199,45 @@ void UpdateTitle(void)
 	// ゲージの色の設定(灰色)
 	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlpha));
 
+	// エフェクト
+	UpdateEffect();
+
+//	D3DXVECTOR3 pos(140.0f + FloatRandam(20.0f, -20.0f), 80.0f + FloatRandam(10.0f, -10.0f), 0.0f);
+	{
+		D3DXVECTOR3 pos(142.5f, 102.0f, 0.0f);
+		D3DXCOLOR col = GetColor(COLOR_WHITE);
+
+		col.b = 0.1f;
+
+		if (s_nTime % 45 == 0)
+		{
+			SetEffect(pos, EFFECT_TYPE_003, col);
+		}
+	}
+
+	{
+		D3DXVECTOR3 pos(SCREEN_WIDTH * 0.4f + FloatRandam(100.0f, -100.0f), SCREEN_HEIGHT * 0.4f + FloatRandam(20.0f, -20.0f), 0.0f);
+		D3DXCOLOR col = D3DXCOLOR(1.0f, 0.5f, 0.5f, 1.0f);
+
+		col.b = 0.1f;
+
+		if (s_nTime % 55 == 0)
+		{
+			SetEffect(pos, EFFECT_TYPE_003, col);
+		}
+	}
+
+	{
+		D3DXVECTOR3 pos(SCREEN_WIDTH * 0.15f + FloatRandam(100.0f, -100.0f), SCREEN_HEIGHT * 0.6f + FloatRandam(20.0f, -20.0f), 0.0f);
+		D3DXCOLOR col = D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f);
+
+		col.b = 0.1f;
+
+		if (s_nTime % 35 == 0)
+		{
+			SetEffect(pos, EFFECT_TYPE_003, col);
+		}
+	}
 }
 
 //--------------------------------------------------
