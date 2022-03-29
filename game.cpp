@@ -209,7 +209,7 @@ void UpdateGame(void)
 	UpdateMenu();
 
 	// エフェクトの更新
-	//UpdateEffect();
+	UpdateEffect();
 
 	// タイムの更新
 	//UpdateTime();

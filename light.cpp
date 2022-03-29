@@ -19,6 +19,7 @@
 #include "sound.h"
 #include "texture.h"
 #include "utility.h"
+#include "effect.h"
 
 #include <assert.h>
 
@@ -122,6 +123,7 @@ void UpdateLight(void)
 	{
 		if (s_nLight < MAX_LIGHT)
 		{
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nLight), EFFECT_TYPE_000, D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.0f));
 			s_nLight++;
 		}
 
