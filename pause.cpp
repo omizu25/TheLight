@@ -226,8 +226,7 @@ void Input(void)
 		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
 
-	if (GetKeyboardTrigger(DIK_RETURN) || GetKeyboardTrigger(DIK_SPACE) ||
-		GetJoypadTrigger(JOYKEY_A,0) || GetJoypadTrigger(JOYKEY_B,0))
+	if (GetFunctionKeyTrigger(FUNCTION_KEY_DESISION))
 	{//決定キー(ENTERキー)が押されたかどうか
 		switch (s_nSelectMenu)
 		{

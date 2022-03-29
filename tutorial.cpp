@@ -21,7 +21,7 @@
 //==================================================
 namespace
 {
-const int	MAX_TIME = 120;		// タイムの最大値
+const int	MAX_TIME = 90;		// タイムの最大値
 }// namespaceはここまで
 
 //==================================================
@@ -29,8 +29,9 @@ const int	MAX_TIME = 120;		// タイムの最大値
 //==================================================
 namespace
 {
-int	s_nIdx;		// 背景の矩形のインデックス
-int	s_nTime;	// タイム
+int		s_nIdx;		// 背景の矩形のインデックス
+int		s_nTime;	// タイム
+bool	s_bDraw;	// 描画
 }// namespaceはここまで
 
  //--------------------------------------------------
@@ -49,6 +50,7 @@ void InitTutorial(void)
 		SetPosRectangle(s_nIdx, pos, size);
 	}
 
+	s_bDraw = false;
 	s_nTime = 0;
 }
 
@@ -72,16 +74,27 @@ void UpdateTutorial(void)
 	}
 	s_nTime++;
 
-	if (s_nTime >= MAX_TIME)
+	if (s_bDraw)
 	{
-		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.25f, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.725f, size.y * 0.5f, 0.0f);
+		if (s_nTime >= 30)
+		{
+			// ゲーム状態の設定
+			SetGameState(GAMESTATE_SAMPLE);
+		}
+	}
+	else
+	{
+		if (s_nTime >= MAX_TIME)
+		{
+			D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.25f, 0.0f);
+			D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.725f, size.y * 0.5f, 0.0f);
 
-		// 矩形の位置の設定
-		SetPosRectangle(s_nIdx, pos, size);
+			// 矩形の位置の設定
+			SetPosRectangle(s_nIdx, pos, size);
 
-		// ゲーム状態の設定
-		SetGameState(GAMESTATE_SAMPLE);
+			s_nTime = 0;
+			s_bDraw = true;
+		}
 	}
 }
 
