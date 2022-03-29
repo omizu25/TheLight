@@ -24,6 +24,7 @@ typedef enum
 	TEXTURE_BG_1,			// îwåi
 	TEXTURE_BG_2,						// îwåi
 	TEXTURE_BG,						// îwåi
+	TEXTURE_BG_MOON,						// îwåi
 	TEXTURE_effect_000,
 	TEXTURE_effect_001,
 	TEXTURE_effect_002,

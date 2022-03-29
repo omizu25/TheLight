@@ -21,6 +21,8 @@
 #include "cursor.h"
 #include "gauge.h"
 #include "utility.h"
+#include "effect.h"
+#include "bg.h"
 
 #include <assert.h>
 
@@ -47,7 +49,7 @@ typedef enum
 //==================================================
 namespace
 {
-int	s_nIdxBG;		// 背景の矩形のインデックス
+int	s_nIdxMoon;		// 背景の矩形のインデックス
 int	s_nIdx;			// 矩形のインデックス
 int	s_nSelectMenu;	// 選ばれているメニュー
 int	s_nIdxMenu;		// メニューの配列のインデックス
@@ -82,16 +84,23 @@ void InitTitle(void)
 	// ゲージの色の設定(灰色)
 	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlpha));
 
-	{// 背景
-		// 矩形の設定
-		s_nIdxBG = SetRectangle(TEXTURE_BG);
+	// 背景
+	InitBG();
+
+	// エフェクト
+	InitEffect();
+
+	{// 月
+	 // 矩形の設定
+		s_nIdxMoon = SetRectangle(TEXTURE_BG_MOON);
 
 		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
 
 		// 矩形の位置の設定
-		SetPosRectangle(s_nIdxBG, pos, size);
+		SetPosRectangle(s_nIdxMoon, pos, size);
 	}
+
 
 	{// ロゴ
 		// 矩形の設定
@@ -169,8 +178,14 @@ void UninitTitle(void)
 	// カーソルの終了
 	UninitCursor();
 
+	// エフェクト
+	UninitEffect();
+
+	// 背景
+	UninitBG();
+
 	// 使うのを止める
-	StopUseRectangle(s_nIdxBG);
+	StopUseRectangle(s_nIdxMoon);
 	StopUseRectangle(s_nIdx);
 }
 
@@ -196,6 +211,44 @@ void UpdateTitle(void)
 	// ゲージの色の設定(灰色)
 	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlpha));
 
+	// エフェクト
+	UpdateEffect();
+
+	{// 月エフェクト
+		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
+		D3DXCOLOR col = GetColor(COLOR_WHITE);
+
+		col.b = 0.1f;
+
+		if (s_nTime % 45 == 0)
+		{
+			SetEffect(pos, EFFECT_TYPE_003, col);
+		}
+	}
+
+	{
+		D3DXVECTOR3 pos(SCREEN_WIDTH * 0.4f + FloatRandam(100.0f, -100.0f), SCREEN_HEIGHT * 0.4f + FloatRandam(20.0f, -20.0f), 0.0f);
+		D3DXCOLOR col = D3DXCOLOR(1.0f, 0.5f, 0.5f, 1.0f);
+
+		col.b = 0.1f;
+
+		if (s_nTime % 65 == 0)
+		{
+			SetEffect(pos, EFFECT_TYPE_003, col);
+		}
+	}
+
+	{
+		D3DXVECTOR3 pos(SCREEN_WIDTH * 0.15f + FloatRandam(100.0f, -100.0f), SCREEN_HEIGHT * 0.6f + FloatRandam(20.0f, -20.0f), 0.0f);
+		D3DXCOLOR col = D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f);
+
+		col.b = 0.1f;
+
+		if (s_nTime % 75 == 0)
+		{
+			SetEffect(pos, EFFECT_TYPE_003, col);
+		}
+	}
 }
 
 //--------------------------------------------------
