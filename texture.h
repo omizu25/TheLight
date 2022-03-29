@@ -16,6 +16,9 @@ typedef enum
 	TEXTURE_Number_004,			// êî
 	TEXTURE_TITLE_LOGO,			// É^ÉCÉgÉãÉçÉS	
 	TEXTURE_TITLE_UI,
+	TEXTURE_TITLE_GamePopup,
+	TEXTURE_BackToTitle,
+	TEXTURE_ReturnToGame,
 	TEXTURE_BG_0,					// îwåi
 	TEXTURE_BG_1,			// îwåi
 	TEXTURE_BG_2,						// îwåi
