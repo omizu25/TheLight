@@ -142,7 +142,7 @@ int SetNumber(const D3DXVECTOR3 &pos, const D3DXVECTOR3 &size, const D3DXCOLOR &
 		for (int j = 0; j < pNumber->nDigit; j++)
 		{
 			// ‹éŒ`‚Ìİ’è
-			pNumber->nIdx[j] = SetRectangle(TEXTURE_Number_Neon);
+			pNumber->nIdx[j] = SetRectangle(TEXTURE_Number_004);
 
 			// ˆêŒ…‚¸‚Â‚Ìİ’è
 			SetOneDigitNumber(pNumber, j);

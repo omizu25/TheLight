@@ -18,7 +18,6 @@
 #include "input.h"
 #include "utility.h"
 #include "score.h"
-
 #include <stdio.h>
 #include <assert.h>
 
@@ -215,4 +214,9 @@ void SaveRanking(void)
 	{// ファイルが開かない場合
 		assert(false);
 	}
+}
+
+int GetRanking(void)
+{
+	return s_aRanking[0].nScore;
 }
