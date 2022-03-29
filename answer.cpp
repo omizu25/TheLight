@@ -71,6 +71,9 @@ void UpdateAnswer(void)
 				s_nTime = 0;
 				s_bAnswer = true;
 
+				// ゲーム画面の背景ゲージ(黄色)の増加
+				IncreaseGaugeGame();
+
 				// ゲーム状態の設定
 				SetGameState(GAMESTATE_RESET);
 

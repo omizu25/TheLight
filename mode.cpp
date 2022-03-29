@@ -186,6 +186,12 @@ void SetMode(void)
 	// 矩形の初期化
 	InitRectangle();
 
+	// 矩形の終了
+	UninitFanangle();
+
+	// 矩形の初期化
+	InitFanangle();
+
 	switch (s_modeNext)
 	{// 次のモードの初期化
 	case MODE_TITLE:	// タイトル
