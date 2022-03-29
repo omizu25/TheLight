@@ -158,6 +158,9 @@ void UpdateLight(void)
 
 			// ƒQ[ƒ€ó‘Ô‚Ìİ’è
 			SetGameState(GAMESTATE_PLAYER);
+
+			// ˜g‚Ìİ’è
+			SetFramePlayer(0);
 		}
 		break;
 

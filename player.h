@@ -43,4 +43,10 @@ int GetPlayer(void);
 //--------------------------------------------------
 int GetColorPlayer(int nNowLight);
 
+//--------------------------------------------------
+// ˜g‚Ìİ’è
+// ˆø”  : int nNowLight / ƒ‰ƒCƒg‚ÌŒ»İ‚Ì”
+//--------------------------------------------------
+void SetFramePlayer(int nNowLight);
+
 #endif // !_PLAYER_H_

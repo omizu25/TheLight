@@ -55,6 +55,7 @@ namespace
 COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
 int		s_nPlayer;					// ライトの現在の数
 int		s_nIdxSelect;				// メニューの配列のインデックス
+int		s_nIdxFrame;				// 枠の配列のインデックス
 int		s_nIdxColor[MAX_LIGHT];		// 色の番号
 }// namespaceはここまで
 
@@ -77,6 +78,26 @@ void InitPlayer(void)
 	s_aColor[LIGHT_COLOR_YELLOW] = COLOR_YELLOW;
 
 	s_nPlayer = 0;
+
+	{// 枠
+		SelectArgument select;
+		select.nNumUse = MAX_LIGHT;
+		select.fLeft = 0.0f;
+		select.fRight = SCREEN_WIDTH;
+		select.fTop = SCREEN_HEIGHT * 0.5f;
+		select.fBottom = SCREEN_HEIGHT * 0.5f;
+		select.fWidth = LIGHT_SIZE;
+		select.fHeight = LIGHT_SIZE;
+		select.bSort = false;
+
+		for (int i = 0; i < MAX_LIGHT; i++)
+		{
+			select.texture[i] = TEXTURE_Hackathon_Ring;
+		}
+
+		// セレクトの設定
+		s_nIdxFrame = SetSelect(select);
+	}
 
 	{// メニュー
 		SelectArgument select;
@@ -164,6 +185,9 @@ void UpdatePlayer(void)
 
 			s_nPlayer++;
 
+			// 枠の設定
+			SetFramePlayer(s_nPlayer);
+
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
 		}
@@ -191,6 +215,9 @@ void UpdatePlayer(void)
 			SetColorRectangle(GetBG(), GetColor(COLOR_GREEN));
 
 			s_nPlayer++;
+
+			// 枠の設定
+			SetFramePlayer(s_nPlayer);
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
@@ -220,6 +247,9 @@ void UpdatePlayer(void)
 
 			s_nPlayer++;
 
+			// 枠の設定
+			SetFramePlayer(s_nPlayer);
+
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
 		}
@@ -247,6 +277,9 @@ void UpdatePlayer(void)
 			SetColorRectangle(GetBG(), GetColor(COLOR_YELLOW));
 
 			s_nPlayer++;
+
+			// 枠の設定
+			SetFramePlayer(s_nPlayer);
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
@@ -291,6 +324,22 @@ int GetColorPlayer(int nNowLight)
 	return s_nIdxColor[nNowLight];
 }
 
+//--------------------------------------------------
+// 枠の設定
+//--------------------------------------------------
+void SetFramePlayer(int nNowLight)
+{
+	assert(nNowLight >= 0 && nNowLight < MAX_LIGHT);
+
+	if (GetAnswer())
+	{// 最大値
+		return;
+	}
+
+	// セレクトの描画するかどうか
+	SetDrawSelect(s_nIdxFrame, nNowLight, true);
+}
+
 namespace
 {
 //--------------------------------------------------
@@ -302,6 +351,12 @@ void ResetDrawPlayer(void)
 	{
 		// セレクトの描画するかどうか
 		SetDrawSelect(s_nIdxSelect, i, false);
+	}
+
+	for (int i = 0; i < MAX_LIGHT; i++)
+	{
+		// セレクトの描画するかどうか
+		SetDrawSelect(s_nIdxFrame, i, false);
 	}
 
 	s_nPlayer = 0;
