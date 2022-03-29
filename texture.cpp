@@ -31,8 +31,10 @@ const char *s_FileName[] =
 	"data/TEXTURE/effect/effect_000.png",		// エフェクト
 	"data/TEXTURE/effect/effect_001.jpg",		// エフェクト
 	"data/TEXTURE/effect/effect_003.jpg",		// エフェクト
-	"data/TEXTURE/Number_Neon.png",		// ナンバー画像(ネオン)
+	"data/TEXTURE/Number_Neon.png",				// ナンバー画像(ネオン)
 	"data/TEXTURE/Method_of_operation_white.png",		// ナンバー画像(ネオン)
+	"data/TEXTURE/Hackathon_YourScore.png",		// 自己スコア
+	"data/TEXTURE/Hackathon_BestScore.png",		// ベストスコア
 };
 }// namespaceはここまで
 
