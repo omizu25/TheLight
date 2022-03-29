@@ -30,6 +30,7 @@
 #include "select.h"
 #include "player.h"
 #include "answer.h"
+#include "tutorial.h"
 
 #include <assert.h>
 
@@ -65,6 +66,8 @@ void InitGame(void)
 
 	D3DXCOLOR col = GetColor(COLOR_GRAY);
 	col.a = 0.75f;
+
+	s_fGaugeWidth = 0.0f;
 
 	// ÉQÅ[ÉWÇÃê›íË
 	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.35f, 0.0f), col, SCREEN_WIDTH, 100.0f, GAUGE_LEFT);
@@ -315,5 +318,5 @@ void SetEnablePause(bool bPause)
 void IncreaseGaugeGame(void)
 {
 	s_fGaugeWidth += SCREEN_WIDTH / 16.0f;
-	ChangeGauge(s_nGaugeIdx, s_fGaugeWidth, SCREEN_HEIGHT);
+	SetSizeGauge(s_nGaugeIdx, s_fGaugeWidth, SCREEN_HEIGHT);
 }

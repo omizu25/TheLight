@@ -28,6 +28,8 @@ typedef enum
 	TEXTURE_effect_002,
 	TEXTURE_Number_Neon,		// ナンバー画像(ネオン)
 	TEXTURE_Method,
+	TEXTURE_YourScore,		//自己スコア
+	TEXTURE_BestScore,		//ベストスコア
 	TEXTURE_MAX,
 	TEXTURE_NONE,			// 使用しない
 }TEXTURE;
