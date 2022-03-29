@@ -184,8 +184,7 @@ void UpdateGame(void)
 {
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START,0))
 	{// Pキーが押された
-		if (s_gameState == GAMESTATE_SAMPLE ||
-			s_gameState == GAMESTATE_PLAYER)
+		if (s_gameState == GAMESTATE_PLAYER)
 		{// 通常状態の時
 			s_bPause = !s_bPause;
 
@@ -241,7 +240,7 @@ void UpdateGame(void)
 	UpdateEffect();
 
 	// タイムの更新
-	//UpdateTime();
+	UpdateTime();
 
 	// スコアの更新
 	//UpdateScore();

@@ -16,6 +16,7 @@
 #include "mode.h"
 #include "texture.h"
 #include "cursor.h"
+#include "sound.h"
 
 #include <assert.h>
 
@@ -203,6 +204,9 @@ void Input(void)
 
 		// カーソルの位置の変更
 		ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
+
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
 	else if (GetKeyboardTrigger(DIK_S) || GetKeyboardTrigger(DIK_NUMPAD2) ||
 		GetJoypadTrigger(JOYKEY_CROSS_DOWN,0) || GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN,0))
@@ -217,6 +221,9 @@ void Input(void)
 
 		// カーソルの位置の変更
 		ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
+
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
 
 	if (GetKeyboardTrigger(DIK_RETURN) || GetKeyboardTrigger(DIK_SPACE) ||
@@ -243,6 +250,9 @@ void Input(void)
 
 		// 選択肢の決定
 		DecisionOption();
+
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_ENTER);
 	}
 }
 }// namespaceはここまで

@@ -36,8 +36,6 @@ const float	CURSOR_SIZE = 50.0f;	// カーソルのサイズ
 typedef enum
 {
 	MENU_GAME = 0,	// ゲーム
-	MENU_TUTORIAL,	// チュートリアル
-	MENU_RESULT,	// リザルト
 	MENU_MAX
 }MENU;
 }// namespaceはここまで
@@ -108,9 +106,7 @@ void InitTitle(void)
 		menu.fHeight = MENU_HEIGHT;
 		menu.bSort = true;
 
-		menu.texture[MENU_GAME] = TEXTURE_NONE;
-		menu.texture[MENU_TUTORIAL] = TEXTURE_NONE;
-		menu.texture[MENU_RESULT] = TEXTURE_NONE;
+		menu.texture[MENU_GAME] = TEXTURE_TITLE_UI;
 
 		FrameArgument Frame;
 		Frame.bUse = true;
@@ -121,7 +117,7 @@ void InitTitle(void)
 		s_nIdxMenu = SetMenu(menu, Frame);
 
 		// 選択肢の色の設定
-		SetColorOption(s_nIdxMenu, GetColor(COLOR_RED), D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.5f));
+		SetColorOption(s_nIdxMenu, GetColor(COLOR_WHITE), D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 
 		// 選ばれていない選択肢の色の設定
 		SetColorDefaultOption(s_nIdxMenu, GetColor(COLOR_WHITE));
@@ -202,55 +198,12 @@ void Input(void)
 		return;
 	}
 
-	if (GetKeyboardTrigger(DIK_W) || GetJoypadTrigger(JOYKEY_CROSS_UP,0) ||
-		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_UP,0))
-	{// Wキーが押されたかどうか
-		// 選択肢の色の初期化
-		InitColorOption();
-
-		s_nSelectMenu = ((s_nSelectMenu - 1) + MENU_MAX) % MENU_MAX;
-
-		// 選択肢の変更
-		ChangeOption(s_nSelectMenu);
-
-		// カーソルの位置の変更
-		ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
-
-		// サウンドの再生
-		PlaySound(SOUND_LABEL_SE_SELECT);
-	}
-	else if (GetKeyboardTrigger(DIK_S) || GetJoypadTrigger(JOYKEY_CROSS_DOWN,0) ||
-		GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN,0))
-	{// Sキーが押されたかどうか
-		// 選択肢の色の初期化
-		InitColorOption();
-
-		s_nSelectMenu = ((s_nSelectMenu + 1) + MENU_MAX) % MENU_MAX;
-
-		// 選択肢の変更
-		ChangeOption(s_nSelectMenu);
-
-		// カーソルの位置の変更
-		ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
-
-		// サウンドの再生
-		PlaySound(SOUND_LABEL_SE_SELECT);
-	}
-
 	if (GetFunctionKeyTrigger(FUNCTION_KEY_DESISION))
 	{//決定キー(ENTERキー)が押されたかどうか
 		switch (s_nSelectMenu)
 		{
 		case MENU_GAME:	// ゲーム
 			ChangeMode(MODE_GAME);
-			break;
-
-		case MENU_TUTORIAL:	// チュートリアル
-			ChangeMode(MODE_TUTORIAL);
-			break;
-
-		case MENU_RESULT:	// リザルト
-			ChangeMode(MODE_RESULT);
 			break;
 
 		default:
