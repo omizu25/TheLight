@@ -26,6 +26,8 @@
 #include "time.h"
 #include "score.h"
 #include "ranking.h"
+#include "light.h"
+#include "select.h"
 
 #include <assert.h>
 
@@ -37,7 +39,6 @@ namespace
 GAMESTATE	s_gameState = GAMESTATE_NONE;	// ゲームの状態
 int			s_nCounterState;				// 状態管理カウンター
 bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false]
-int			s_nIdx;
 }// namesapceはここまで
 
 //--------------------------------------------------
@@ -54,26 +55,32 @@ void InitGame(void)
 	// 数の初期化
 	InitNumber();
 
-	// メニューの初期化
+	// タイムの初期化
 	InitTime();
 
-	// カーソル初期化
-	InitScore();
+	// スコア初期化
+	//InitScore();
 
-	// ポーズの初期化
-	InitRanking();
+	// ランキングの初期化
+	//InitRanking();
 
 	// エフェクトの初期化
 	InitEffect();
 
-	//サウンド開始
+	// セレクトの初期化
+	InitSelect();
+
+	// メニューの初期化
 	InitMenu();
 
-	//PlaySound(SOUND_LABEL_BGM);
+	// カーソルの初期化
 	InitCursor();
 
 	// ポーズの初期化
-	InitPause();
+	//InitPause();
+
+	// ライトの初期化
+	InitLight();
 
 	//サウンド開始
 	//PlaySound(SOUND_LABEL_BGM);
@@ -83,14 +90,6 @@ void InitGame(void)
 	s_nCounterState = 0;	// カウンターの初期化
 
 	s_bPause = false;	// ポーズ解除
-
-	s_nIdx = SetFanangle(TEXTURE_NONE);
-
-	// 矩形の位置の設定
-	SetRotationPosFanangle(s_nIdx, D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f),D3DX_PI * 0.5f, 30.0f);
-
-	// 矩形の色の設定
-	SetColorFanangle(s_nIdx, GetColor(COLOR_RED));
 }
 
 //--------------------------------------------------
@@ -122,6 +121,9 @@ void UninitGame(void)
 	// ポーズの終了
 	UninitPause();
 
+	// セレクトの終了
+	UninitSelect();
+
 	// メニューの終了
 	UninitMenu();
 
@@ -130,6 +132,9 @@ void UninitGame(void)
 
 	// エフェクトの終了
 	UninitEffect();
+
+	// ライトの終了
+	UninitLight();
 }
 
 //--------------------------------------------------
@@ -191,30 +196,29 @@ void UpdateGame(void)
 		break;
 	}
 
+	// ライトの更新
+	UpdateLight();
+
 	// ゲージの更新
 	UpdateGauge();
 
+	// セレクトの更新
+	UpdateSelect();
+
+	// メニューの更新
+	UpdateMenu();
+
 	// エフェクトの更新
-	UpdateEffect();
-	SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), EFFECT_TYPE_001);
+	//UpdateEffect();
 
 	// タイムの更新
-	UpdateTime();
+	//UpdateTime();
 
 	// スコアの更新
-	UpdateScore();
+	//UpdateScore();
 
 	// ランキングの更新
-	UpdateRanking();
-
-	if (GetKeyboardPress(DIK_RETURN))
-	{
-		AddDrawFanangle(s_nIdx, -1);
-	}
-	if (GetKeyboardPress(DIK_BACKSPACE))
-	{
-		AddDrawFanangle(s_nIdx, 1);
-	}
+	//UpdateRanking();
 }
 
 //--------------------------------------------------
