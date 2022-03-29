@@ -18,6 +18,7 @@
 #include "player.h"
 #include "game.h"
 #include "bg.h"
+#include "sound.h"
 
 //==================================================
 // ’è‹`
@@ -117,6 +118,7 @@ void SetAnswer(int nNowLight)
 	}
 	else
 	{
+		PlaySound(SOUND_LABEL_SE_MISS);
 		s_nTime = 0;
 		s_bMax = true;
 		s_bAnswer = false;
