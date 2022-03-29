@@ -26,18 +26,10 @@
 //==================================================
 namespace
 {
-const int	MAX_RANKING = 5;						// ランキングの最大数
-const int	MAX_DIGIT = 8;							// 最大桁数
+const int	MAX_RANKING = 1;						// ランキングの最大数
 const float	RANKING_WIDTH = 50.0f;					// ランキングの幅
 const float	RANKING_HEIGHT = 100.0f;				// ランキングの高さ
 const char *TEXT_NAME = "data/TEXT/Ranking.txt";	// テキスト名
-
-typedef struct
-{
-	D3DXVECTOR3	pos;	// 位置
-	int			nIdx;	// 矩形のインデックス
-	int			nScore;	// スコア
-}Ranking;
 
 }// namespaceはここまで
 
@@ -46,7 +38,8 @@ typedef struct
 //==================================================
 namespace
 {
-Ranking	s_aRanking[MAX_RANKING];	// ランキングの情報
+int	s_nIdx;		// 矩形のインデックス
+int	s_nScore;	// スコア
 }// namespaceはここまで
 
 //--------------------------------------------------
@@ -56,15 +49,10 @@ void InitRanking(void)
 {
 	D3DXVECTOR3 size = D3DXVECTOR3(RANKING_WIDTH, RANKING_HEIGHT, 0.0f);
 
-	for (int i = 0; i < MAX_RANKING; i++)
-	{
-		Ranking *pRanking = &s_aRanking[i];
+	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.5f, 0.0f);
 
-		pRanking->pos = D3DXVECTOR3(RANKING_WIDTH * MAX_DIGIT, (RANKING_HEIGHT * i) + RANKING_HEIGHT * 0.5f, 0.0f);
-
-		// 数の設定
-		pRanking->nIdx = SetNumber(pRanking->pos, size, GetColor(COLOR_WHITE), pRanking->nScore, MAX_DIGIT, true);
-	}
+	// 数の設定
+	s_nIdx = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nScore, DigitNumber(s_nScore), true);
 }
 
 //--------------------------------------------------
@@ -72,13 +60,8 @@ void InitRanking(void)
 //--------------------------------------------------
 void UninitRanking(void)
 {
-	for (int i = 0; i < MAX_RANKING; i++)
-	{
-		Ranking *pRanking = &s_aRanking[i];
-
-		// 使うのを止める
-		StopUseRectangle(pRanking->nIdx);
-	}
+	// 使うのを止める
+	StopUseRectangle(s_nIdx);
 }
 
 //--------------------------------------------------
@@ -86,11 +69,6 @@ void UninitRanking(void)
 //--------------------------------------------------
 void UpdateRanking(void)
 {
-	if (GetFunctionKeyTrigger(FUNCTION_KEY_DESISION))
-	{//決定キー(ENTERキー)が押されたかどうか
-		// ランキングの設定
-		SetRanking();
-	}
 }
 
 //--------------------------------------------------
@@ -107,13 +85,8 @@ void DrawRanking(void)
 void SetRanking(void)
 {
 	int aSave[MAX_RANKING + 1];
-	
-	for (int i = 0; i < MAX_RANKING; i++)
-	{
-		Ranking *pRanking = &s_aRanking[i];
 
-		aSave[i] = pRanking->nScore;
-	}
+	aSave[0] = s_nScore;
 
 	// スコアの取得
 	aSave[MAX_RANKING] = GetScore();
@@ -141,15 +114,10 @@ void SetRanking(void)
 		}
 	}
 
-	for (int i = 0; i < MAX_RANKING; i++)
-	{
-		Ranking *pRanking = &s_aRanking[i];
+	s_nScore = aSave[0];
 
-		pRanking->nScore = aSave[i];
-
-		// 数の変更
-		pRanking->nIdx = ChangeNumber(pRanking->nIdx, pRanking->nScore);
-	}
+	// 数の変更
+	s_nIdx = ChangeNumber(s_nIdx, s_nScore);
 }
 
 //--------------------------------------------------
@@ -164,12 +132,7 @@ void LoadRanking(void)
 
 	if (pFile != NULL)
 	{// ファイルが開いた場合
-		for (int i = 0; i < MAX_RANKING; i++)
-		{
-			Ranking *pRanking = &s_aRanking[i];
-
-			fscanf(pFile, "%d", &pRanking->nScore);
-		}
+		fscanf(pFile, "%d", &s_nScore);
 
 		// ファイルを閉じる
 		fclose(pFile);
@@ -178,12 +141,7 @@ void LoadRanking(void)
 	{// ファイルが開かない場合
 		assert(false);
 
-		for (int i = 0; i < MAX_RANKING; i++)
-		{
-			Ranking *pRanking = &s_aRanking[i];
-
-			pRanking->nScore = 0;
-		}
+		s_nScore = 0;
 	}
 }
 
@@ -199,14 +157,8 @@ void SaveRanking(void)
 
 	if (pFile != NULL)
 	{// ファイルが開いた場合
-
-		for (int i = 0; i < MAX_RANKING; i++)
-		{
-			Ranking *pRanking = &s_aRanking[i];
-
-			fprintf(pFile, "%d\n\n", pRanking->nScore);
-		}
-
+		fprintf(pFile, "%d\n\n", s_nScore);
+	
 		// ファイルを閉じる
 		fclose(pFile);
 	}
@@ -214,9 +166,4 @@ void SaveRanking(void)
 	{// ファイルが開かない場合
 		assert(false);
 	}
-}
-
-int GetRanking(void)
-{
-	return s_aRanking[0].nScore;
 }

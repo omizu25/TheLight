@@ -36,12 +36,9 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{ "data/BGM/Title.wav", -1},	// タイトル
 	{ "data/BGM/Game.wav", -1 },	// タイトル
 	{ "data/BGM/Result.wav", -1 },	// タイトル
-	{ "data/SE/Enter002.wav", 0},	// 決定音
+	{ "data/SE/Enter003.wav", 0},	// 決定音
 	{ "data/SE/Select001.wav", 0 },	// 選択音
-	{ "data/SE/Piano_do.wav", 0 },	// 選択音
-	{ "data/SE/Piano_re.wav", 0 },	// 選択音
-	{ "data/SE/Piano_mi.wav", 0 },	// 選択音
-	{ "data/SE/Piano_fa.wav", 0 },	// 選択音
+	{ "data/SE/Miss_000.wav", 0 },	// ミス音
 };
 
 //=============================================================================
