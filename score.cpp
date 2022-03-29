@@ -25,8 +25,8 @@
 //==================================================
 namespace
 {
-const float	SCORE_WIDTH = 50.0f;	// スコアの幅
-const float	SCORE_HEIGHT = 100.0f;	// スコアの高さ
+const float	SCORE_WIDTH = 70.0f;	// スコアの幅
+const float	SCORE_HEIGHT = 150.0f;	// スコアの高さ
 }// namespaceはここまで
 
 //==================================================
@@ -46,7 +46,7 @@ void InitScore(void)
 	s_nScore = GetLight() - 1;
 
 	D3DXVECTOR3 size = D3DXVECTOR3(SCORE_WIDTH, SCORE_HEIGHT, 0.0f);
-	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.25f, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.68f, SCREEN_HEIGHT * 0.25f, 0.0f);
 
 	// 数の設定
 	s_nIdxScore = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nScore, DigitNumber(s_nScore), false);
