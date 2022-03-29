@@ -116,6 +116,9 @@ void UpdateTime(void)
 		default:
 			break;
 		}
+
+		s_col.a = 0.5f;
+
 		SetColorFanangle(s_nIdxTime, s_col);
 
 		if (s_nTime <= 0)
@@ -151,6 +154,8 @@ void SetTime(int nTime)
 	ResetDrawFanangle(s_nIdxTime);
 
 	s_col = GetColor(COLOR_GREEN);
+
+	s_col.a = 0.5f;
 
 	SetColorFanangle(s_nIdxTime, s_col);
 }

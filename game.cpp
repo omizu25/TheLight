@@ -145,8 +145,8 @@ void InitGame(void)
 	{
 		int nIdx = SetRectangle(TEXTURE_Method);
 
-		D3DXVECTOR3 pos(SCREEN_WIDTH - 100.0f, 85.0f, 0.0f);
-		D3DXVECTOR3 size(125.0f, 125.0f, 0.0f);
+		D3DXVECTOR3 pos(SCREEN_WIDTH - 100.0f, 95.0f, 0.0f);
+		D3DXVECTOR3 size(155.0f, 155.0f, 0.0f);
 
 		SetPosRectangle(nIdx, pos, size);
 	}
