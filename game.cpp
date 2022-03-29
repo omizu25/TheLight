@@ -31,6 +31,7 @@
 #include "player.h"
 #include "answer.h"
 #include "tutorial.h"
+#include "utility.h"
 
 #include <assert.h>
 
@@ -42,24 +43,37 @@ namespace
 GAMESTATE	s_gameState = GAMESTATE_NONE;	// ゲームの状態
 int			s_nCounterState;				// 状態管理カウンター
 bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false]
+int			s_nGaugeIdxGray;				//ゲージのインデックスの保管
+int			s_nGaugeIdxYellow;				//ゲージのインデックスの保管
+int			s_nTime;						// タイム
+float		s_fGaugeAlphaGray;				// 現在のゲージのアルファ値
+float		s_fGaugeAlphaYellow;			// 現在のゲージのアルファ値
+float		s_fGaugeWidth;					//ゲージの幅（黄色）
 }// namesapceはここまで
-
-static int s_nGaugeIdx;			//ゲージのインデックスの保管
-static float s_fGaugeWidth;		//ゲージの幅（黄色）
 
 //--------------------------------------------------
 // 初期化
 //--------------------------------------------------
 void InitGame(void)
 {
+	s_nTime = 0;
+	s_fGaugeAlphaGray = 0.3f;
+	s_fGaugeAlphaYellow = 0.3f;
+
 	// ゲージの初期化
 	InitGauge();
 
 	// ゲージの設定
-	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
+	s_nGaugeIdxGray = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
 
 	// ゲージの設定(黄色)
-	s_nGaugeIdx = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_YELLOW), 0.0f, SCREEN_HEIGHT, GAUGE_LEFT);
+	s_nGaugeIdxYellow = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_YELLOW), 0.0f, SCREEN_HEIGHT, GAUGE_LEFT);
+
+	// ゲージの色の設定(灰色)
+	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlphaGray));
+
+	// ゲージの色の設定(黄色)
+	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
 
 	// 背景の初期化
 	InitBG();
@@ -271,6 +285,22 @@ void UpdateGame(void)
 		assert(false);
 		break;
 	}
+
+	s_nTime++;
+
+	float fCurve = CosCurve(s_nTime, 0.01f);
+	s_fGaugeAlphaGray = Curve(fCurve, 0.3f, 0.6f);
+
+	fCurve = CosCurve(s_nTime, 0.01f);
+
+	s_fGaugeAlphaYellow = Curve(fCurve, 0.3f, 1.0f);
+
+	// ゲージの色の設定(灰色)
+	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlphaGray));
+
+	// ゲージの色の設定(黄色)
+	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
+
 }
 
 //--------------------------------------------------
@@ -318,5 +348,5 @@ void SetEnablePause(bool bPause)
 void IncreaseGaugeGame(void)
 {
 	s_fGaugeWidth += SCREEN_WIDTH / 16.0f;
-	SetSizeGauge(s_nGaugeIdx, s_fGaugeWidth, SCREEN_HEIGHT);
+	SetSizeGauge(s_nGaugeIdxYellow, s_fGaugeWidth, SCREEN_HEIGHT);
 }

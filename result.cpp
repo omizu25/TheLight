@@ -35,12 +35,13 @@ const int	MAX_TIME = 600;	// タイムの最大値
 //=============================================================================
 namespace
 {
-int	s_nIdxBG;			// 背景の矩形のインデックス
+int	s_nIdxBG;				// 背景の矩形のインデックス
 int	s_nIdxUI[2];			// UIの矩形のインデックス
-int	s_nGaugeIdxGray;	// ゲージのインデックスの保管
-int	s_nGaugeIdxYellow;	// ゲージのインデックスの保管
-int	s_nTime;			// タイム
-float s_fGaugeAlpha;	// 現在のゲージのアルファ値
+int	s_nGaugeIdxGray;		// ゲージのインデックスの保管
+int	s_nGaugeIdxYellow;		// ゲージのインデックスの保管
+int	s_nTime;				// タイム
+float s_fGaugeAlphaGray;	// 現在のゲージのアルファ値
+float s_fGaugeAlphaYellow;	// 現在のゲージのアルファ値
 }// namespaceはここまで
 
 //=============================================================================
@@ -56,7 +57,8 @@ void InitResult(void)
 
 	s_nTime = 0;
 
-	s_fGaugeAlpha = 0.3f;	// 現在のゲージのアルファ値
+	s_fGaugeAlphaGray = 0.3f;	// 現在のゲージのアルファ値
+	s_fGaugeAlphaYellow = 0.3f;	// 現在のゲージのアルファ値
 
 	// ゲージの初期化
 	InitGauge();
@@ -67,8 +69,11 @@ void InitResult(void)
 	// ゲージの設定(黄色)
 	s_nGaugeIdxYellow = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_YELLOW), (GetLight() - 1) * (SCREEN_WIDTH / 16.0f), SCREEN_HEIGHT, GAUGE_LEFT);
 
+	// ゲージの色の設定(灰色)
+	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlphaGray));
+
 	// ゲージの色の設定(黄色)
-	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlpha));
+	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
 	
 	{// 背景
 		// 矩形の設定
@@ -162,10 +167,17 @@ void UpdateResult(void)
 	}
 
 	float fCurve = CosCurve(s_nTime, 0.01f);
-	s_fGaugeAlpha = Curve(fCurve, 0.3f, 1.0f);
+	s_fGaugeAlphaGray = Curve(fCurve, 0.3f, 0.6f);
+		
+		
+	fCurve = CosCurve(s_nTime, 0.01f);
+	s_fGaugeAlphaYellow = Curve(fCurve, 0.3f, 1.0f);
+
+	// ゲージの色の設定(灰色)
+	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlphaGray));
 
 	// ゲージの色の設定(黄色)
-	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlpha));
+	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
 }
 
 //=============================================================================
