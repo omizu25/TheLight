@@ -32,6 +32,7 @@ const char *s_FileName[] =
 	"data/TEXTURE/Bg001.png",					// 背景
 	"data/TEXTURE/Bg002.png",					// 背景
 	"data/TEXTURE/Bg.png",						// 背景
+	"data/TEXTURE/BgMoon.png",					// 背景
 	"data/TEXTURE/effect/effect_000.png",		// エフェクト
 	"data/TEXTURE/effect/effect_001.jpg",		// エフェクト
 	"data/TEXTURE/effect/effect_003.jpg",		// エフェクト
