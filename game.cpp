@@ -235,7 +235,7 @@ void UpdateGame(void)
 	UpdateEffect();
 
 	// タイムの更新
-	//UpdateTime();
+	UpdateTime();
 
 	// スコアの更新
 	//UpdateScore();

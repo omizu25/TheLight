@@ -23,6 +23,7 @@
 #include "effect.h"
 #include "player.h"
 #include "answer.h"
+#include "time.h"
 
 #include <assert.h>
 
@@ -31,6 +32,7 @@
 //==================================================
 namespace
 {
+const int	MAX_TIME = 5;		// タイムの最大値
 const int	MAX_LIGHT = 16;		// ライトの最大数
 const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
 
@@ -97,6 +99,9 @@ void InitPlayer(void)
 
 	// 描画のリセット
 	ResetDrawPlayer();
+
+	// タイムの設定
+	SetTime(MAX_TIME);
 }
 
 //--------------------------------------------------
@@ -111,6 +116,11 @@ void UninitPlayer(void)
 //--------------------------------------------------
 void UpdatePlayer(void)
 {
+	if (GetFade() != FADE_NONE)
+	{
+		return;
+	}
+
 	switch (GetGameState())
 	{
 	case GAMESTATE_RESET:	// リセット状態
@@ -144,6 +154,9 @@ void UpdatePlayer(void)
 			// 答え合わせ
 			SetAnswer(s_nPlayer);
 
+			// タイムの設定
+			SetTime(MAX_TIME);
+
 			s_nPlayer++;
 
 			// エフェクトの設定
@@ -164,6 +177,9 @@ void UpdatePlayer(void)
 
 			// 答え合わせ
 			SetAnswer(s_nPlayer);
+
+			// タイムの設定
+			SetTime(MAX_TIME);
 
 			s_nPlayer++;
 
@@ -186,6 +202,9 @@ void UpdatePlayer(void)
 			// 答え合わせ
 			SetAnswer(s_nPlayer);
 
+			// タイムの設定
+			SetTime(MAX_TIME);
+
 			s_nPlayer++;
 
 			// エフェクトの設定
@@ -206,6 +225,9 @@ void UpdatePlayer(void)
 		
 			// 答え合わせ
 			SetAnswer(s_nPlayer);
+
+			// タイムの設定
+			SetTime(MAX_TIME);
 
 			s_nPlayer++;
 
