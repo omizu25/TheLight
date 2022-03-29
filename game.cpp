@@ -28,6 +28,7 @@
 #include "ranking.h"
 #include "light.h"
 #include "select.h"
+#include "player.h"
 
 #include <assert.h>
 
@@ -94,6 +95,11 @@ void InitGame(void)
 	//InitPause();
 
 	//サウンド開始
+	// プレイヤーの初期化
+	//PlaySound(SOUND_LABEL_BGM);
+	InitPlayer();
+
+	//サウンド開始
 	//PlaySound(SOUND_LABEL_BGM);
 
 	s_gameState = GAMESTATE_START;	// 何もしていない状態に設定
@@ -146,6 +152,9 @@ void UninitGame(void)
 
 	// ライトの終了
 	UninitLight();
+
+	// プレイヤーの終了
+	UninitPlayer();
 }
 
 //--------------------------------------------------
@@ -213,6 +222,9 @@ void UpdateGame(void)
 
 	// ライトの更新
 	UpdateLight();
+
+	// ゲージの更新
+	UpdatePlayer();
 
 	// ゲージの更新
 	UpdateGauge();

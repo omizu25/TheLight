@@ -50,9 +50,9 @@ namespace
 {
 int		s_nNowLight;				// ライトの現在数
 int		s_nMaxLight;				// ライトの最大数
-int		s_nSelect;					// 選ばれている
 int		s_nIdxSelect;				// メニューの配列のインデックス
 int		s_nTime;					// タイム
+int		s_nIdxColor[MAX_LIGHT];		// 色の番号
 COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
 }// namespaceはここまで
 
@@ -74,7 +74,6 @@ void InitLight(void)
 	s_aColor[LIGHT_COLOR_BLUE] = COLOR_BLUE;
 	s_aColor[LIGHT_COLOR_YELLOW] = COLOR_YELLOW;
 
-	s_nSelect = 0;
 	s_nNowLight = 0;
 	s_nMaxLight = 1;
 
@@ -83,8 +82,8 @@ void InitLight(void)
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
 		select.fRight = SCREEN_WIDTH;
-		select.fTop = SCREEN_HEIGHT * 0.25f;
-		select.fBottom = SCREEN_HEIGHT * 0.75f;
+		select.fTop = SCREEN_HEIGHT * 0.35f;
+		select.fBottom = SCREEN_HEIGHT * 0.35f;
 		select.fWidth = LIGHT_SIZE;
 		select.fHeight = LIGHT_SIZE;
 		select.bSort = false;
@@ -98,10 +97,13 @@ void InitLight(void)
 		s_nIdxSelect = SetSelect(select);
 	}
 
+
 	for (int i = 0; i < MAX_LIGHT; i++)
 	{
+		s_nIdxColor[i] = IntRandam(LIGHT_COLOR_MAX, 0);
+
 		// セレクトの色の設定
-		SetColorSelect(s_nIdxSelect, i, s_aColor[IntRandam(LIGHT_COLOR_MAX, 0)]);
+		SetColorSelect(s_nIdxSelect, i, s_aColor[s_nIdxColor[i]]);
 	}
 
 	// 描画のリセット
@@ -125,29 +127,31 @@ void UpdateLight(void)
 	case GAMESTATE_SAMPLE:	// 見本状態
 		s_nTime++;
 
-		if (s_nTime % REPEAT_TIME == 0)
+		if (s_nTime % REPEAT_TIME != 0)
 		{
-			if (s_nNowLight < s_nMaxLight)
+			return;
+		}
+
+		if (s_nNowLight < s_nMaxLight)
+		{
+			s_nNowLight++;
+			
+			// エフェクトの設定
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nNowLight - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nNowLight - 1));
+			
+			// 描画のリセット
+			ResetDrawLight();
+		}
+		else
+		{// 増え切った
+			for (int i = 0; i < MAX_LIGHT; i++)
 			{
-				s_nNowLight++;
-
-				// エフェクトの設定
-				SetEffect(GetPosSelect(s_nIdxSelect, s_nNowLight - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nNowLight - 1));
-
-				// 描画のリセット
-				ResetDrawLight();
+				// セレクトの描画するかどうか
+				SetDrawSelect(s_nIdxSelect, i, false);
 			}
-			else
-			{// 増え切った
-				for (int i = 0; i < MAX_LIGHT; i++)
-				{
-					// セレクトの描画するかどうか
-					SetDrawSelect(s_nIdxSelect, i, false);
-				}
 
-				// ゲーム状態の設定
-				SetGameState(GAMESTATE_RESET);
-			}
+			// ゲーム状態の設定
+			SetGameState(GAMESTATE_PLAYER);
 		}
 		break;
 
@@ -157,15 +161,14 @@ void UpdateLight(void)
 
 		for (int i = 0; i < MAX_LIGHT; i++)
 		{
+			s_nIdxColor[i] = IntRandam(LIGHT_COLOR_MAX, 0);
+
 			// セレクトの色の設定
-			SetColorSelect(s_nIdxSelect, i, s_aColor[IntRandam(LIGHT_COLOR_MAX, 0)]);
+			SetColorSelect(s_nIdxSelect, i, s_aColor[s_nIdxColor[i]]);
 		}
 
 		// 描画のリセット
 		ResetDrawLight();
-
-		// ゲーム状態の設定
-		SetGameState(GAMESTATE_SAMPLE);
 
 		break;
 
