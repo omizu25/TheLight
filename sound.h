@@ -15,6 +15,8 @@
 typedef enum
 {
 	SOUND_LABEL_BGM_TITLE = 0,	// タイトル
+	SOUND_LABEL_BGM_GAME,		// ゲーム
+	SOUND_LABEL_BGM_RESULT,		// リザルト
 	SOUND_LABEL_SE_ENTER,		// 決定音
 	SOUND_LABEL_SE_SELECT,		// 選択音
 	SOUND_LABEL_MAX,

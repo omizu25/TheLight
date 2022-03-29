@@ -13,6 +13,7 @@
 #include "rectangle.h"
 #include "texture.h"
 #include "color.h"
+#include "sound.h"
 
 #include "input.h"
 
@@ -36,6 +37,8 @@ static float s_fGaugeWidth;		//ゲージの幅（黄色）
 //=============================================================================
 void InitResult(void)
 {
+	PlaySound(SOUND_LABEL_BGM_RESULT);
+
 	s_fGaugeWidth = 0.0f;
 	// ゲージの初期化
 	InitGauge();
@@ -63,6 +66,8 @@ void InitResult(void)
 //=============================================================================
 void UninitResult(void)
 {
+	StopSound();
+
 	// 使うのを止める
 	StopUseRectangle(s_nIdxBG);
 }

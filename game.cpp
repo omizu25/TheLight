@@ -61,11 +61,9 @@ void InitGame(void)
 	col.a = 0.75f;
 
 	// ゲージの設定
-	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.35f, 0.0f), col, SCREEN_WIDTH, 125.0f, GAUGE_LEFT);
+	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.35f, 0.0f), col, SCREEN_WIDTH, 100.0f, GAUGE_LEFT);
 	// ゲージの設定
-	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), col, SCREEN_WIDTH, 125.0f, GAUGE_LEFT);
-
-
+	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), col, SCREEN_WIDTH, 100.0f, GAUGE_LEFT);
 
 	// 数の初期化
 	InitNumber();
@@ -104,13 +102,22 @@ void InitGame(void)
 	InitPause();
 
 	//サウンド開始
-	//PlaySound(SOUND_LABEL_BGM);
+	PlaySound(SOUND_LABEL_BGM_GAME);
 
 	s_gameState = GAMESTATE_START;	// 何もしていない状態に設定
 
 	s_nCounterState = 0;	// カウンターの初期化
 
 	s_bPause = false;	// ポーズ解除
+
+	{
+		int nIdx = SetRectangle(TEXTURE_Method);
+
+		D3DXVECTOR3 pos(SCREEN_WIDTH - 100.0f, 85.0f, 0.0f);
+		D3DXVECTOR3 size(125.0f, 125.0f, 0.0f);
+
+		SetPosRectangle(nIdx, pos, size);
+	}
 }
 
 //--------------------------------------------------
@@ -203,6 +210,9 @@ void UpdateGame(void)
 		return;
 	}
 
+	// 背景の更新
+	UpdateBG();
+
 	// ライトの更新
 	UpdateLight();
 
@@ -225,7 +235,7 @@ void UpdateGame(void)
 	UpdateEffect();
 
 	// タイムの更新
-	//UpdateTime();
+	UpdateTime();
 
 	// スコアの更新
 	//UpdateScore();

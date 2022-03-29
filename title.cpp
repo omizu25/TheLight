@@ -68,7 +68,7 @@ void Input(void);
 void InitTitle(void)
 {
 	// ÉTÉEÉìÉhÇÃçƒê∂
-	//PlaySound(SOUND_LABEL_TITLE2);
+	PlaySound(SOUND_LABEL_BGM_TITLE);
 
 	s_nSelectMenu = 0;
 
@@ -108,7 +108,7 @@ void InitTitle(void)
 		menu.fHeight = MENU_HEIGHT;
 		menu.bSort = true;
 
-		menu.texture[MENU_GAME] = TEXTURE_NONE;
+		menu.texture[MENU_GAME] = TEXTURE_TITLE_UI;
 		menu.texture[MENU_TUTORIAL] = TEXTURE_NONE;
 		menu.texture[MENU_RESULT] = TEXTURE_NONE;
 

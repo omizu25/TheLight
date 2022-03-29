@@ -20,14 +20,17 @@ namespace
 {
 const char *s_FileName[] =
 {// テクスチャのパス
-	"data/TEXTURE/Cursor_Right.png",	// カーソル
-	"data/TEXTURE/Number_004.png",		// 数
-	"data/TEXTURE/Title.png",			// タイトル
-	"data/TEXTURE/Bg.png",				// 背景
-	"data/TEXTURE/effect/effect_000.png",		// エフェクト
-	"data/TEXTURE/effect/effect_001.jpg",		// エフェクト
-	"data/TEXTURE/effect/effect_003.jpg",		// エフェクト
-	"data/TEXTURE/Number_Neon.png",		// ナンバー画像(ネオン)
+	"data/TEXTURE/Cursor_Right.png",				// カーソル
+	"data/TEXTURE/Number_004.png",					// 数
+	"data/TEXTURE/Title.png",						// タイトル
+	"data/TEXTURE/Hackathon_TitleUI.png",			// タイトルUI
+	"data/TEXTURE/Bg.png",							// 背景
+	"data/TEXTURE/Bg000.png",						// 背景
+	"data/TEXTURE/effect/effect_000.png",			// エフェクト
+	"data/TEXTURE/effect/effect_001.jpg",			// エフェクト
+	"data/TEXTURE/effect/effect_003.jpg",			// エフェクト
+	"data/TEXTURE/Number_Neon.png",					// ナンバー画像(ネオン)
+	"data/TEXTURE/Method_of_operation_white.png",	// 操作方法
 };
 }// namespaceはここまで
 

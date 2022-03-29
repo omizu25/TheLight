@@ -15,6 +15,8 @@
 #include "number.h"
 #include "color.h"
 #include "mode.h"
+#include "answer.h"
+#include "game.h"
 
 //==================================================
 // 定義
@@ -22,9 +24,8 @@
 namespace
 {
 const int	ONE_SECOND = 60;		// 1秒
-const int	START_TIME = 30;		// タイムの始まりの値
-const float	TIME_WIDTH = 50.0f;		// タイムの幅
-const float	TIME_HEIGHT = 100.0f;	// タイムの高さ
+const float	TIME_WIDTH = 100.0f;	// タイムの幅
+const float	TIME_HEIGHT = 200.0f;	// タイムの高さ
 }// namespaceはここまで
 
 //==================================================
@@ -53,9 +54,6 @@ void InitTime(void)
 
 	// 数の設定
 	s_nIdxTime = SetNumber(pos, size, GetColor(COLOR_WHITE), s_nTime, DigitNumber(s_nTime), false);
-
-	// タイムの設定
-	SetTime(START_TIME);
 }
 
 //--------------------------------------------------
@@ -72,6 +70,22 @@ void UninitTime(void)
 //--------------------------------------------------
 void UpdateTime(void)
 {
+	if (GetGameState() != GAMESTATE_PLAYER)
+	{
+		// 数を描画するかどうか
+		SetDrawNumber(s_nIdxTime, false);
+
+		return;
+	}
+
+	// 数を描画するかどうか
+	SetDrawNumber(s_nIdxTime, true);
+
+	if (GetAnswer())
+	{// 最大値
+		return;
+	}
+
 	s_nSecond++;
 
 	if ((s_nSecond % ONE_SECOND) == 0)
@@ -82,7 +96,7 @@ void UpdateTime(void)
 		if (s_nTime <= 0)
 		{// 制限時間が来た
 			// モードの変更
-			ChangeMode(MODE_TITLE);
+			ChangeMode(MODE_RESULT);
 		}
 	}
 }
