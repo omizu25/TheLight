@@ -1,6 +1,6 @@
 //**************************************************
 //
-// Hackathon ( light.cpp )
+// Hackathon ( player.cpp )
 // Author  : katsuki mizuki
 //
 //**************************************************
@@ -21,6 +21,7 @@
 #include "utility.h"
 #include "game.h"
 #include "effect.h"
+#include "player.h"
 
 #include <assert.h>
 
@@ -30,7 +31,6 @@
 namespace
 {
 const int	MAX_LIGHT = 16;		// ライトの最大数
-const int	REPEAT_TIME = 30;	// タイムの繰り返し
 const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
 
 typedef enum
@@ -43,47 +43,45 @@ typedef enum
 }LIGHT_COLOR;
 }// namespaceはここまで
 
-//==================================================
-// スタティック変数
-//==================================================
+ //==================================================
+ // スタティック変数
+ //==================================================
 namespace
 {
-int		s_nNowLight;				// ライトの現在数
-int		s_nMaxLight;				// ライトの最大数
+int		s_nPlayer;					// ライトの現在の数
 int		s_nIdxSelect;				// メニューの配列のインデックス
 int		s_nTime;					// タイム
 int		s_nIdxColor[MAX_LIGHT];		// 色の番号
 COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
 }// namespaceはここまで
 
-//==================================================
-// スタティック関数プロトタイプ宣言
-//==================================================
+ //==================================================
+ // スタティック関数プロトタイプ宣言
+ //==================================================
 namespace
 {
-void ResetDrawLight(void);
+void ResetDrawPlayer(void);
 }// namespaceはここまで
 
-//--------------------------------------------------
-// 初期化
-//--------------------------------------------------
-void InitLight(void)
+ //--------------------------------------------------
+ // 初期化
+ //--------------------------------------------------
+void InitPlayer(void)
 {
 	s_aColor[LIGHT_COLOR_RED] = COLOR_RED;
 	s_aColor[LIGHT_COLOR_GREEN] = COLOR_GREEN;
 	s_aColor[LIGHT_COLOR_BLUE] = COLOR_BLUE;
 	s_aColor[LIGHT_COLOR_YELLOW] = COLOR_YELLOW;
 
-	s_nNowLight = 0;
-	s_nMaxLight = 1;
+	s_nPlayer = 0;
 
 	{// メニュー
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
 		select.fRight = SCREEN_WIDTH;
-		select.fTop = SCREEN_HEIGHT * 0.35f;
-		select.fBottom = SCREEN_HEIGHT * 0.35f;
+		select.fTop = SCREEN_HEIGHT * 0.5f;
+		select.fBottom = SCREEN_HEIGHT * 0.5f;
 		select.fWidth = LIGHT_SIZE;
 		select.fHeight = LIGHT_SIZE;
 		select.bSort = false;
@@ -97,81 +95,39 @@ void InitLight(void)
 		s_nIdxSelect = SetSelect(select);
 	}
 
-
-	for (int i = 0; i < MAX_LIGHT; i++)
-	{
-		s_nIdxColor[i] = IntRandam(LIGHT_COLOR_MAX, 0);
-
-		// セレクトの色の設定
-		SetColorSelect(s_nIdxSelect, i, s_aColor[s_nIdxColor[i]]);
-	}
-
 	// 描画のリセット
-	ResetDrawLight();
+	//ResetDrawPlayer();
 }
 
 //--------------------------------------------------
 // 終了
 //--------------------------------------------------
-void UninitLight(void)
+void UninitPlayer(void)
 {
 }
 
 //--------------------------------------------------
 // 更新
 //--------------------------------------------------
-void UpdateLight(void)
+void UpdatePlayer(void)
 {
 	switch (GetGameState())
 	{
-	case GAMESTATE_SAMPLE:	// 見本状態
-		s_nTime++;
-
-		if (s_nTime % REPEAT_TIME != 0)
-		{
-			return;
-		}
-
-		if (s_nNowLight < s_nMaxLight)
-		{
-			s_nNowLight++;
-			
-			// エフェクトの設定
-			SetEffect(GetPosSelect(s_nIdxSelect, s_nNowLight - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nNowLight - 1));
-			
-			// 描画のリセット
-			ResetDrawLight();
-		}
-		else
-		{// 増え切った
-			for (int i = 0; i < MAX_LIGHT; i++)
-			{
-				// セレクトの描画するかどうか
-				SetDrawSelect(s_nIdxSelect, i, false);
-			}
-
-			// ゲーム状態の設定
-			SetGameState(GAMESTATE_PLAYER);
-		}
-		break;
-
 	case GAMESTATE_RESET:	// リセット状態
-		s_nNowLight = 0;
-		s_nMaxLight++;
+		s_nPlayer = 0;
 
 		for (int i = 0; i < MAX_LIGHT; i++)
 		{
-			s_nIdxColor[i] = IntRandam(LIGHT_COLOR_MAX, 0);
-
 			// セレクトの色の設定
-			SetColorSelect(s_nIdxSelect, i, s_aColor[s_nIdxColor[i]]);
+			SetColorSelect(s_nIdxSelect, i, s_aColor[IntRandam(LIGHT_COLOR_MAX, 0)]);
 		}
 
 		// 描画のリセット
-		ResetDrawLight();
+		ResetDrawPlayer();
 
 		break;
 
+	case GAMESTATE_SAMPLE:	// 見本状態
 	case GAMESTATE_NONE:	// 何もしていない状態
 	case GAMESTATE_START:	// 開始状態
 	case GAMESTATE_ANSWER:	// 答え合わせ状態
@@ -183,13 +139,13 @@ void UpdateLight(void)
 		break;
 	}
 
-	
+
 }
 
 //--------------------------------------------------
 // 描画
 //--------------------------------------------------
-void DrawLight(void)
+void DrawPlayer(void)
 {
 }
 
@@ -198,18 +154,12 @@ namespace
 //--------------------------------------------------
 // 描画のリセット
 //--------------------------------------------------
-void ResetDrawLight(void)
+void ResetDrawPlayer(void)
 {
 	for (int i = 0; i < MAX_LIGHT; i++)
 	{
 		// セレクトの描画するかどうか
 		SetDrawSelect(s_nIdxSelect, i, false);
-	}
-
-	for (int i = 0; i < s_nNowLight; i++)
-	{
-		// セレクトの描画するかどうか
-		SetDrawSelect(s_nIdxSelect, i, true);
 	}
 }
 }// namespaceはここまで
