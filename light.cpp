@@ -107,8 +107,14 @@ void InitLight(void)
 		SetColorSelect(s_nIdxSelect, i, s_aColor[s_nIdxColor[i]]);
 	}
 
+	// 応急処置
+	s_nIdxColor[0] = IntRandam(LIGHT_COLOR_MAX, 0);
+
+	// セレクトの色の設定
+	SetColorSelect(s_nIdxSelect, 0, s_aColor[s_nIdxColor[0]]);
+
 	// 描画のリセット
-	ResetDrawLight();
+	//ResetDrawLight();
 }
 
 //--------------------------------------------------
@@ -203,7 +209,17 @@ int GetLight(void)
 }
 
 //--------------------------------------------------
-// 取得
+// 色の取得
+//--------------------------------------------------
+int GetColorLight(int nNowLight)
+{
+	assert(nNowLight >= 0 && nNowLight < MAX_LIGHT);
+
+	return s_nIdxColor[nNowLight];
+}
+
+//--------------------------------------------------
+// 描画の設定
 //--------------------------------------------------
 void SetDrawLight(int nNowLight)
 {
