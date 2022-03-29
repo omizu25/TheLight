@@ -61,4 +61,9 @@ GAMESTATE GetGameState(void);
 //--------------------------------------------------
 void SetEnablePause(bool bPause);
 
+//--------------------------------------------------
+// ƒQ[ƒ€‰æ–Ê‚Ì”wŒiƒQ[ƒW(‰©F)‚Ì‘‰Á
+//--------------------------------------------------
+void IncreaseGaugeGame(void);
+
 #endif // !_GAME_H_

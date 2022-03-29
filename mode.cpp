@@ -94,10 +94,6 @@ void UpdateMode(void)
 		UpdateGame();
 		break;
 
-	case MODE_TUTORIAL:	// チュートリアル
-		UpdateTutorial();
-		break;
-
 	case MODE_RESULT:	// リザルト
 		UpdateResult();
 		break;
@@ -125,10 +121,6 @@ void DrawMode(void)
 
 	case MODE_GAME:		// ゲーム
 		DrawGame();
-		break;
-
-	case MODE_TUTORIAL:	// チュートリアル
-		DrawTutorial();
 		break;
 
 	case MODE_RESULT:	// リザルト
@@ -175,10 +167,6 @@ void SetMode(void)
 		UninitGame();
 		break;
 
-	case MODE_TUTORIAL:	// チュートリアル
-		UninitTutorial();
-		break;
-
 	case MODE_RESULT:	// リザルト
 		UninitResult();
 		break;
@@ -206,10 +194,6 @@ void SetMode(void)
 
 	case MODE_GAME:		// ゲーム
 		InitGame();
-		break;
-
-	case MODE_TUTORIAL:	// チュートリアル
-		InitTutorial();
 		break;
 
 	case MODE_RESULT:	// リザルト
