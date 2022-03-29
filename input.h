@@ -81,6 +81,16 @@ typedef enum
 	FUNCTION_KEY_MAX
 }FUNCTION_KEY;
 
+//ライトの色選択キー
+typedef enum
+{
+	LIGHT_KEY_RED = 0,			//赤キー
+	LIGHT_KEY_GREEN,			//緑キー
+	LIGHT_KEY_BLUE,				//青キー
+	LIGHT_KEY_YELLOW,			//黄キー
+	LIGHT_KEY_MAX
+}LIGHT_KEY;
+
 //----------------------------------------------------------------------------
 //プロトタイプ宣言
 //----------------------------------------------------------------------------
@@ -108,5 +118,7 @@ bool GetJoypadStickAllTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY Key);					//ジ
 bool GetJoypadAllTrigger(JOYKEY Key);															//ジョイパッドトリガーの全プレイヤーの対象
 
 bool GetMoveKeyPress(MOVE_KEY Key);									//移動系のキーまとめ
-bool GetFunctionKeyTrigger(FUNCTION_KEY Key);							//機能系のキーまとめ
+bool GetFunctionKeyTrigger(FUNCTION_KEY Key);						//機能系のキーまとめ
+bool GetLightKeyPress(LIGHT_KEY Key);									//ライトの色選択キーのプレス
+bool GetLightKeyTrigger(LIGHT_KEY Key);									//ライトの色選択キーのトリガー
 #endif
