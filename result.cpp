@@ -16,6 +16,7 @@
 #include "sound.h"
 #include "light.h"
 #include "mode.h"
+#include "utility.h"
 
 #include "input.h"
 
@@ -36,6 +37,7 @@ int	s_nIdxBG;			// 背景の矩形のインデックス
 int	s_nGaugeIdxGray;	// ゲージのインデックスの保管
 int	s_nGaugeIdxYellow;	// ゲージのインデックスの保管
 int	s_nTime;			// タイム
+float s_fGaugeAlpha;	// 現在のゲージのアルファ値
 }// namespaceはここまで
 
 //=============================================================================
@@ -51,6 +53,8 @@ void InitResult(void)
 
 	s_nTime = 0;
 
+	s_fGaugeAlpha = 0.3f;	// 現在のゲージのアルファ値
+
 	// ゲージの初期化
 	InitGauge();
 
@@ -59,7 +63,9 @@ void InitResult(void)
 	
 	// ゲージの設定(黄色)
 	s_nGaugeIdxYellow = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_YELLOW), (GetLight() - 1) * (SCREEN_WIDTH / 16.0f), SCREEN_HEIGHT, GAUGE_LEFT);
-
+	// ゲージの色の設定(黄色)
+	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlpha));
+	
 	{// 背景
 		// 矩形の設定
 		s_nIdxBG = SetRectangle(TEXTURE_BG);
@@ -113,6 +119,12 @@ void UpdateResult(void)
 		// サウンドの再生
 		PlaySound(SOUND_LABEL_SE_ENTER);
 	}
+
+	float fCurve = CosCurve(s_nTime, 0.01f);
+	s_fGaugeAlpha = Curve(fCurve, 0.3f, 1.0f);
+
+	// ゲージの色の設定(黄色)
+	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlpha));
 }
 
 //=============================================================================
