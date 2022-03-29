@@ -21,6 +21,7 @@
 #include "utility.h"
 #include "game.h"
 #include "effect.h"
+#include "player.h"
 
 #include <assert.h>
 
@@ -173,9 +174,9 @@ void UpdateLight(void)
 
 		break;
 
+	case GAMESTATE_PLAYER:	// プレイヤー状態
 	case GAMESTATE_NONE:	// 何もしていない状態
 	case GAMESTATE_START:	// 開始状態
-	case GAMESTATE_PLAYER:	// プレイヤー状態
 		break;
 
 	default:
@@ -199,6 +200,18 @@ void DrawLight(void)
 int GetLight(void)
 {
 	return s_nMaxLight;
+}
+
+//--------------------------------------------------
+// 取得
+//--------------------------------------------------
+void SetDrawLight(int nNowLight)
+{
+	// セレクトの描画するかどうか
+	SetDrawSelect(s_nIdxSelect, nNowLight, true);
+
+	// エフェクトの設定
+	SetEffect(GetPosSelect(s_nIdxSelect, nNowLight), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, nNowLight));
 }
 
 namespace

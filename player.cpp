@@ -31,6 +31,7 @@
 namespace
 {
 const int	MAX_LIGHT = 16;		// ライトの最大数
+const int	MAX_TIME = 60;		// タイムの最大値
 const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
 
 typedef enum
@@ -48,11 +49,12 @@ typedef enum
  //==================================================
 namespace
 {
+COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
 int		s_nPlayer;					// ライトの現在の数
 int		s_nIdxSelect;				// メニューの配列のインデックス
 int		s_nTime;					// タイム
 int		s_nIdxColor[MAX_LIGHT];		// 色の番号
-COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
+bool	s_bMax;						// 最大になったかどうか
 }// namespaceはここまで
 
  //==================================================
@@ -74,6 +76,8 @@ void InitPlayer(void)
 	s_aColor[LIGHT_COLOR_YELLOW] = COLOR_YELLOW;
 
 	s_nPlayer = 0;
+	s_nTime = 0;
+	s_bMax = false;
 
 	{// メニュー
 		SelectArgument select;
@@ -122,6 +126,22 @@ void UpdatePlayer(void)
 		break;
 
 	case GAMESTATE_PLAYER:	// プレイヤー状態
+		if (s_bMax)
+		{
+			s_nTime++;
+
+			if (s_nTime >= MAX_TIME)
+			{
+				s_bMax = false;
+				s_nTime = 0;
+
+				// ゲーム状態の設定
+				SetGameState(GAMESTATE_RESET);
+			}
+
+			return;
+		}
+
 		if (GetLightKeyTrigger(LIGHT_KEY_RED))
 		{// 赤
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_RED;
@@ -132,15 +152,13 @@ void UpdatePlayer(void)
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
 
+			// ライトの描画設定
+			SetDrawLight(s_nPlayer);
+
 			s_nPlayer++;
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
-			if (s_nPlayer >= GetLight())
-			{
-				// ゲーム状態の設定
-				SetGameState(GAMESTATE_RESET);
-			}
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_GREEN))
 		{// 緑
@@ -152,15 +170,13 @@ void UpdatePlayer(void)
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
 
+			// ライトの描画設定
+			SetDrawLight(s_nPlayer);
+
 			s_nPlayer++;
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
-			if (s_nPlayer >= GetLight())
-			{
-				// ゲーム状態の設定
-				SetGameState(GAMESTATE_RESET);
-			}
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_BLUE))
 		{// 青
@@ -172,15 +188,13 @@ void UpdatePlayer(void)
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
 
+			// ライトの描画設定
+			SetDrawLight(s_nPlayer);
+
 			s_nPlayer++;
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
-			if (s_nPlayer >= GetLight())
-			{
-				// ゲーム状態の設定
-				SetGameState(GAMESTATE_RESET);
-			}
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_YELLOW))
 		{// 黄色
@@ -192,15 +206,19 @@ void UpdatePlayer(void)
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
 
+			// ライトの描画設定
+			SetDrawLight(s_nPlayer);
+
 			s_nPlayer++;
 
 			// エフェクトの設定
 			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
-			if (s_nPlayer >= GetLight())
-			{
-				// ゲーム状態の設定
-				SetGameState(GAMESTATE_RESET);
-			}
+		}
+
+		if (s_nPlayer >= GetLight())
+		{// 最大になった
+			s_bMax = true;
+			s_nTime = 0;
 		}
 
 		break;
@@ -223,6 +241,14 @@ void UpdatePlayer(void)
 //--------------------------------------------------
 void DrawPlayer(void)
 {
+}
+
+//--------------------------------------------------
+// 取得
+//--------------------------------------------------
+int GetPlayer(void)
+{
+	return s_nPlayer;
 }
 
 namespace
