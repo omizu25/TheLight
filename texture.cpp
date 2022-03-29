@@ -23,8 +23,10 @@ const char *s_FileName[] =
 	"data/TEXTURE/Cursor_Right.png",			// カーソル
 	"data/TEXTURE/Number_004.png",				// 数
 	"data/TEXTURE/Title.png",					// タイトル
-	"data/TEXTURE/Bg001.png",					// 背景
 	"data/TEXTURE/Bg000.png",					// 背景
+	"data/TEXTURE/Bg001.png",					// 背景
+	"data/TEXTURE/Bg002.png",					// 背景
+	"data/TEXTURE/Bg.png",						// 背景
 	"data/TEXTURE/effect/effect_000.png",		// エフェクト
 	"data/TEXTURE/effect/effect_001.jpg",		// エフェクト
 	"data/TEXTURE/effect/effect_003.jpg",		// エフェクト

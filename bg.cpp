@@ -20,7 +20,7 @@
 //==================================================
 namespace
 {
-int	s_nIdxBG[2];	// 背景の矩形のインデックス
+int	s_nIdxBG[3];	// 背景の矩形のインデックス
 }// namespaceはここまで
 
 //--------------------------------------------------
@@ -29,7 +29,7 @@ int	s_nIdxBG[2];	// 背景の矩形のインデックス
 void InitBG(void)
 {
 	// 矩形の設定
-	s_nIdxBG[0] = SetRectangle(TEXTURE_BG);
+	s_nIdxBG[0] = SetRectangle(TEXTURE_BG_2);
 
 	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
 	D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
@@ -41,7 +41,7 @@ void InitBG(void)
 	SetColorRectangle(s_nIdxBG[0], D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	// 矩形の設定
-	s_nIdxBG[1] = SetRectangle(TEXTURE_BG_STAR);
+	s_nIdxBG[1] = SetRectangle(TEXTURE_BG_1);
 
 	pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
 	size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
@@ -51,6 +51,18 @@ void InitBG(void)
 
 	// 矩形の色の設定
 	SetColorRectangle(s_nIdxBG[1], D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	// 矩形の設定
+	s_nIdxBG[2] = SetRectangle(TEXTURE_BG_0);
+
+	pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
+	size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
+
+	// 矩形の位置の設定
+	SetPosRectangle(s_nIdxBG[2], pos, size);
+
+	// 矩形の色の設定
+	SetColorRectangle(s_nIdxBG[2], D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 //--------------------------------------------------
@@ -58,7 +70,7 @@ void InitBG(void)
 //--------------------------------------------------
 void UninitBG(void)
 {
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		// 使うのを止める
 		StopUseRectangle(s_nIdxBG[i]);
