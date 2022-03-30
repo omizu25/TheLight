@@ -19,6 +19,7 @@
 #include "gauge.h"
 #include "light.h"
 #include "utility.h"
+#include "effect.h"
 
 //==================================================
 // 定義
@@ -36,7 +37,8 @@ const float	MIN_ALPHA_YELLOW = 0.3f;	// 黄色のゲージのα値の最小値
 //==================================================
 namespace
 {
-int		s_nTime;				// タイム
+int		s_nTimeMoon;			// 月のエフェクトのタイム
+int		s_nTimeGauge;			// ゲージのタイム
 int		s_nIdxGaugeGray;		// 灰色のゲージの配列のインデックス
 int		s_nIdxGaugeYellow;		// 黄色のゲージの配列のインデックス
 float	s_fAlphaGaugeGray;		// 灰色のゲージのα値
@@ -48,7 +50,8 @@ float	s_fAlphaGaugeYellow;	// 黄色のゲージのα値
 //--------------------------------------------------
 void SetGaugeUI(void)
 {
-	s_nTime = 0;
+	s_nTimeGauge = 0;
+	s_nTimeMoon = 0;
 	s_fAlphaGaugeGray = MIN_ALPHA_GRAY;
 	s_fAlphaGaugeYellow = MIN_ALPHA_YELLOW;
 
@@ -84,10 +87,10 @@ void SetGaugeUI(void)
 //--------------------------------------------------
 void UpdateGaugeUI(void)
 {
-	s_nTime++;
+	s_nTimeGauge++;
 
 	{// α値の変更
-		float fCurve = CosCurve(s_nTime, 0.01f);
+		float fCurve = CosCurve(s_nTimeGauge, 0.01f);
 		s_fAlphaGaugeGray = Curve(fCurve, MAX_ALPHA_GRAY, MIN_ALPHA_GRAY);
 		s_fAlphaGaugeYellow = Curve(fCurve, MAX_ALPHA_YELLOW, MIN_ALPHA_YELLOW);
 	}
@@ -117,4 +120,23 @@ void ChangeGaugeUI(void)
 {
 	// ゲージのサイズの設定
 	SetSizeGauge(s_nIdxGaugeYellow, GetLight() * (SCREEN_WIDTH / 16.0f), SCREEN_HEIGHT);
+}
+
+//--------------------------------------------------
+// 月のエフェクトの更新
+//--------------------------------------------------
+void UpdateEffectMoonUI(void)
+{
+	if (s_nTimeMoon % 45 == 0)
+	{
+		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
+		D3DXCOLOR col = GetColor(COLOR_WHITE);
+
+		col.b = 0.1f;
+
+		// エフェクトの設定
+		SetEffect(pos, EFFECT_TYPE_003, col);
+	}
+
+	s_nTimeMoon++;
 }

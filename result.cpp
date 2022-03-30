@@ -142,7 +142,7 @@ void InitResult(void)
 		s_nIdxMenu = SetMenu(menu, Frame);
 
 		// 選択肢の色の設定
-		SetColorOption(s_nIdxMenu, GetColor(COLOR_WHITE), D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+		SetColorOption(s_nIdxMenu, GetColor(COLOR_RED), D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.5f));
 
 		// 選ばれていない選択肢の色の設定
 		SetColorDefaultOption(s_nIdxMenu, GetColor(COLOR_WHITE));
@@ -221,18 +221,8 @@ void UpdateResult(void)
 	// ゲージのUIの更新
 	UpdateGaugeUI();
 
-	{// 月エフェクト
-		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
-		D3DXCOLOR col = GetColor(COLOR_WHITE);
-
-		col.b = 0.1f;
-
-		if (s_nTime % 45 == 0)
-		{
-			// エフェクトの設定
-			SetEffect(pos, EFFECT_TYPE_003, col);
-		}
-	}
+	// 月のエフェクトの更新
+	UpdateEffectMoonUI();
 }
 
 //=============================================================================

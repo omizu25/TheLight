@@ -204,17 +204,8 @@ void UpdateTitle(void)
 	// エフェクト
 	UpdateEffect();
 
-	{// 月エフェクト
-		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
-		D3DXCOLOR col = GetColor(COLOR_WHITE);
-
-		col.b = 0.1f;
-
-		if (s_nTime % 45 == 0)
-		{
-			SetEffect(pos, EFFECT_TYPE_003, col);
-		}
-	}
+	// 月のエフェクトの更新
+	UpdateEffectMoonUI();
 
 	{
 		D3DXVECTOR3 pos(SCREEN_WIDTH * 0.4f + FloatRandam(100.0f, -100.0f), SCREEN_HEIGHT * 0.4f + FloatRandam(20.0f, -20.0f), 0.0f);

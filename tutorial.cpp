@@ -19,6 +19,7 @@
 #include "ui.h"
 #include "bg.h"
 #include "gauge.h"
+#include "effect.h"
 
 //==================================================
 // 定義
@@ -51,6 +52,9 @@ void InitTutorial(void)
 	// 背景の初期化
 	InitBG();
 
+	// エフェクトの初期化
+	InitEffect();
+
 	// 月の背景の初期化
 	InitMoonBG();
 
@@ -79,6 +83,9 @@ void UninitTutorial(void)
 
 	// 背景の終了
 	UninitBG();
+
+	// エフェクトの終了
+	UninitEffect();
 }
 
 //--------------------------------------------------
@@ -105,6 +112,12 @@ void UpdateTutorial(void)
 
 	// ゲージのUIの更新
 	UpdateGaugeUI();
+
+	// 月のエフェクトの更新
+	UpdateEffectMoonUI();
+
+	// エフェクトの更新
+	UpdateEffect();
 }
 
 //--------------------------------------------------

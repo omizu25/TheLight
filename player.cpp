@@ -36,8 +36,8 @@ namespace
 const int	MAX_TIME = 5;			// タイムの最大値
 const int	MAX_LIGHT = 16;			// ライトの最大数
 const float	LIGHT_SIZE = 50.0f;		// ライトのサイズ
-const float	PUSH_WIDTH = 280.0f;	// 押せの幅
-const float	PUSH_HEIGHT = 100.0f;	// 押せの高さ
+const float	PUSH_WIDTH = 120.0f;	// 押せの幅
+const float	PUSH_HEIGHT = 80.0f;	// 押せの高さ
 
 typedef enum
 {
@@ -100,7 +100,7 @@ void InitPlayer(void)
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH;
+		select.fRight = SCREEN_WIDTH - PUSH_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.5f;
 		select.fBottom = SCREEN_HEIGHT * 0.5f;
 		select.fWidth = LIGHT_SIZE;
@@ -120,7 +120,7 @@ void InitPlayer(void)
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH;
+		select.fRight = SCREEN_WIDTH - PUSH_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.5f;
 		select.fBottom = SCREEN_HEIGHT * 0.5f;
 		select.fWidth = LIGHT_SIZE;

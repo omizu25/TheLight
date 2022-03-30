@@ -44,9 +44,7 @@ namespace
 GAMESTATE	s_gameState = GAMESTATE_NONE;	// ゲームの状態
 int			s_nCounterState;				// 状態管理カウンター
 bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false]
-int			s_nIdxMoon;						// 背景の矩形のインデックス
 int			s_nIdxMethod;					// 操作説明の矩形のインデックス
-int			s_nTime;						// タイム
 }// namesapceはここまで
 
 //--------------------------------------------------
@@ -54,8 +52,6 @@ int			s_nTime;						// タイム
 //--------------------------------------------------
 void InitGame(void)
 {
-	s_nTime = 0;
-	
 	// ゲージの初期化
 	InitGauge();
 
@@ -174,7 +170,6 @@ void UninitGame(void)
 	UninitAnswer();
 
 	// 使うのを止める
-	StopUseRectangle(s_nIdxMoon);
 	StopUseRectangle(s_nIdxMethod);
 }
 
@@ -223,6 +218,15 @@ void UpdateGame(void)
 		// カーソルの更新
 		UpdateCursor();
 
+		// ゲージのUIの更新
+		UpdateGaugeUI();
+
+		// 月のエフェクトの更新
+		UpdateEffectMoonUI();
+
+		// エフェクトの更新
+		UpdateEffect();
+
 		return;
 	}
 
@@ -247,28 +251,17 @@ void UpdateGame(void)
 	// メニューの更新
 	UpdateMenu();
 
-	// エフェクトの更新
-	UpdateEffect();
-
 	// タイムの更新
 	UpdateTime();
-
-	s_nTime++;
 
 	// ゲージのUIの更新
 	UpdateGaugeUI();
 
-	{// 月エフェクト
-		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
-		D3DXCOLOR col = GetColor(COLOR_WHITE);
+	// 月のエフェクトの更新
+	UpdateEffectMoonUI();
 
-		col.b = 0.1f;
-
-		if (s_nTime % 45 == 0)
-		{
-			SetEffect(pos, EFFECT_TYPE_003, col);
-		}
-	}
+	// エフェクトの更新
+	UpdateEffect();
 }
 
 //--------------------------------------------------

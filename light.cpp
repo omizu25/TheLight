@@ -32,12 +32,11 @@
 namespace
 {
 const int	MAX_LIGHT = 16;			// ライトの最大数
-const int	MAX_LEARN = 3;			// 覚えろの最大数
-const int	MAX_TIME = 120;			// タイムの最大値
+const int	MAX_TIME = 90;			// タイムの最大値
 const int	REPEAT_TIME = 30;		// タイムの繰り返し
 const float	LIGHT_SIZE = 50.0f;		// ライトのサイズ
-const float	LEARN_WIDTH = 280.0f;	// 覚えろの幅
-const float	LEARN_HEIGHT = 100.0f;	// 覚えろの高さ
+const float	LEARN_WIDTH = 120.0f;	// 覚えろの幅
+const float	LEARN_HEIGHT = 80.0f;	// 覚えろの高さ
 
 typedef enum
 {
@@ -101,7 +100,7 @@ void InitLight(void)
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH;
+		select.fRight = SCREEN_WIDTH - LEARN_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.35f;
 		select.fBottom = SCREEN_HEIGHT * 0.35f;
 		select.fWidth = LIGHT_SIZE;
@@ -127,7 +126,7 @@ void InitLight(void)
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH;
+		select.fRight = SCREEN_WIDTH - LEARN_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.35f;
 		select.fBottom = SCREEN_HEIGHT * 0.35f;
 		select.fWidth = LIGHT_SIZE;
@@ -220,12 +219,9 @@ void UpdateLight(void)
 					// 矩形の描画するかどうか
 					SetDrawRectangle(s_nIdxLearn, false);
 
-					if (s_nMaxLight <= MAX_LEARN)
-					{// 指定値以下
-						// 押せの描画するかどうか
-						SetDrawPushPlayer(true);
-					}
-
+					// 押せの描画するかどうか
+					SetDrawPushPlayer(true);
+					
 					// 枠の設定
 					SetFramePlayer(0);
 				}
@@ -260,11 +256,8 @@ void UpdateLight(void)
 		// 描画のリセット
 		ResetDrawLight();
 
-		if (s_nMaxLight <= MAX_LEARN)
-		{// 指定値以下
-			// 矩形の描画するかどうか
-			SetDrawRectangle(s_nIdxLearn, true);
-		}
+		// 矩形の描画するかどうか
+		SetDrawRectangle(s_nIdxLearn, true);
 
 		break;
 
