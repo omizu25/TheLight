@@ -26,6 +26,7 @@
 #include "menu.h"
 #include "fade.h"
 #include "cursor.h"
+#include "ui.h"
 
 #include <assert.h>
 
@@ -58,11 +59,7 @@ int	s_nIdxBestScore;		// ベストスコアの矩形のインデックス
 int	s_nIdxMenu;				// メニューの配列のインデックス
 int	s_nSelectMenu;			// 選ばれているメニュー
 int	s_nIdxCursor;			// カーソルの配列のインデックス
-int	s_nGaugeIdxGray;		// ゲージのインデックスの保管
-int	s_nGaugeIdxYellow;		// ゲージのインデックスの保管
 int	s_nTime;				// タイム
-float s_fGaugeAlphaGray;	// 現在のゲージのアルファ値
-float s_fGaugeAlphaYellow;	// 現在のゲージのアルファ値
 }// namespaceはここまで
 
  //=============================================================================
@@ -81,41 +78,22 @@ void InitResult(void)
 	PlaySound(SOUND_LABEL_BGM_RESULT);
 
 	s_nTime = 0;
-
-	s_fGaugeAlphaGray = 0.3f;	// 現在のゲージのアルファ値
-	s_fGaugeAlphaYellow = 0.3f;	// 現在のゲージのアルファ値
+	s_nSelectMenu = 0;
 
 	// ゲージの初期化
 	InitGauge();
 
-	// ゲージの設定(灰色)
-	s_nGaugeIdxGray =  SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
-	
-	// ゲージの設定(黄色)
-	s_nGaugeIdxYellow = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_YELLOW), (GetLight() - 1) * (SCREEN_WIDTH / 16.0f), SCREEN_HEIGHT, GAUGE_LEFT);
+	// ゲージのUIの設定
+	SetGaugeUI();
 
-	// ゲージの色の設定(灰色)
-	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlphaGray));
-
-	// ゲージの色の設定(黄色)
-	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
-	
 	// 背景の初期化
 	InitBG();
 
 	// エフェクトの初期化
 	InitEffect();
 
-	{// 月
-		// 矩形の設定
-		s_nIdxMoon = SetRectangle(TEXTURE_BG_MOON);
-
-		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
-
-		// 矩形の位置の設定
-		SetPosRectangle(s_nIdxMoon, pos, size);
-	}
+	// 月の背景の初期化
+	InitMoonBG();
 
 	{// 今回のスコア
 		s_nIdxScore = SetRectangle(TEXTURE_YourScore);
@@ -168,27 +146,6 @@ void InitResult(void)
 
 		// 選ばれていない選択肢の色の設定
 		SetColorDefaultOption(s_nIdxMenu, GetColor(COLOR_WHITE));
-
-		s_nSelectMenu = 0;
-	}
-
-	{// カーソル
-		// カーソル初期化
-		InitCursor();
-
-		CursorArgument cursor;
-		cursor.nNumUse = MENU_MAX;
-		cursor.fPosX = SCREEN_WIDTH * 0.65f;
-		cursor.fTop = SCREEN_HEIGHT * 0.5f;
-		cursor.fBottom = SCREEN_HEIGHT;
-		cursor.fWidth = CURSOR_SIZE;
-		cursor.fHeight = CURSOR_SIZE;
-		cursor.texture = TEXTURE_Cursor_Right;
-		cursor.nSelect = s_nSelectMenu;
-		cursor.bRotation = false;
-
-		// カーソルの設定
-		//s_nIdxCursor = SetCursor(cursor);
 	}
 
 	// ランキングの初期化
@@ -206,6 +163,7 @@ void InitResult(void)
 //=============================================================================
 void UninitResult(void)
 {
+	// サウンドの停止
 	StopSound();
 
 	// 使うのを止める
@@ -227,9 +185,6 @@ void UninitResult(void)
 
 	// メニューの終了
 	UninitMenu();
-
-	// カーソルの終了
-	UninitCursor();
 }
 
 //=============================================================================
@@ -252,9 +207,6 @@ void UpdateResult(void)
 	// メニューの更新更新
 	UpdateMenu();
 
-	// カーソルの更新
-	UpdateCursor();
-
 	s_nTime++;
 
 	if (s_nTime >= MAX_TIME)
@@ -266,18 +218,8 @@ void UpdateResult(void)
 	// 入力
 	Input();
 
-	float fCurve = CosCurve(s_nTime, 0.01f);
-	s_fGaugeAlphaGray = Curve(fCurve, 0.3f, 0.6f);
-		
-		
-	fCurve = CosCurve(s_nTime, 0.01f);
-	s_fGaugeAlphaYellow = Curve(fCurve, 0.3f, 1.0f);
-
-	// ゲージの色の設定(灰色)
-	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlphaGray));
-
-	// ゲージの色の設定(黄色)
-	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
+	// ゲージのUIの更新
+	UpdateGaugeUI();
 
 	{// 月エフェクト
 		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
@@ -287,6 +229,7 @@ void UpdateResult(void)
 
 		if (s_nTime % 45 == 0)
 		{
+			// エフェクトの設定
 			SetEffect(pos, EFFECT_TYPE_003, col);
 		}
 	}
@@ -324,11 +267,10 @@ void Input(void)
 		// 選択肢の変更
 		ChangeOption(s_nSelectMenu);
 
-		// カーソルの位置の変更
-		//ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
-
 		// サウンドの再生
 		PlaySound(SOUND_LABEL_SE_SELECT);
+
+		s_nTime = 0;
 	}
 	else if (GetKeyboardTrigger(DIK_S) || GetKeyboardTrigger(DIK_DOWN) ||
 		GetJoypadTrigger(JOYKEY_CROSS_DOWN, 0) || GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN, 0))
@@ -341,11 +283,10 @@ void Input(void)
 		// 選択肢の変更
 		ChangeOption(s_nSelectMenu);
 
-		// カーソルの位置の変更
-		//ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
-
 		// サウンドの再生
 		PlaySound(SOUND_LABEL_SE_SELECT);
+
+		s_nTime = 0;
 	}
 
 	if (GetFunctionKeyTrigger(FUNCTION_KEY_DESISION))

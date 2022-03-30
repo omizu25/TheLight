@@ -15,13 +15,17 @@
 #include "input.h"
 #include "mode.h"
 #include "game.h"
+#include "sound.h"
+#include "ui.h"
+#include "bg.h"
+#include "gauge.h"
 
 //==================================================
 // 定義
 //==================================================
 namespace
 {
-const int	MAX_TIME = 90;		// タイムの最大値
+const int	MAX_TIME = 900;	// タイムの最大値
 }// namespaceはここまで
 
 //==================================================
@@ -31,7 +35,6 @@ namespace
 {
 int		s_nIdx;		// 背景の矩形のインデックス
 int		s_nTime;	// タイム
-bool	s_bDraw;	// 描画
 }// namespaceはここまで
 
  //--------------------------------------------------
@@ -39,18 +42,27 @@ bool	s_bDraw;	// 描画
  //--------------------------------------------------
 void InitTutorial(void)
 {
-	{// 背景
-		// 矩形の設定
-		s_nIdx = SetRectangle(TEXTURE_TITLE_GamePopup);
+	// ゲージの初期化
+	InitGauge();
 
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
-		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH * 0.8f, SCREEN_HEIGHT * 0.8f, 0.0f);
+	// ゲージのUIの設定
+	SetGaugeUI();
 
-		// 矩形の位置の設定
-		SetPosRectangle(s_nIdx, pos, size);
-	}
+	// 背景の初期化
+	InitBG();
 
-	s_bDraw = false;
+	// 月の背景の初期化
+	InitMoonBG();
+
+	// 矩形の設定
+	s_nIdx = SetRectangle(TEXTURE_TITLE_GamePopup);
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
+	D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH * 0.8f, SCREEN_HEIGHT * 0.8f, 0.0f);
+
+	// 矩形の位置の設定
+	SetPosRectangle(s_nIdx, pos, size);
+
 	s_nTime = 0;
 }
 
@@ -61,6 +73,12 @@ void UninitTutorial(void)
 {
 	// 使うのを止める
 	StopUseRectangle(s_nIdx);
+
+	// ゲージの終了
+	UninitGauge();
+
+	// 背景の終了
+	UninitBG();
 }
 
 //--------------------------------------------------
@@ -68,34 +86,25 @@ void UninitTutorial(void)
 //--------------------------------------------------
 void UpdateTutorial(void)
 {
-	if (GetGameState() != GAMESTATE_START)
-	{
-		return;
-	}
 	s_nTime++;
 
-	if (s_bDraw)
-	{
-		if (s_nTime >= 30)
-		{
-			// ゲーム状態の設定
-			SetGameState(GAMESTATE_SAMPLE);
-		}
+	if (s_nTime >= MAX_TIME)
+	{// 指定の値を越した
+		// モードの変更
+		ChangeMode(MODE_GAME);
 	}
-	else
-	{
-		if (s_nTime >= MAX_TIME)
-		{
-			D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.25f, 0.0f);
-			D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.725f, size.y * 0.5f, 0.0f);
 
-			// 矩形の位置の設定
-			SetPosRectangle(s_nIdx, pos, size);
-
-			s_nTime = 0;
-			s_bDraw = true;
-		}
+	if (GetFunctionKeyTrigger(FUNCTION_KEY_DESISION))
+	{//決定キー(ENTERキー)が押されたかどうか
+		// モードの変更
+		ChangeMode(MODE_GAME);
+		
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_ENTER);
 	}
+
+	// ゲージのUIの更新
+	UpdateGaugeUI();
 }
 
 //--------------------------------------------------
@@ -103,4 +112,6 @@ void UpdateTutorial(void)
 //--------------------------------------------------
 void DrawTutorial(void)
 {
+	// 矩形の描画
+	DrawRectangle();
 }

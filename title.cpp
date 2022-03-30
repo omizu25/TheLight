@@ -23,6 +23,7 @@
 #include "utility.h"
 #include "effect.h"
 #include "bg.h"
+#include "ui.h"
 
 #include <assert.h>
 
@@ -79,29 +80,20 @@ void InitTitle(void)
 	s_nTime = 0;
 	s_fGaugeAlpha = 0.3f;
 
-	// ゲージの設定(灰色)
-	s_nGaugeIdxGray = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
-	
-	// ゲージの色の設定(灰色)
-	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlpha));
+	// ゲージの初期化
+	InitGauge();
 
+	// ゲージのUIの設定
+	SetGaugeUI();
+	
 	// 背景
 	InitBG();
 
 	// エフェクト
 	InitEffect();
 
-	{// 月
-	 // 矩形の設定
-		s_nIdxMoon = SetRectangle(TEXTURE_BG_MOON);
-
-		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
-
-		// 矩形の位置の設定
-		SetPosRectangle(s_nIdxMoon, pos, size);
-	}
-
+	// 月の背景の初期化
+	InitMoonBG();
 
 	{// ロゴ
 		// 矩形の設定
@@ -206,11 +198,8 @@ void UpdateTitle(void)
 
 	s_nTime++;
 
-	float fCurve = CosCurve(s_nTime, 0.01f);
-	s_fGaugeAlpha = Curve(fCurve, 0.3f, 0.6f);
-
-	// ゲージの色の設定(灰色)
-	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlpha));
+	// ゲージのUIの更新
+	UpdateGaugeUI();
 
 	// エフェクト
 	UpdateEffect();
@@ -278,7 +267,7 @@ void Input(void)
 		switch (s_nSelectMenu)
 		{
 		case MENU_GAME:	// ゲーム
-			ChangeMode(MODE_GAME);
+			ChangeMode(MODE_TUTORIAL);
 			break;
 
 		default:

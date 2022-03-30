@@ -19,6 +19,7 @@
 #include "game.h"
 #include "bg.h"
 #include "sound.h"
+#include "ui.h"
 
 //==================================================
 // 定義
@@ -72,14 +73,14 @@ void UpdateAnswer(void)
 				s_nTime = 0;
 				s_bAnswer = true;
 
-				// ゲーム画面の背景ゲージ(黄色)の増加
-				IncreaseGaugeGame();
-
 				// ゲーム状態の設定
 				SetGameState(GAMESTATE_RESET);
 
 				// 矩形の色の設定
 				SetColorRectangle(GetIdxBG(0), GetColor(COLOR_WHITE));
+
+				// ゲージのUIの変更
+				ChangeGaugeUI();
 			}
 			else
 			{// 不正解
@@ -114,6 +115,8 @@ void SetAnswer(int nNowLight)
 			s_bMax = true;
 			s_nTime = 0;
 			s_bAnswer = true;
+
+			
 		}
 	}
 	else

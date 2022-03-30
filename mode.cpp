@@ -60,6 +60,9 @@ void UninitMode(void)
 	// タイトルの終了
 	UninitTitle();
 
+	// チュートリアルの終了
+	UninitTutorial();
+
 	// ゲームの終了
 	UninitGame();
 
@@ -90,6 +93,10 @@ void UpdateMode(void)
 		UpdateTitle();
 		break;
 
+	case MODE_TUTORIAL:	// チュートリアル
+		UpdateTutorial();
+		break;
+
 	case MODE_GAME:		// ゲーム
 		UpdateGame();
 		break;
@@ -117,6 +124,10 @@ void DrawMode(void)
 	{// どのモード？
 	case MODE_TITLE:	// タイトル
 		DrawTitle();
+		break;
+
+	case MODE_TUTORIAL:	// チュートリアル
+		DrawTutorial();
 		break;
 
 	case MODE_GAME:		// ゲーム
@@ -163,6 +174,10 @@ void SetMode(void)
 		UninitTitle();
 		break;
 
+	case MODE_TUTORIAL:	// チュートリアル
+		UninitTutorial();
+		break;
+
 	case MODE_GAME:		// ゲーム
 		UninitGame();
 		break;
@@ -192,10 +207,16 @@ void SetMode(void)
 	// 矩形の初期化
 	InitFanangle();
 
+	s_mode = s_modeNext;	// 現在の画面(モード)を切り替える
+	
 	switch (s_modeNext)
 	{// 次のモードの初期化
 	case MODE_TITLE:	// タイトル
 		InitTitle();
+		break;
+
+	case MODE_TUTORIAL:	// チュートリアル
+		InitTutorial();
 		break;
 
 	case MODE_GAME:		// ゲーム
@@ -212,7 +233,6 @@ void SetMode(void)
 		break;
 	}
 
-	s_mode = s_modeNext;	// 現在の画面(モード)を切り替える
 	s_modeNext = MODE_NONE;
 }
 
