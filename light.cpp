@@ -22,6 +22,7 @@
 #include "game.h"
 #include "effect.h"
 #include "player.h"
+#include "time.h"
 
 #include <assert.h>
 
@@ -31,7 +32,7 @@
 namespace
 {
 const int	MAX_LIGHT = 16;		// ライトの最大数
-const int	MAX_TIME = 60;		// タイムの最大値
+const int	MAX_TIME = 2;		// タイムの最大値
 const int	REPEAT_TIME = 30;	// タイムの繰り返し
 const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
 
@@ -182,26 +183,32 @@ void UpdateLight(void)
 		{// 増え切った
 			if (s_bMax)
 			{
-				for (int i = 0; i < MAX_LIGHT; i++)
+				if (s_nTime >= MAX_TIME * 60)
 				{
-					// セレクトの描画するかどうか
-					SetDrawSelect(s_nIdxSelect, i, false);
+					for (int i = 0; i < MAX_LIGHT; i++)
+					{
+						// セレクトの描画するかどうか
+						SetDrawSelect(s_nIdxSelect, i, false);
+					}
+
+					for (int i = 0; i < s_nNowLight; i++)
+					{
+						// セレクトの描画するかどうか
+						SetDrawSelect(s_nIdxFrame, i, true);
+					}
+
+					// ゲーム状態の設定
+					SetGameState(GAMESTATE_PLAYER);
+
+					// 枠の設定
+					SetFramePlayer(0);
 				}
-
-				for (int i = 0; i < s_nNowLight; i++)
-				{
-					// セレクトの描画するかどうか
-					SetDrawSelect(s_nIdxFrame, i, true);
-				}
-
-				// ゲーム状態の設定
-				SetGameState(GAMESTATE_PLAYER);
-
-				// 枠の設定
-				SetFramePlayer(0);
 			}
-
-			s_bMax = true;
+			else
+			{
+				s_nTime = 0;
+				s_bMax = true;
+			}
 		}
 		break;
 
@@ -238,8 +245,6 @@ void UpdateLight(void)
 		assert(false);
 		break;
 	}
-
-	
 }
 
 //--------------------------------------------------
@@ -277,6 +282,21 @@ void SetDrawLight(int nNowLight)
 
 	// エフェクトの設定
 	SetEffect(GetPosSelect(s_nIdxSelect, nNowLight), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, nNowLight));
+}
+
+//--------------------------------------------------
+// 間違った
+//--------------------------------------------------
+void MistakeLight(void)
+{
+	for (int i = (GetPlayer() + 1); i < s_nMaxLight; i++)
+	{
+		// セレクトの描画するかどうか
+		SetDrawSelect(s_nIdxSelect, i, true);
+
+		// エフェクトの設定
+		SetEffect(GetPosSelect(s_nIdxSelect, i), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, i));
+	}
 }
 
 namespace

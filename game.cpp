@@ -358,6 +358,6 @@ bool GetEnablePause(void)
 //--------------------------------------------------
 void IncreaseGaugeGame(void)
 {
-	s_fGaugeWidth += SCREEN_WIDTH / 16.0f;
-	SetSizeGauge(s_nGaugeIdxYellow, s_fGaugeWidth, SCREEN_HEIGHT);
+	// ゲージのサイズの設定
+	SetSizeGauge(s_nGaugeIdxYellow, GetLight() * (SCREEN_WIDTH / 16.0f), SCREEN_HEIGHT);
 }

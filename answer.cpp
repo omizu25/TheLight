@@ -25,7 +25,7 @@
 //==================================================
 namespace
 {
-const int	MAX_TIME = 60;	// タイムの最大値
+const int	MAX_TIME = 120;	// タイムの最大値
 }// namespaceはここまで
 
  //==================================================
@@ -122,6 +122,9 @@ void SetAnswer(int nNowLight)
 		s_nTime = 0;
 		s_bMax = true;
 		s_bAnswer = false;
+
+		// 間違った
+		MistakeLight();
 	}
 }
 

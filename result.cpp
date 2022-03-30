@@ -23,13 +23,23 @@
 #include "input.h"
 #include "bg.h"
 #include "effect.h"
+#include "menu.h"
 
 //=============================================================================
 // 定義
 //=============================================================================
 namespace
 {
-const int	MAX_TIME = 600;	// タイムの最大値
+const int	MAX_TIME = 600;			// タイムの最大値
+const float	MENU_WIDTH = 300.0f;	// メニューの幅
+const float	MENU_HEIGHT = 80.0f;	// メニューの高さ
+
+typedef enum
+{
+	MENU_GAME = 0,	// ゲーム
+	MENU_TITLE,		// タイトル
+	MENU_MAX
+}MENU;
 }// namespaceはここまで
 
 //=============================================================================
@@ -38,7 +48,10 @@ const int	MAX_TIME = 600;	// タイムの最大値
 namespace
 {
 int	s_nIdxMoon;				// 背景の矩形のインデックス
-int	s_nIdxUI[2];			// UIの矩形のインデックス
+int	s_nIdxScore;			// スコアの矩形のインデックス
+int	s_nIdxBestScore;		// ベストスコアの矩形のインデックス
+int	s_nIdxLoop;				// ループの矩形のインデックス
+int	s_nIdxMenu;				// メニューの配列のインデックス
 int	s_nGaugeIdxGray;		// ゲージのインデックスの保管
 int	s_nGaugeIdxYellow;		// ゲージのインデックスの保管
 int	s_nTime;				// タイム
@@ -95,25 +108,58 @@ void InitResult(void)
 	}
 
 	{// 今回のスコア
-		s_nIdxUI[0] = SetRectangle(TEXTURE_YourScore);
+		s_nIdxScore = SetRectangle(TEXTURE_YourScore);
 
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.25f, 0.0f);
 		D3DXVECTOR3 size = D3DXVECTOR3(750.0f, 100.0f, 0.0f);
 
 		// 矩形の位置の設定
-		SetPosRectangle(s_nIdxUI[0], pos, size);
+		SetPosRectangle(s_nIdxScore, pos, size);
 	}
 
 	{// ベストスコア
 		// 矩形の設定
-		s_nIdxUI[1] = SetRectangle(TEXTURE_BestScore);
+		s_nIdxBestScore = SetRectangle(TEXTURE_BestScore);
 
 		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
 		D3DXVECTOR3 size = D3DXVECTOR3(750.0f, 100.0f, 0.0f);
 
 		// 矩形の位置の設定
-		SetPosRectangle(s_nIdxUI[1], pos, size);
+		SetPosRectangle(s_nIdxBestScore, pos, size);
 	}
+
+	{// メニュー
+		// メニューの初期化
+		InitMenu();
+
+		MenuArgument menu;
+		menu.nNumUse = MENU_MAX;
+		menu.fLeft =  0.0f;
+		menu.fRight = SCREEN_WIDTH;
+		menu.fTop = SCREEN_HEIGHT * 0.75f;
+		menu.fBottom = SCREEN_HEIGHT * 0.75f;
+		menu.fWidth = MENU_WIDTH;
+		menu.fHeight = MENU_HEIGHT;
+		menu.bSort = false;
+
+		menu.texture[MENU_GAME] = TEXTURE_TITLE_UI;
+		menu.texture[MENU_TITLE] = TEXTURE_TITLE_UI;
+
+		FrameArgument Frame;
+		Frame.bUse = false;
+		Frame.col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.5f);
+		Frame.texture = TEXTURE_NONE;
+
+		// メニューの設定
+		s_nIdxMenu = SetMenu(menu, Frame);
+
+		// 選択肢の色の設定
+		SetColorOption(s_nIdxMenu, GetColor(COLOR_WHITE), D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+
+		// 選ばれていない選択肢の色の設定
+		SetColorDefaultOption(s_nIdxMenu, GetColor(COLOR_WHITE));
+	}
+
 
 	// ランキングの初期化
 	InitRanking();
@@ -134,6 +180,8 @@ void UninitResult(void)
 
 	// 使うのを止める
 	StopUseRectangle(s_nIdxMoon);
+	StopUseRectangle(s_nIdxScore);
+	StopUseRectangle(s_nIdxBestScore);
 
 	// ゲージの終了
 	UninitGauge();
