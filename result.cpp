@@ -256,9 +256,8 @@ void Input(void)
 		return;
 	}
 
-	if (GetKeyboardTrigger(DIK_W) || GetKeyboardTrigger(DIK_UP) ||
-		GetJoypadTrigger(JOYKEY_CROSS_UP, 0) || GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_UP, 0))
-	{// Wキーが押されたかどうか
+	if (GetMoveKeyTrigger(MOVE_KEY_LEFT))
+	{// Aキーが押されたかどうか
 		// 選択肢の色の初期化
 		InitColorOption();
 
@@ -272,9 +271,8 @@ void Input(void)
 
 		s_nTime = 0;
 	}
-	else if (GetKeyboardTrigger(DIK_S) || GetKeyboardTrigger(DIK_DOWN) ||
-		GetJoypadTrigger(JOYKEY_CROSS_DOWN, 0) || GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN, 0))
-	{// Sキーが押されたかどうか
+	else if (GetMoveKeyTrigger(MOVE_KEY_RIGHT))
+	{// Dキーが押されたかどうか
 		// 選択肢の色の初期化
 		InitColorOption();
 
