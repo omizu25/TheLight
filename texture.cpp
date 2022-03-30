@@ -31,7 +31,6 @@ const char *s_FileName[] =
 	"data/TEXTURE/Bg001.png",						// 家
 	"data/TEXTURE/Bg002.png",						// 背景
 	"data/TEXTURE/BgMoon.png",						// 月
-	"data/TEXTURE/loop.png",						// ループ
 	"data/TEXTURE/end.png",							// やめる
 	"data/TEXTURE/play.png",						// 遊ぶ
 	"data/TEXTURE/effect/effect_000.png",			// エフェクト

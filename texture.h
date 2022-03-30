@@ -23,7 +23,6 @@ typedef enum
 	TEXTURE_BG_1,				// 家
 	TEXTURE_BG_2,				// 背景
 	TEXTURE_BG_MOON,			// 月
-	TEXTURE_loop,				// ループ
 	TEXTURE_end,				// やめる
 	TEXTURE_play,				// 遊ぶ
 	TEXTURE_effect_000,			// エフェクト

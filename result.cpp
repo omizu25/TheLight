@@ -24,15 +24,20 @@
 #include "bg.h"
 #include "effect.h"
 #include "menu.h"
+#include "fade.h"
+#include "cursor.h"
+
+#include <assert.h>
 
 //=============================================================================
 // 定義
 //=============================================================================
 namespace
 {
-const int	MAX_TIME = 600;			// タイムの最大値
-const float	MENU_WIDTH = 300.0f;	// メニューの幅
+const int	MAX_TIME = 900;			// タイムの最大値
+const float	MENU_WIDTH = 280.0f;	// メニューの幅
 const float	MENU_HEIGHT = 80.0f;	// メニューの高さ
+const float	CURSOR_SIZE = 50.0f;	// カーソルのサイズ
 
 typedef enum
 {
@@ -50,8 +55,9 @@ namespace
 int	s_nIdxMoon;				// 背景の矩形のインデックス
 int	s_nIdxScore;			// スコアの矩形のインデックス
 int	s_nIdxBestScore;		// ベストスコアの矩形のインデックス
-int	s_nIdxLoop;				// ループの矩形のインデックス
 int	s_nIdxMenu;				// メニューの配列のインデックス
+int	s_nSelectMenu;			// 選ばれているメニュー
+int	s_nIdxCursor;			// カーソルの配列のインデックス
 int	s_nGaugeIdxGray;		// ゲージのインデックスの保管
 int	s_nGaugeIdxYellow;		// ゲージのインデックスの保管
 int	s_nTime;				// タイム
@@ -59,9 +65,13 @@ float s_fGaugeAlphaGray;	// 現在のゲージのアルファ値
 float s_fGaugeAlphaYellow;	// 現在のゲージのアルファ値
 }// namespaceはここまで
 
+ //=============================================================================
+// スタティック関数プロトタイプ宣言
 //=============================================================================
-// プロトタイプ宣言
-//=============================================================================
+namespace
+{
+void Input(void);
+}// namespaceはここまで
 
 //=============================================================================
 // リザルト初期化処理
@@ -136,14 +146,14 @@ void InitResult(void)
 		menu.nNumUse = MENU_MAX;
 		menu.fLeft =  0.0f;
 		menu.fRight = SCREEN_WIDTH;
-		menu.fTop = SCREEN_HEIGHT * 0.75f;
-		menu.fBottom = SCREEN_HEIGHT * 0.75f;
+		menu.fTop = SCREEN_HEIGHT * 0.7f;
+		menu.fBottom = SCREEN_HEIGHT * 0.7f;
 		menu.fWidth = MENU_WIDTH;
 		menu.fHeight = MENU_HEIGHT;
 		menu.bSort = false;
 
-		menu.texture[MENU_GAME] = TEXTURE_TITLE_UI;
-		menu.texture[MENU_TITLE] = TEXTURE_TITLE_UI;
+		menu.texture[MENU_GAME] = TEXTURE_play;
+		menu.texture[MENU_TITLE] = TEXTURE_end;
 
 		FrameArgument Frame;
 		Frame.bUse = false;
@@ -158,8 +168,28 @@ void InitResult(void)
 
 		// 選ばれていない選択肢の色の設定
 		SetColorDefaultOption(s_nIdxMenu, GetColor(COLOR_WHITE));
+
+		s_nSelectMenu = 0;
 	}
 
+	{// カーソル
+		// カーソル初期化
+		InitCursor();
+
+		CursorArgument cursor;
+		cursor.nNumUse = MENU_MAX;
+		cursor.fPosX = SCREEN_WIDTH * 0.65f;
+		cursor.fTop = SCREEN_HEIGHT * 0.5f;
+		cursor.fBottom = SCREEN_HEIGHT;
+		cursor.fWidth = CURSOR_SIZE;
+		cursor.fHeight = CURSOR_SIZE;
+		cursor.texture = TEXTURE_Cursor_Right;
+		cursor.nSelect = s_nSelectMenu;
+		cursor.bRotation = false;
+
+		// カーソルの設定
+		//s_nIdxCursor = SetCursor(cursor);
+	}
 
 	// ランキングの初期化
 	InitRanking();
@@ -193,7 +223,13 @@ void UninitResult(void)
 	UninitEffect();
 
 	// スコアの終了
-	InitScore();
+	UninitScore();
+
+	// メニューの終了
+	UninitMenu();
+
+	// カーソルの終了
+	UninitCursor();
 }
 
 //=============================================================================
@@ -213,6 +249,12 @@ void UpdateResult(void)
 	// ランキングの更新
 	UpdateRanking();
 
+	// メニューの更新更新
+	UpdateMenu();
+
+	// カーソルの更新
+	UpdateCursor();
+
 	s_nTime++;
 
 	if (s_nTime >= MAX_TIME)
@@ -221,14 +263,8 @@ void UpdateResult(void)
 		ChangeMode(MODE_TITLE);
 	}
 
-	if (GetFunctionKeyTrigger(FUNCTION_KEY_DESISION))
-	{//決定キー(ENTERキー)が押されたかどうか
-		// モードの変更
-		ChangeMode(MODE_TITLE);
-
-		// サウンドの再生
-		PlaySound(SOUND_LABEL_SE_ENTER);
-	}
+	// 入力
+	Input();
 
 	float fCurve = CosCurve(s_nTime, 0.01f);
 	s_fGaugeAlphaGray = Curve(fCurve, 0.3f, 0.6f);
@@ -264,3 +300,76 @@ void DrawResult(void)
 	// 矩形の描画
 	DrawRectangle();
 }
+
+namespace
+{
+//--------------------------------------------------
+// 入力
+//--------------------------------------------------
+void Input(void)
+{
+	if (GetFade() != FADE_NONE)
+	{// フェードしている
+		return;
+	}
+
+	if (GetKeyboardTrigger(DIK_W) || GetKeyboardTrigger(DIK_UP) ||
+		GetJoypadTrigger(JOYKEY_CROSS_UP, 0) || GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_UP, 0))
+	{// Wキーが押されたかどうか
+		// 選択肢の色の初期化
+		InitColorOption();
+
+		s_nSelectMenu = ((s_nSelectMenu - 1) + MENU_MAX) % MENU_MAX;
+
+		// 選択肢の変更
+		ChangeOption(s_nSelectMenu);
+
+		// カーソルの位置の変更
+		//ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
+
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_SELECT);
+	}
+	else if (GetKeyboardTrigger(DIK_S) || GetKeyboardTrigger(DIK_DOWN) ||
+		GetJoypadTrigger(JOYKEY_CROSS_DOWN, 0) || GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN, 0))
+	{// Sキーが押されたかどうか
+		// 選択肢の色の初期化
+		InitColorOption();
+
+		s_nSelectMenu = ((s_nSelectMenu + 1) + MENU_MAX) % MENU_MAX;
+
+		// 選択肢の変更
+		ChangeOption(s_nSelectMenu);
+
+		// カーソルの位置の変更
+		//ChangePosCursor(s_nIdxCursor, s_nSelectMenu);
+
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_SELECT);
+	}
+
+	if (GetFunctionKeyTrigger(FUNCTION_KEY_DESISION))
+	{//決定キー(ENTERキー)が押されたかどうか
+		switch (s_nSelectMenu)
+		{
+		case MENU_GAME:		// ゲーム
+			ChangeMode(MODE_GAME);
+			break;
+
+		case MENU_TITLE:	// タイトル
+			ChangeMode(MODE_TITLE);
+			break;
+
+		default:
+			assert(false);
+			break;
+		}
+
+		// 選択肢の決定
+		DecisionOption();
+
+		// サウンドの再生
+		PlaySound(SOUND_LABEL_SE_ENTER);
+	}
+}
+}// namespaceはここまで

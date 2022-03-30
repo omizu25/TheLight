@@ -32,7 +32,7 @@
 namespace
 {
 const int	MAX_LIGHT = 16;		// ライトの最大数
-const int	MAX_TIME = 2;		// タイムの最大値
+const int	MAX_TIME = 120;		// タイムの最大値
 const int	REPEAT_TIME = 30;	// タイムの繰り返し
 const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
 
@@ -183,7 +183,7 @@ void UpdateLight(void)
 		{// 増え切った
 			if (s_bMax)
 			{
-				if (s_nTime >= MAX_TIME * 60)
+				if (s_nTime >= MAX_TIME)
 				{
 					for (int i = 0; i < MAX_LIGHT; i++)
 					{
