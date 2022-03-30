@@ -36,6 +36,7 @@ D3DXVECTOR3 g_JoyStickPos[PLAYER_MAX];				//ジョイスティックの傾き
 JOYKEY g_OldJoyKeyStick[PLAYER_MAX][JOYKEY_RIGHT_LEFT_MAX];			//前回のスティックの位置
 FUNCTION_KEY g_OldFunctionKey;										//前回の機能キーの情報
 LIGHT_KEY g_OldLightKey = LIGHT_KEY_MAX;							//前回のライトのキーの情報
+MOVE_KEY g_OldMoveKey;
 
 int g_nKeyCnt;
 
@@ -410,7 +411,7 @@ bool GetJoypadAllTrigger(JOYKEY Key)
 	return false;
 }
 
-//移動系のキーまとめ
+//移動系のキーまとめプレス
 bool GetMoveKeyPress(MOVE_KEY Key)
 {
 	if (Key == MOVE_KEY_UP)
@@ -559,5 +560,34 @@ bool GetLightKeyTrigger(LIGHT_KEY Key)
 	}
 
 	g_OldLightKey = LIGHT_KEY_MAX;							//前回のライトのキーの情報のリセット
+	return false;
+}
+
+//移動系のキーまとめトリガー
+bool GetMoveKeyTrigger(MOVE_KEY Key)
+{
+	if (!GetMoveKeyPress(Key)
+		&& g_OldMoveKey != Key)
+	{
+		return false;
+	}
+	else if (GetMoveKeyPress(Key)
+		&& g_OldMoveKey == Key)
+	{
+		return false;
+	}
+	else if (GetMoveKeyPress(Key)
+		&& g_OldMoveKey == MOVE_KEY_MAX)
+	{
+		g_OldMoveKey = Key;
+		return true;
+	}
+	else if (GetMoveKeyPress(Key)
+		&& g_OldMoveKey != Key)
+	{
+		return false;
+	}
+
+	g_OldMoveKey = MOVE_KEY_MAX;							//前回のライトのキーの情報のリセット
 	return false;
 }

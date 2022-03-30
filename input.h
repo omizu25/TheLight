@@ -118,7 +118,9 @@ bool GetJoypadStickAllTrigger(JOYKEY_RIGHT_LEFT RightLeft, JOYKEY Key);					//ジ
 bool GetJoypadAllTrigger(JOYKEY Key);															//ジョイパッドトリガーの全プレイヤーの対象
 
 bool GetMoveKeyPress(MOVE_KEY Key);									//移動系のキーまとめ
+bool GetMoveKeyTrigger(MOVE_KEY Key);								//移動系のキーまとめトリガー
 bool GetFunctionKeyTrigger(FUNCTION_KEY Key);						//機能系のキーまとめ
 bool GetLightKeyPress(LIGHT_KEY Key);									//ライトの色選択キーのプレス
 bool GetLightKeyTrigger(LIGHT_KEY Key);									//ライトの色選択キーのトリガー
+
 #endif
