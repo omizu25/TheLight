@@ -81,6 +81,9 @@ void UpdateAnswer(void)
 
 				// ゲージのUIの変更
 				ChangeGaugeUI();
+
+				// 押せの描画するかどうか
+				SetDrawPushPlayer(false);
 			}
 			else
 			{// 不正解
@@ -115,8 +118,6 @@ void SetAnswer(int nNowLight)
 			s_bMax = true;
 			s_nTime = 0;
 			s_bAnswer = true;
-
-			
 		}
 	}
 	else

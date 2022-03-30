@@ -31,10 +31,13 @@
 //==================================================
 namespace
 {
-const int	MAX_LIGHT = 16;		// ライトの最大数
-const int	MAX_TIME = 120;		// タイムの最大値
-const int	REPEAT_TIME = 30;	// タイムの繰り返し
-const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
+const int	MAX_LIGHT = 16;			// ライトの最大数
+const int	MAX_LEARN = 3;			// 覚えろの最大数
+const int	MAX_TIME = 120;			// タイムの最大値
+const int	REPEAT_TIME = 30;		// タイムの繰り返し
+const float	LIGHT_SIZE = 50.0f;		// ライトのサイズ
+const float	LEARN_WIDTH = 280.0f;	// 覚えろの幅
+const float	LEARN_HEIGHT = 100.0f;	// 覚えろの高さ
 
 typedef enum
 {
@@ -53,6 +56,7 @@ namespace
 {
 int		s_nNowLight;				// ライトの現在数
 int		s_nMaxLight;				// ライトの最大数
+int		s_nIdxLearn;				// 覚えろの矩形のインデックス
 int		s_nIdxSelect;				// メニューの配列のインデックス
 int		s_nIdxFrame;				// 枠の配列のインデックス
 int		s_nTime;					// タイム
@@ -81,6 +85,17 @@ void InitLight(void)
 
 	s_nNowLight = 0;
 	s_nMaxLight = 1;
+
+	{// 覚えろ
+		// 矩形の設定
+		s_nIdxLearn = SetRectangle(TEXTURE_Learn);
+
+		D3DXVECTOR3 size = D3DXVECTOR3(LEARN_WIDTH, LEARN_HEIGHT, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH - (LEARN_WIDTH * 0.5f), SCREEN_HEIGHT * 0.35f, 0.0f);
+
+		// 矩形の位置の設定
+		SetPosRectangle(s_nIdxLearn, pos, size);
+	}
 
 	{// 枠
 		SelectArgument select;
@@ -151,6 +166,8 @@ void InitLight(void)
 //--------------------------------------------------
 void UninitLight(void)
 {
+	// 使うのを止める
+	StopUseRectangle(s_nIdxLearn);
 }
 
 //--------------------------------------------------
@@ -200,6 +217,15 @@ void UpdateLight(void)
 					// ゲーム状態の設定
 					SetGameState(GAMESTATE_PLAYER);
 
+					// 矩形の描画するかどうか
+					SetDrawRectangle(s_nIdxLearn, false);
+
+					if (s_nMaxLight <= MAX_LEARN)
+					{// 指定値以下
+						// 押せの描画するかどうか
+						SetDrawPushPlayer(true);
+					}
+
 					// 枠の設定
 					SetFramePlayer(0);
 				}
@@ -233,6 +259,12 @@ void UpdateLight(void)
 
 		// 描画のリセット
 		ResetDrawLight();
+
+		if (s_nMaxLight <= MAX_LEARN)
+		{// 指定値以下
+			// 矩形の描画するかどうか
+			SetDrawRectangle(s_nIdxLearn, true);
+		}
 
 		break;
 

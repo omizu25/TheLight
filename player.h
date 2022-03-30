@@ -49,4 +49,10 @@ int GetColorPlayer(int nNowLight);
 //--------------------------------------------------
 void SetFramePlayer(int nNowLight);
 
+//--------------------------------------------------
+// âüÇπÇÃï`âÊÇ∑ÇÈÇ©Ç«Ç§Ç©
+// à¯êî  : bool bDraw / ï`âÊÇ∑ÇÈÇ©Ç«Ç§Ç©
+//--------------------------------------------------
+void SetDrawPushPlayer(bool bDraw);
+
 #endif // !_PLAYER_H_

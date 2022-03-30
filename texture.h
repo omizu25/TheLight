@@ -25,6 +25,8 @@ typedef enum
 	TEXTURE_BG_MOON,			// 月
 	TEXTURE_end,				// やめる
 	TEXTURE_play,				// 遊ぶ
+	TEXTURE_Learn,				// 覚えろ
+	TEXTURE_Push,				// 押せ
 	TEXTURE_effect_000,			// エフェクト
 	TEXTURE_effect_001,			// エフェクト
 	TEXTURE_effect_002,			// エフェクト
