@@ -30,6 +30,8 @@ const float	MAX_ALPHA_GRAY = 0.6f;		// 灰色のゲージのα値の最大値
 const float	MAX_ALPHA_YELLOW = 1.0f;	// 黄色のゲージのα値の最大値
 const float	MIN_ALPHA_GRAY = 0.3f;		// 灰色のゲージのα値の最小値
 const float	MIN_ALPHA_YELLOW = 0.3f;	// 黄色のゲージのα値の最小値
+const D3DXVECTOR3 MOON_POS(140.5f, 90.5f, 0.0f);	// 月の座標
+const int MOONEFFECT_TIME = 45;
 }// namespaceはここまで
 
 //==================================================
@@ -127,15 +129,14 @@ void ChangeGaugeUI(void)
 //--------------------------------------------------
 void UpdateEffectMoonUI(void)
 {
-	if (s_nTimeMoon % 45 == 0)
+	if (s_nTimeMoon % MOONEFFECT_TIME == 0)
 	{
-		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
+		// 色の設定
 		D3DXCOLOR col = GetColor(COLOR_WHITE);
-
 		col.b = 0.1f;
 
 		// エフェクトの設定
-		SetEffect(pos, EFFECT_TYPE_003, col);
+		SetEffect(MOON_POS, EFFECT_TYPE_003, col);
 	}
 
 	s_nTimeMoon++;
