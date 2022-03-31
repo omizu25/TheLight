@@ -221,11 +221,11 @@ void UpdateLight(void)
 					// ゲーム状態の設定
 					SetGameState(GAMESTATE_PLAYER);
 
-					// 矩形の描画するかどうか
-					SetDrawRectangle(s_nIdxLearn, false);
+					// 矩形の色の設定
+					SetColorRectangle(s_nIdxLearn, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 
-					// 押せの描画するかどうか
-					SetDrawPushPlayer(true);
+					// 押せの色の設定
+					SetColorPushPlayer(GetColor(COLOR_WHITE));
 					
 					// 枠の設定
 					SetFramePlayer(0);
@@ -261,8 +261,8 @@ void UpdateLight(void)
 		// 描画のリセット
 		ResetDrawLight();
 
-		// 矩形の描画するかどうか
-		SetDrawRectangle(s_nIdxLearn, true);
+		// 矩形の色の設定
+		SetColorRectangle(s_nIdxLearn, GetColor(COLOR_WHITE));
 
 		break;
 

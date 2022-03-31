@@ -82,8 +82,8 @@ void UpdateAnswer(void)
 				// ゲージのUIの変更
 				ChangeGaugeUI();
 
-				// 押せの描画するかどうか
-				SetDrawPushPlayer(false);
+				// 押せの色の設定
+				SetColorPushPlayer(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 			}
 			else
 			{// 不正解

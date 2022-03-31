@@ -97,8 +97,8 @@ void InitPlayer(void)
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdxPush, pos, size);
 
-		// 矩形の描画するかどうか
-		SetDrawRectangle(s_nIdxPush, false);
+		// 矩形の色の設定
+		SetColorRectangle(s_nIdxPush, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 	}
 
 	{// 枠
@@ -366,12 +366,12 @@ void SetFramePlayer(int nNowLight)
 }
 
 //--------------------------------------------------
-// 押せの描画するかどうか
+// 押せの色の設定
 //--------------------------------------------------
-void SetDrawPushPlayer(bool bDraw)
+void SetColorPushPlayer(D3DXCOLOR col)
 {
-	// 矩形の描画するかどうか
-	SetDrawRectangle(s_nIdxPush, bDraw);
+	// 矩形の色の設定
+	SetColorRectangle(s_nIdxPush, col);
 }
 
 namespace
