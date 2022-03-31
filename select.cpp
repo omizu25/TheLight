@@ -207,6 +207,20 @@ void SetColorSelect(int nIdxSelect, int nIdxOption, COLOR color)
 }
 
 //--------------------------------------------------
+// セレクトのテクスチャの変更
+//--------------------------------------------------
+void ChangeTextuteSelect(int nIdxSelect, int nIdxOption, TEXTURE texture)
+{
+	assert(nIdxSelect >= 0 && nIdxSelect < MAX_SELECT);
+	assert(nIdxOption >= 0 && nIdxOption < MAX_OPTION);
+
+	Option *pOption = &s_aSelect[nIdxSelect].Option[nIdxOption];
+
+	// 矩形の色の設定
+	ChangeTextureRectangle(pOption->nIdx, texture);
+}
+
+//--------------------------------------------------
 // リセット
 //--------------------------------------------------
 void ResetSelect(int nIdx)
