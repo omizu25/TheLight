@@ -53,15 +53,16 @@ typedef enum
 //==================================================
 namespace
 {
-int		s_nNowLight;				// ライトの現在数
-int		s_nMaxLight;				// ライトの最大数
-int		s_nIdxLearn;				// 覚えろの矩形のインデックス
-int		s_nIdxSelect;				// メニューの配列のインデックス
-int		s_nIdxFrame;				// 枠の配列のインデックス
-int		s_nTime;					// タイム
-int		s_nIdxColor[MAX_LIGHT];		// 色の番号
-bool	s_bMax;						// 増え切った
-COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
+int		s_nNowLight;					// ライトの現在数
+int		s_nMaxLight;					// ライトの最大数
+int		s_nIdxLearn;					// 覚えろの矩形のインデックス
+int		s_nIdxSelect;					// メニューの配列のインデックス
+int		s_nIdxFrame;					// 枠の配列のインデックス
+int		s_nTime;						// タイム
+int		s_nIdxColor[MAX_LIGHT];			// 色の番号
+bool	s_bMax;							// 増え切った
+COLOR	s_aColor[LIGHT_COLOR_MAX];		// ライトの色
+TEXTURE	s_aTexture[LIGHT_COLOR_MAX];	// テクスチャ
 }// namespaceはここまで
 
 //==================================================
@@ -81,6 +82,10 @@ void InitLight(void)
 	s_aColor[LIGHT_COLOR_GREEN] = COLOR_GREEN;
 	s_aColor[LIGHT_COLOR_BLUE] = COLOR_BLUE;
 	s_aColor[LIGHT_COLOR_YELLOW] = COLOR_YELLOW;
+	s_aTexture[LIGHT_COLOR_RED] = TEXTURE_Red;
+	s_aTexture[LIGHT_COLOR_GREEN] = TEXTURE_Green;
+	s_aTexture[LIGHT_COLOR_BLUE] = TEXTURE_Blue;
+	s_aTexture[LIGHT_COLOR_YELLOW] = TEXTURE_Yellow;
 
 	s_nNowLight = 0;
 	s_nMaxLight = 1;
@@ -90,7 +95,7 @@ void InitLight(void)
 		s_nIdxLearn = SetRectangle(TEXTURE_Learn);
 
 		D3DXVECTOR3 size = D3DXVECTOR3(LEARN_WIDTH, LEARN_HEIGHT, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH - (LEARN_WIDTH * 0.5f), SCREEN_HEIGHT * 0.35f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(LEARN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.35f, 0.0f);
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdxLearn, pos, size);
@@ -99,8 +104,8 @@ void InitLight(void)
 	{// 枠
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
-		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH - LEARN_WIDTH;
+		select.fLeft = LEARN_WIDTH;
+		select.fRight = SCREEN_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.35f;
 		select.fBottom = SCREEN_HEIGHT * 0.35f;
 		select.fWidth = LIGHT_SIZE;
@@ -125,8 +130,8 @@ void InitLight(void)
 	{// メニュー
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
-		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH - LEARN_WIDTH;
+		select.fLeft = LEARN_WIDTH;
+		select.fRight = SCREEN_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.35f;
 		select.fBottom = SCREEN_HEIGHT * 0.35f;
 		select.fWidth = LIGHT_SIZE;
@@ -146,15 +151,15 @@ void InitLight(void)
 	{
 		s_nIdxColor[i] = IntRandam(LIGHT_COLOR_MAX, 0);
 
-		// セレクトの色の設定
-		SetColorSelect(s_nIdxSelect, i, s_aColor[s_nIdxColor[i]]);
+		// セレクトのテクスチャの設定
+		ChangeTextuteSelect(s_nIdxSelect, i, s_aTexture[s_nIdxColor[i]]);
 	}
 
 	// 応急処置
 	s_nIdxColor[0] = IntRandam(LIGHT_COLOR_MAX, 0);
 
-	// セレクトの色の設定
-	SetColorSelect(s_nIdxSelect, 0, s_aColor[s_nIdxColor[0]]);
+	// セレクトのテクスチャの設定
+	ChangeTextuteSelect(s_nIdxSelect, 0, s_aTexture[s_nIdxColor[0]]);
 
 	// 描画のリセット
 	ResetDrawLight();
@@ -190,7 +195,7 @@ void UpdateLight(void)
 			s_nNowLight++;
 			
 			// エフェクトの設定
-			SetEffect(GetPosSelect(s_nIdxSelect, s_nNowLight - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nNowLight - 1));
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nNowLight - 1), EFFECT_TYPE_000, GetColor(s_aColor[s_nIdxColor[s_nNowLight - 1]]));
 			
 			// 描画のリセット
 			ResetDrawLight();
@@ -216,11 +221,11 @@ void UpdateLight(void)
 					// ゲーム状態の設定
 					SetGameState(GAMESTATE_PLAYER);
 
-					// 矩形の描画するかどうか
-					SetDrawRectangle(s_nIdxLearn, false);
+					// 矩形の色の設定
+					SetColorRectangle(s_nIdxLearn, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 
-					// 押せの描画するかどうか
-					SetDrawPushPlayer(true);
+					// 押せの色の設定
+					SetColorPushPlayer(GetColor(COLOR_WHITE));
 					
 					// 枠の設定
 					SetFramePlayer(0);
@@ -249,15 +254,15 @@ void UpdateLight(void)
 		{
 			s_nIdxColor[i] = IntRandam(LIGHT_COLOR_MAX, 0);
 
-			// セレクトの色の設定
-			SetColorSelect(s_nIdxSelect, i, s_aColor[s_nIdxColor[i]]);
+			// セレクトのテクスチャの設定
+			ChangeTextuteSelect(s_nIdxSelect, i, s_aTexture[s_nIdxColor[i]]);
 		}
 
 		// 描画のリセット
 		ResetDrawLight();
 
-		// 矩形の描画するかどうか
-		SetDrawRectangle(s_nIdxLearn, true);
+		// 矩形の色の設定
+		SetColorRectangle(s_nIdxLearn, GetColor(COLOR_WHITE));
 
 		break;
 
@@ -306,7 +311,7 @@ void SetDrawLight(int nNowLight)
 	SetDrawSelect(s_nIdxSelect, nNowLight, true);
 
 	// エフェクトの設定
-	SetEffect(GetPosSelect(s_nIdxSelect, nNowLight), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, nNowLight));
+	SetEffect(GetPosSelect(s_nIdxSelect, nNowLight), EFFECT_TYPE_000, GetColor(s_aColor[s_nIdxColor[nNowLight]]));
 }
 
 //--------------------------------------------------
@@ -320,7 +325,7 @@ void MistakeLight(void)
 		SetDrawSelect(s_nIdxSelect, i, true);
 
 		// エフェクトの設定
-		SetEffect(GetPosSelect(s_nIdxSelect, i), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, i));
+		SetEffect(GetPosSelect(s_nIdxSelect, i), EFFECT_TYPE_000, GetColor(s_aColor[s_nIdxColor[i]]));
 	}
 }
 

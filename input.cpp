@@ -566,12 +566,7 @@ bool GetLightKeyTrigger(LIGHT_KEY Key)
 //移動系のキーまとめトリガー
 bool GetMoveKeyTrigger(MOVE_KEY Key)
 {
-	if (!GetMoveKeyPress(Key)
-		&& g_OldMoveKey != Key)
-	{
-		return false;
-	}
-	else if (GetMoveKeyPress(Key)
+	if (GetMoveKeyPress(Key)
 		&& g_OldMoveKey == Key)
 	{
 		return false;
@@ -582,8 +577,7 @@ bool GetMoveKeyTrigger(MOVE_KEY Key)
 		g_OldMoveKey = Key;
 		return true;
 	}
-	else if (GetMoveKeyPress(Key)
-		&& g_OldMoveKey != Key)
+	else if (GetMoveKeyPress(g_OldMoveKey))
 	{
 		return false;
 	}

@@ -27,6 +27,10 @@ typedef enum
 	TEXTURE_play,				// 遊ぶ
 	TEXTURE_Learn,				// 覚えろ
 	TEXTURE_Push,				// 押せ
+	TEXTURE_Red,				// 赤
+	TEXTURE_Green,				// 緑
+	TEXTURE_Blue,				// 青
+	TEXTURE_Yellow,				// 黄色
 	TEXTURE_effect_000,			// エフェクト
 	TEXTURE_effect_001,			// エフェクト
 	TEXTURE_effect_002,			// エフェクト

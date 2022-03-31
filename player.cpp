@@ -54,12 +54,13 @@ typedef enum
  //==================================================
 namespace
 {
-COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
-int		s_nPlayer;					// ライトの現在の数
-int		s_nIdxPush;					// 押せの矩形のインデックス
-int		s_nIdxSelect;				// メニューの配列のインデックス
-int		s_nIdxFrame;				// 枠の配列のインデックス
-int		s_nIdxColor[MAX_LIGHT];		// 色の番号
+COLOR	s_aColor[LIGHT_COLOR_MAX];		// ライトの色
+int		s_nPlayer;						// ライトの現在の数
+int		s_nIdxPush;						// 押せの矩形のインデックス
+int		s_nIdxSelect;					// メニューの配列のインデックス
+int		s_nIdxFrame;					// 枠の配列のインデックス
+int		s_nIdxColor[MAX_LIGHT];			// 色の番号
+TEXTURE	s_aTexture[LIGHT_COLOR_MAX];	// テクスチャ
 }// namespaceはここまで
 
  //==================================================
@@ -79,6 +80,10 @@ void InitPlayer(void)
 	s_aColor[LIGHT_COLOR_GREEN] = COLOR_GREEN;
 	s_aColor[LIGHT_COLOR_BLUE] = COLOR_BLUE;
 	s_aColor[LIGHT_COLOR_YELLOW] = COLOR_YELLOW;
+	s_aTexture[LIGHT_COLOR_RED] = TEXTURE_Red;
+	s_aTexture[LIGHT_COLOR_GREEN] = TEXTURE_Green;
+	s_aTexture[LIGHT_COLOR_BLUE] = TEXTURE_Blue;
+	s_aTexture[LIGHT_COLOR_YELLOW] = TEXTURE_Yellow;
 
 	s_nPlayer = 0;
 
@@ -87,20 +92,20 @@ void InitPlayer(void)
 		s_nIdxPush = SetRectangle(TEXTURE_Push);
 
 		D3DXVECTOR3 size = D3DXVECTOR3(PUSH_WIDTH, PUSH_HEIGHT, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH - (PUSH_WIDTH * 0.5f), SCREEN_HEIGHT * 0.5f, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(PUSH_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
 
 		// 矩形の位置の設定
 		SetPosRectangle(s_nIdxPush, pos, size);
 
-		// 矩形の描画するかどうか
-		SetDrawRectangle(s_nIdxPush, false);
+		// 矩形の色の設定
+		SetColorRectangle(s_nIdxPush, D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 	}
 
 	{// 枠
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
-		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH - PUSH_WIDTH;
+		select.fLeft = PUSH_WIDTH;
+		select.fRight = SCREEN_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.5f;
 		select.fBottom = SCREEN_HEIGHT * 0.5f;
 		select.fWidth = LIGHT_SIZE;
@@ -119,8 +124,8 @@ void InitPlayer(void)
 	{// メニュー
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
-		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH - PUSH_WIDTH;
+		select.fLeft = PUSH_WIDTH;
+		select.fRight = SCREEN_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.5f;
 		select.fBottom = SCREEN_HEIGHT * 0.5f;
 		select.fWidth = LIGHT_SIZE;
@@ -184,8 +189,8 @@ void UpdatePlayer(void)
 			PlaySound(SOUND_LABEL_SE_SELECT);
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_RED;
 
-			// セレクトの色の設定
-			SetColorSelect(s_nIdxSelect, s_nPlayer, s_aColor[s_nIdxColor[s_nPlayer]]);
+			// セレクトのテクスチャの設定
+			ChangeTextuteSelect(s_nIdxSelect, s_nPlayer, s_aTexture[s_nIdxColor[s_nPlayer]]);
 
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
@@ -208,15 +213,15 @@ void UpdatePlayer(void)
 			SetFramePlayer(s_nPlayer);
 
 			// エフェクトの設定
-			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColor(s_aColor[s_nIdxColor[s_nPlayer - 1]]));
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_GREEN))
 		{// 緑
 			PlaySound(SOUND_LABEL_SE_SELECT);
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_GREEN;
 
-			// セレクトの色の設定
-			SetColorSelect(s_nIdxSelect, s_nPlayer, s_aColor[s_nIdxColor[s_nPlayer]]);
+			// セレクトのテクスチャの設定
+			ChangeTextuteSelect(s_nIdxSelect, s_nPlayer, s_aTexture[s_nIdxColor[s_nPlayer]]);
 
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
@@ -239,15 +244,15 @@ void UpdatePlayer(void)
 			SetFramePlayer(s_nPlayer);
 
 			// エフェクトの設定
-			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColor(s_aColor[s_nIdxColor[s_nPlayer - 1]]));
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_BLUE))
 		{// 青
 			PlaySound(SOUND_LABEL_SE_SELECT);
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_BLUE;
 
-			// セレクトの色の設定
-			SetColorSelect(s_nIdxSelect, s_nPlayer, s_aColor[s_nIdxColor[s_nPlayer]]);
+			// セレクトのテクスチャの設定
+			ChangeTextuteSelect(s_nIdxSelect, s_nPlayer, s_aTexture[s_nIdxColor[s_nPlayer]]);
 
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
@@ -270,15 +275,15 @@ void UpdatePlayer(void)
 			SetFramePlayer(s_nPlayer);
 
 			// エフェクトの設定
-			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColor(s_aColor[s_nIdxColor[s_nPlayer - 1]]));
 		}
 		else if (GetLightKeyTrigger(LIGHT_KEY_YELLOW))
 		{// 黄色
 			PlaySound(SOUND_LABEL_SE_SELECT);
 			s_nIdxColor[s_nPlayer] = LIGHT_COLOR_YELLOW;
 
-			// セレクトの色の設定
-			SetColorSelect(s_nIdxSelect, s_nPlayer, s_aColor[s_nIdxColor[s_nPlayer]]);
+			// セレクトのテクスチャの設定
+			ChangeTextuteSelect(s_nIdxSelect, s_nPlayer, s_aTexture[s_nIdxColor[s_nPlayer]]);
 
 			// セレクトの描画するかどうか
 			SetDrawSelect(s_nIdxSelect, s_nPlayer, true);
@@ -301,7 +306,7 @@ void UpdatePlayer(void)
 			SetFramePlayer(s_nPlayer);
 
 			// エフェクトの設定
-			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, s_nPlayer - 1));
+			SetEffect(GetPosSelect(s_nIdxSelect, s_nPlayer - 1), EFFECT_TYPE_000, GetColor(s_aColor[s_nIdxColor[s_nPlayer - 1]]));
 		}
 		break;
 
@@ -355,15 +360,18 @@ void SetFramePlayer(int nNowLight)
 
 	// セレクトの描画するかどうか
 	SetDrawSelect(s_nIdxFrame, nNowLight, true);
+
+	// タイムの位置の設定
+	SetPosTime(GetPosSelect(s_nIdxSelect, nNowLight));
 }
 
 //--------------------------------------------------
-// 押せの描画するかどうか
+// 押せの色の設定
 //--------------------------------------------------
-void SetDrawPushPlayer(bool bDraw)
+void SetColorPushPlayer(D3DXCOLOR col)
 {
-	// 矩形の描画するかどうか
-	SetDrawRectangle(s_nIdxPush, bDraw);
+	// 矩形の色の設定
+	SetColorRectangle(s_nIdxPush, col);
 }
 
 namespace

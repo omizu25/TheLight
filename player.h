@@ -50,9 +50,9 @@ int GetColorPlayer(int nNowLight);
 void SetFramePlayer(int nNowLight);
 
 //--------------------------------------------------
-// ‰Ÿ‚¹‚Ì•`‰æ‚·‚é‚©‚Ç‚¤‚©
-// ˆø”  : bool bDraw / •`‰æ‚·‚é‚©‚Ç‚¤‚©
+// ‰Ÿ‚¹‚ÌF‚Ìİ’è
+// ˆø”ˆø”  : D3DXCOLOR col /@F
 //--------------------------------------------------
-void SetDrawPushPlayer(bool bDraw);
+void SetColorPushPlayer(D3DXCOLOR col);
 
 #endif // !_PLAYER_H_
