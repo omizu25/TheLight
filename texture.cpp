@@ -35,6 +35,10 @@ const char *s_FileName[] =
 	"data/TEXTURE/play.png",						// 遊ぶ
 	"data/TEXTURE/Learn.png",						// 覚えろ
 	"data/TEXTURE/Push.png",						// 押せ
+	"data/TEXTURE/Hackathon_Direction_Red.png",		// 赤
+	"data/TEXTURE/Hackathon_Direction_Green.png",	// 緑
+	"data/TEXTURE/Hackathon_Direction_Blue.png",	// 青
+	"data/TEXTURE/Hackathon_Direction_Yellow.png",	// 黄色
 	"data/TEXTURE/effect/effect_000.png",			// エフェクト
 	"data/TEXTURE/effect/effect_001.jpg",			// エフェクト
 	"data/TEXTURE/effect/effect_003.jpg",			// エフェクト

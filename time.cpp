@@ -24,9 +24,8 @@
 //==================================================
 namespace
 {
-const int	ONE_SECOND = 60;		// 1秒
-const float	TIME_WIDTH = 100.0f;	// タイムの幅
-const float	TIME_HEIGHT = 200.0f;	// タイムの高さ
+const int	ONE_SECOND = 60;	// 1秒
+const float	TIME_SIZE = 21.5f;	// タイムのサイズ
 }// namespaceはここまで
 
 //==================================================
@@ -49,10 +48,10 @@ void InitTime(void)
 	s_nSecond = 0;
 	s_nIdxTime = 0;
 
-	D3DXVECTOR3 size = D3DXVECTOR3(TIME_WIDTH, TIME_HEIGHT, 0.0f);
-	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, TIME_HEIGHT * 0.5f, 0.0f);
+	D3DXVECTOR3 size = D3DXVECTOR3(TIME_SIZE, TIME_SIZE, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, TIME_SIZE * 0.5f, 0.0f);
 
-	pos.x += DigitNumber(s_nTime) * (TIME_WIDTH * 0.5f);
+	pos.x += DigitNumber(s_nTime) * (TIME_SIZE * 0.5f);
 
 	// 数の設定
 	s_nIdxTime = SetFanangle(TEXTURE_NONE);
@@ -80,13 +79,16 @@ void UpdateTime(void)
 		return;
 	}
 
-	// 数を描画するかどうか
-	SetDrawFanangle(s_nIdxTime, true);
-
 	if (GetAnswer())
 	{// 最大値
+		// 数を描画するかどうか
+		SetDrawFanangle(s_nIdxTime, false);
+
 		return;
 	}
+
+	// 数を描画するかどうか
+	SetDrawFanangle(s_nIdxTime, true);
 
 	s_nSecond++;
 
@@ -145,11 +147,6 @@ void SetTime(int nTime)
 	s_nTime = nTime;
 	s_nSecond = 0;
 
-	D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, TIME_HEIGHT * 0.5f, 0.0f);
-
-	// 位置の設定
-	SetRotationPosFanangle(s_nIdxTime, pos,D3DX_PI, 75.0f,false);
-
 	// リセット
 	ResetDrawFanangle(s_nIdxTime);
 
@@ -158,6 +155,15 @@ void SetTime(int nTime)
 	s_col.a = 0.5f;
 
 	SetColorFanangle(s_nIdxTime, s_col);
+}
+
+//--------------------------------------------------
+// 位置の設定
+//--------------------------------------------------
+void SetPosTime(D3DXVECTOR3 pos)
+{
+	// 位置の設定
+	SetRotationPosFanangle(s_nIdxTime, pos, D3DX_PI, TIME_SIZE, false);
 }
 
 //--------------------------------------------------
