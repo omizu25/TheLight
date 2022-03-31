@@ -1,14 +1,14 @@
 //**************************************************
 // 
-// Hackathon ( rectangle.cpp )
-// Author  : katsuki mizuki
+// Hackathon ( fan.cpp )
+// Author  : Yuda Kaito
 // 
 //**************************************************
 
 //==================================================
 // インクルード
 //==================================================
-#include "fanangle.h"
+#include "fan.h"
 #include "color.h"
 #include "texture.h"
 #include "utility.h"
@@ -20,9 +20,9 @@
 //==================================================
 namespace
 {
-const int	MAX_FANANGLE = 1024;	// 矩形の最大数
-const int	NUM_VERTEX = 100;		// 頂点の数
-const int	NUM_POLYGON = NUM_VERTEX - 2;		// ポリゴンの数
+const int	MAX_FAN = 1024;					// 円形の最大数
+const int	NUM_VERTEX = 100;				// 頂点の数
+const int	NUM_POLYGON = NUM_VERTEX - 2;	// ポリゴンの数
 
 typedef struct
 {
@@ -32,39 +32,39 @@ typedef struct
 	bool					bUse;		// 使用しているかどうか
 	bool					bDraw;		// 描画するかどうか
 	bool					bAdd;		// 加算合成するかどうか
-}MyFanangle;
+}MyFan;
 }// namespaceはここまで
 
- //==================================================
- // スタティック変数
- //==================================================
+//==================================================
+// スタティック変数
+//==================================================
 namespace
 {
-MyFanangle	s_aFanangle[MAX_FANANGLE];	// 矩形の情報
+MyFan	s_aFan[MAX_FAN];	// 円形の情報
 }// namespaceはここまで
 
- //--------------------------------------------------
- // 初期化
- //--------------------------------------------------
-void InitFanangle(void)
+//--------------------------------------------------
+// 初期化
+//--------------------------------------------------
+void InitFan(void)
 {
 	// メモリのクリア
-	memset(s_aFanangle, 0, sizeof(s_aFanangle));
+	memset(s_aFan, 0, sizeof(s_aFan));
 }
 
 //--------------------------------------------------
 // 終了
 //--------------------------------------------------
-void UninitFanangle(void)
+void UninitFan(void)
 {
-	for (int i = 0; i < MAX_FANANGLE; i++)
+	for (int i = 0; i < MAX_FAN; i++)
 	{
-		MyFanangle *pFanangle = &s_aFanangle[i];
+		MyFan *pFan = &s_aFan[i];
 
-		if (pFanangle->pVtxBuff != NULL)
+		if (pFan->pVtxBuff != NULL)
 		{// 頂点バッファの解放
-			pFanangle->pVtxBuff->Release();
-			pFanangle->pVtxBuff = NULL;
+			pFan->pVtxBuff->Release();
+			pFan->pVtxBuff = NULL;
 		}
 	}
 }
@@ -72,25 +72,25 @@ void UninitFanangle(void)
 //--------------------------------------------------
 // 描画
 //--------------------------------------------------
-void DrawFanangle(void)
+void DrawFan(void)
 {
 	// デバイスへのポインタの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	for (int i = 0; i < MAX_FANANGLE; i++)
+	for (int i = 0; i < MAX_FAN; i++)
 	{
-		MyFanangle *pFanangle = &s_aFanangle[i];
+		MyFan *pFan = &s_aFan[i];
 
-		if (!pFanangle->bUse || !pFanangle->bDraw)
+		if (!pFan->bUse || !pFan->bDraw)
 		{// 使用していない、描画するしない
 			continue;
 		}
 
 		/*↓ 使用している、描画する ↓*/
 
-		if (pFanangle->bAdd)
+		if (pFan->bAdd)
 		{// 加算合成する
-		 // レンダーステートの設定
+			// レンダーステートの設定
 			pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
@@ -98,24 +98,24 @@ void DrawFanangle(void)
 		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
 
 		// 頂点バッファをデータストリームに設定
-		pDevice->SetStreamSource(0, pFanangle->pVtxBuff, 0, sizeof(VERTEX_2D));
+		pDevice->SetStreamSource(0, pFan->pVtxBuff, 0, sizeof(VERTEX_2D));
 
 		// 頂点フォーマットの設定
 		pDevice->SetFVF(FVF_VERTEX_2D);
 
 		// テクスチャの設定
-		pDevice->SetTexture(0, pFanangle->pTexture);
+		pDevice->SetTexture(0, pFan->pTexture);
 
 		// ポリゴンの描画
 		pDevice->DrawPrimitive(
-			D3DPT_TRIANGLEFAN,			// プリミティブの種類
-			0,							// 描画する最初の頂点インデックス
-			pFanangle->nMaxBuff);		// プリミティブ(ポリゴン)数
+			D3DPT_TRIANGLEFAN,	// プリミティブの種類
+			0,					// 描画する最初の頂点インデックス
+			pFan->nMaxBuff);	// プリミティブ(ポリゴン)数
 
-										// テクスチャの解除
+		// テクスチャの解除
 		pDevice->SetTexture(0, NULL);
 
-		if (pFanangle->bAdd)
+		if (pFan->bAdd)
 		{// 加算合成する
 		 // レンダーステートを元に戻す
 			pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
@@ -129,33 +129,33 @@ void DrawFanangle(void)
 //--------------------------------------------------
 // 設定
 //--------------------------------------------------
-int SetFanangle(TEXTURE texture)
+int SetFan(TEXTURE texture)
 {
 	// 設定 [ テクスチャあり ]
-	return SetFanangleWithTex(GetTexture(texture));
+	return SetFanWithTex(GetTexture(texture));
 }
 
 //--------------------------------------------------
 // 設定 [ テクスチャあり ]
 //--------------------------------------------------
-int SetFanangleWithTex(LPDIRECT3DTEXTURE9 pTexture)
+int SetFanWithTex(LPDIRECT3DTEXTURE9 pTexture)
 {
-	for (int i = 0; i < MAX_FANANGLE; i++)
+	for (int i = 0; i < MAX_FAN; i++)
 	{
-		MyFanangle *pFanangle = &s_aFanangle[i];
+		MyFan *pFan = &s_aFan[i];
 
-		if (pFanangle->bUse)
+		if (pFan->bUse)
 		{// 使用している
 			continue;
 		}
 
 		/*↓ 使用していない ↓*/
 
-		pFanangle->pTexture = pTexture;
-		pFanangle->nMaxBuff = NUM_POLYGON;
-		pFanangle->bUse = true;
-		pFanangle->bDraw = true;
-		pFanangle->bAdd = false;
+		pFan->pTexture = pTexture;
+		pFan->nMaxBuff = NUM_POLYGON;
+		pFan->bUse = true;
+		pFan->bDraw = true;
+		pFan->bAdd = false;
 
 		// 頂点バッファの生成
 		GetDevice()->CreateVertexBuffer(
@@ -163,13 +163,13 @@ int SetFanangleWithTex(LPDIRECT3DTEXTURE9 pTexture)
 			D3DUSAGE_WRITEONLY,
 			FVF_VERTEX_2D,
 			D3DPOOL_MANAGED,
-			&pFanangle->pVtxBuff,
+			&pFan->pVtxBuff,
 			NULL);
 
-		VERTEX_2D *pVtx = NULL;		// 頂点情報へのポインタ
+		VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
 
 		// 頂点情報をロックし、頂点情報へのポインタを取得
-		pFanangle->pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+		pFan->pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 		// rhwの設定
 		pVtx[0].rhw = 1.0f;
@@ -178,22 +178,22 @@ int SetFanangleWithTex(LPDIRECT3DTEXTURE9 pTexture)
 		pVtx[3].rhw = 1.0f;
 
 		// 頂点バッファをアンロックする
-		pFanangle->pVtxBuff->Unlock();
+		pFan->pVtxBuff->Unlock();
 
 		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		float fLength = 0.0f;
 
 		// 位置の設定
-		SetPosFanangle(i, pos, fLength,true);
+		SetPosFan(i, pos, fLength, true);
 
 		//色の設定
-		SetColorFanangle(i, GetColor(COLOR_WHITE));
+		SetColorFan(i, GetColor(COLOR_WHITE));
 
 		D3DXVECTOR2 texU = D3DXVECTOR2(0.0f, 1.0f);
 		D3DXVECTOR2 texV = D3DXVECTOR2(0.0f, 1.0f);
 
 		// テクスチャ座標の設定
-		SetTexFanangle(i);
+		SetTexFan(i);
 
 		return i;
 	}
@@ -205,40 +205,40 @@ int SetFanangleWithTex(LPDIRECT3DTEXTURE9 pTexture)
 //--------------------------------------------------
 // 使用をやめる
 //--------------------------------------------------
-void StopUseFanangle(int nIdx)
+void StopUseFan(int nIdx)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	pFanangle->bUse = false;
+	pFan->bUse = false;
 
-	if (pFanangle->pVtxBuff != NULL)
+	if (pFan->pVtxBuff != NULL)
 	{// 頂点バッファの解放
-		pFanangle->pVtxBuff->Release();
-		pFanangle->pVtxBuff = NULL;
+		pFan->pVtxBuff->Release();
+		pFan->pVtxBuff = NULL;
 	}
 }
 
 //--------------------------------------------------
 // 位置の設定
 //--------------------------------------------------
-void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength, bool bSide)
+void SetPosFan(int nIdx, const D3DXVECTOR3 &pos, const float &fLength, bool bSide)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	if (!pFanangle->bUse)
+	if (!pFan->bUse)
 	{// 使用していない
 		return;
 	}
 
 	/*↓ 使用している ↓*/
 
-	VERTEX_2D *pVtx = NULL;		// 頂点情報へのポインタ
+	VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
 
-	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFanangle(nIdx);
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFan(nIdx);
 
 	// 頂点情報をロックし、頂点情報へのポインタを取得
 	pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -260,7 +260,7 @@ void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength, bool
 			pVtx[i].pos.x = pos.x + cosf(fRot) * fLength;
 			pVtx[i].pos.y = pos.y + sinf(fRot) * fLength;
 			pVtx[i].pos.z = pos.z;
-		
+
 		}
 		else
 		{
@@ -280,22 +280,22 @@ void SetPosFanangle(int nIdx, const D3DXVECTOR3 &pos, const float &fLength, bool
 //--------------------------------------------------
 // 回転する位置の設定
 //--------------------------------------------------
-void SetRotationPosFanangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float fLength, bool bSide)
+void SetRotationPosFan(int nIdx, const D3DXVECTOR3 &pos, float fRot, float fLength, bool bSide)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	if (!pFanangle->bUse)
+	if (!pFan->bUse)
 	{// 使用していない
 		return;
 	}
 
 	/*↓ 使用している ↓*/
 
-	VERTEX_2D *pVtx = NULL;		// 頂点情報へのポインタ
+	VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
 
-	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFanangle(nIdx);
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFan(nIdx);
 
 	// 頂点情報をロックし、頂点情報へのポインタを取得
 	pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -337,22 +337,22 @@ void SetRotationPosFanangle(int nIdx, const D3DXVECTOR3 &pos, float fRot, float 
 //--------------------------------------------------
 // 色の設定
 //--------------------------------------------------
-void SetColorFanangle(int nIdx, const D3DXCOLOR &color)
+void SetColorFan(int nIdx, const D3DXCOLOR &color)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	if (!pFanangle->bUse)
+	if (!pFan->bUse)
 	{// 使用していない
 		return;
 	}
 
 	/*↓ 使用している ↓*/
 
-	VERTEX_2D *pVtx = NULL;		// 頂点情報へのポインタ
+	VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
 
-	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFanangle(nIdx);
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFan(nIdx);
 
 	// 頂点情報をロックし、頂点情報へのポインタを取得
 	pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -376,22 +376,22 @@ void SetColorFanangle(int nIdx, const D3DXCOLOR &color)
 //--------------------------------------------------
 // 色の設定
 //--------------------------------------------------
-void SetColorCenterFanangle(int nIdx, const D3DXCOLOR & color)
+void SetColorCenterFan(int nIdx, const D3DXCOLOR & color)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	if (!pFanangle->bUse)
+	if (!pFan->bUse)
 	{// 使用していない
 		return;
 	}
 
 	/*↓ 使用している ↓*/
 
-	VERTEX_2D *pVtx = NULL;		// 頂点情報へのポインタ
+	VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
 
-	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFanangle(nIdx);
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFan(nIdx);
 
 	// 頂点情報をロックし、頂点情報へのポインタを取得
 	pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -405,22 +405,22 @@ void SetColorCenterFanangle(int nIdx, const D3DXCOLOR & color)
 //--------------------------------------------------
 // テクスチャ座標の設定
 //--------------------------------------------------
-void SetTexFanangle(int nIdx)
+void SetTexFan(int nIdx)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	if (!pFanangle->bUse)
+	if (!pFan->bUse)
 	{// 使用していない
 		return;
 	}
 
 	/*↓ 使用している ↓*/
 
-	VERTEX_2D *pVtx = NULL;		// 頂点情報へのポインタ
+	VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
 
-	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFanangle(nIdx);
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuffFan(nIdx);
 
 	// 頂点情報をロックし、頂点情報へのポインタを取得
 	pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
@@ -438,114 +438,117 @@ void SetTexFanangle(int nIdx)
 //--------------------------------------------------
 // 描画するかどうか
 //--------------------------------------------------
-void SetDrawFanangle(int nIdx, bool bDraw)
+void SetDrawFan(int nIdx, bool bDraw)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	if (!pFanangle->bUse)
+	if (!pFan->bUse)
 	{// 使用していない
 		return;
 	}
 
 	/*↓ 使用している ↓*/
 
-	pFanangle->bDraw = bDraw;
+	pFan->bDraw = bDraw;
 }
 
 //--------------------------------------------------
 // 加算合成するかどうか
 //--------------------------------------------------
-void SetAddFanangle(int nIdx, bool bAdd)
+void SetAddFan(int nIdx, bool bAdd)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	if (!pFanangle->bUse)
+	if (!pFan->bUse)
 	{// 使用していない
 		return;
 	}
 
 	/*↓ 使用している ↓*/
 
-	pFanangle->bAdd = bAdd;
+	pFan->bAdd = bAdd;
 }
 
 //--------------------------------------------------
 // テクスチャの変更
 //--------------------------------------------------
-void ChangeTextureFanangle(int nIdx, TEXTURE texture)
+void ChangeTextureFan(int nIdx, TEXTURE texture)
 {
 	// テクスチャの変更 [ テクスチャあり ]
-	ChangeTextureFanangleWithTex(nIdx, GetTexture(texture));
+	ChangeTextureFanWithTex(nIdx, GetTexture(texture));
 }
 
 //--------------------------------------------------
 // テクスチャの変更 [ テクスチャあり ]
 //--------------------------------------------------
-void ChangeTextureFanangleWithTex(int nIdx, LPDIRECT3DTEXTURE9 pTexture)
+void ChangeTextureFanWithTex(int nIdx, LPDIRECT3DTEXTURE9 pTexture)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	if (!pFanangle->bUse)
+	if (!pFan->bUse)
 	{// 使用していない
 		return;
 	}
 
 	/*↓ 使用している ↓*/
 
-	pFanangle->pTexture = pTexture;
+	pFan->pTexture = pTexture;
 }
 
 //--------------------------------------------------
 // 頂点バッファを取得
 //--------------------------------------------------
-LPDIRECT3DVERTEXBUFFER9 GetVtxBuffFanangle(int nIdx)
+LPDIRECT3DVERTEXBUFFER9 GetVtxBuffFan(int nIdx)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	if (!pFanangle->bUse)
+	if (!pFan->bUse)
 	{// 使用していない
 		return NULL;
 	}
 
 	/*↓ 使用している ↓*/
 
-	return s_aFanangle[nIdx].pVtxBuff;
+	return s_aFan[nIdx].pVtxBuff;
 }
 
 //--------------------------------------------------
-// 描画する円の量を設定
+// 描画する円の量を加算
 //--------------------------------------------------
-void AddDrawFanangle(int nIdx, int nVolume)
+void AddDrawFan(int nIdx, int nVolume)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
+	MyFan *pFan = &s_aFan[nIdx];
 
-	pFanangle->nMaxBuff += nVolume;
+	pFan->nMaxBuff += nVolume;
 
-	if (pFanangle->nMaxBuff > NUM_POLYGON)
+	if (pFan->nMaxBuff > NUM_POLYGON)
 	{
-		pFanangle->nMaxBuff = NUM_POLYGON;
+		pFan->nMaxBuff = NUM_POLYGON;
 	}
-	else if (pFanangle->nMaxBuff < 0)
+	else if (pFan->nMaxBuff < 0)
 	{
-		pFanangle->nMaxBuff = 0;
+		pFan->nMaxBuff = 0;
 	}
 }
 
-void ResetDrawFanangle(int nIdx)
+//--------------------------------------------------
+// 描画する円の量をリセット
+//--------------------------------------------------
+void ResetDrawFan(int nIdx)
 {
-	assert(nIdx >= 0 && nIdx < MAX_FANANGLE);
+	assert(nIdx >= 0 && nIdx < MAX_FAN);
 
-	MyFanangle *pFanangle = &s_aFanangle[nIdx];
-	
-	pFanangle->nMaxBuff = NUM_POLYGON;
+	MyFan *pFan = &s_aFan[nIdx];
+
+	pFan->nMaxBuff = NUM_POLYGON;
 }
