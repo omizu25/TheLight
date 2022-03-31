@@ -33,9 +33,11 @@
 //==================================================
 namespace
 {
-const int	MAX_TIME = 5;		// タイムの最大値
-const int	MAX_LIGHT = 16;		// ライトの最大数
-const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
+const int	MAX_TIME = 5;			// タイムの最大値
+const int	MAX_LIGHT = 16;			// ライトの最大数
+const float	LIGHT_SIZE = 50.0f;		// ライトのサイズ
+const float	PUSH_WIDTH = 120.0f;	// 押せの幅
+const float	PUSH_HEIGHT = 80.0f;	// 押せの高さ
 
 typedef enum
 {
@@ -54,6 +56,7 @@ namespace
 {
 COLOR	s_aColor[LIGHT_COLOR_MAX];	// ライトの色
 int		s_nPlayer;					// ライトの現在の数
+int		s_nIdxPush;					// 押せの矩形のインデックス
 int		s_nIdxSelect;				// メニューの配列のインデックス
 int		s_nIdxFrame;				// 枠の配列のインデックス
 int		s_nIdxColor[MAX_LIGHT];		// 色の番号
@@ -79,11 +82,25 @@ void InitPlayer(void)
 
 	s_nPlayer = 0;
 
+	{// 押せ
+		// 矩形の設定
+		s_nIdxPush = SetRectangle(TEXTURE_Push);
+
+		D3DXVECTOR3 size = D3DXVECTOR3(PUSH_WIDTH, PUSH_HEIGHT, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH - (PUSH_WIDTH * 0.5f), SCREEN_HEIGHT * 0.5f, 0.0f);
+
+		// 矩形の位置の設定
+		SetPosRectangle(s_nIdxPush, pos, size);
+
+		// 矩形の描画するかどうか
+		SetDrawRectangle(s_nIdxPush, false);
+	}
+
 	{// 枠
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH;
+		select.fRight = SCREEN_WIDTH - PUSH_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.5f;
 		select.fBottom = SCREEN_HEIGHT * 0.5f;
 		select.fWidth = LIGHT_SIZE;
@@ -103,7 +120,7 @@ void InitPlayer(void)
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH;
+		select.fRight = SCREEN_WIDTH - PUSH_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.5f;
 		select.fBottom = SCREEN_HEIGHT * 0.5f;
 		select.fWidth = LIGHT_SIZE;
@@ -131,6 +148,8 @@ void InitPlayer(void)
 //--------------------------------------------------
 void UninitPlayer(void)
 {
+	// 使うのを止める
+	StopUseRectangle(s_nIdxPush);
 }
 
 //--------------------------------------------------
@@ -181,7 +200,7 @@ void UpdatePlayer(void)
 			SetTime(MAX_TIME);
 
 			// 矩形の色の設定
-			SetColorRectangle(GetBG(), GetColor(COLOR_RED));
+			SetColorRectangle(GetIdxBG(0), GetColor(COLOR_RED));
 
 			s_nPlayer++;
 
@@ -212,7 +231,7 @@ void UpdatePlayer(void)
 			SetTime(MAX_TIME);
 
 			// 矩形の色の設定
-			SetColorRectangle(GetBG(), GetColor(COLOR_GREEN));
+			SetColorRectangle(GetIdxBG(0), GetColor(COLOR_GREEN));
 
 			s_nPlayer++;
 
@@ -243,7 +262,7 @@ void UpdatePlayer(void)
 			SetTime(MAX_TIME);
 
 			// 矩形の色の設定
-			SetColorRectangle(GetBG(), GetColor(COLOR_BLUE));
+			SetColorRectangle(GetIdxBG(0), GetColor(COLOR_BLUE));
 
 			s_nPlayer++;
 
@@ -274,7 +293,7 @@ void UpdatePlayer(void)
 			SetTime(MAX_TIME);
 
 			// 矩形の色の設定
-			SetColorRectangle(GetBG(), GetColor(COLOR_YELLOW));
+			SetColorRectangle(GetIdxBG(0), GetColor(COLOR_YELLOW));
 
 			s_nPlayer++;
 
@@ -295,8 +314,6 @@ void UpdatePlayer(void)
 		assert(false);
 		break;
 	}
-
-
 }
 
 //--------------------------------------------------
@@ -319,7 +336,7 @@ int GetPlayer(void)
 //--------------------------------------------------
 int GetColorPlayer(int nNowLight)
 {
-	assert(nNowLight >= 0 && nNowLight < MAX_LIGHT);
+	assert(nNowLight >= 0 && nNowLight <= MAX_LIGHT);
 
 	return s_nIdxColor[nNowLight];
 }
@@ -329,7 +346,7 @@ int GetColorPlayer(int nNowLight)
 //--------------------------------------------------
 void SetFramePlayer(int nNowLight)
 {
-	assert(nNowLight >= 0 && nNowLight < MAX_LIGHT);
+	assert(nNowLight >= 0 && nNowLight <= MAX_LIGHT);
 
 	if (GetAnswer())
 	{// 最大値
@@ -338,6 +355,15 @@ void SetFramePlayer(int nNowLight)
 
 	// セレクトの描画するかどうか
 	SetDrawSelect(s_nIdxFrame, nNowLight, true);
+}
+
+//--------------------------------------------------
+// 押せの描画するかどうか
+//--------------------------------------------------
+void SetDrawPushPlayer(bool bDraw)
+{
+	// 矩形の描画するかどうか
+	SetDrawRectangle(s_nIdxPush, bDraw);
 }
 
 namespace

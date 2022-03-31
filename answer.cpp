@@ -19,13 +19,14 @@
 #include "game.h"
 #include "bg.h"
 #include "sound.h"
+#include "ui.h"
 
 //==================================================
 // 定義
 //==================================================
 namespace
 {
-const int	MAX_TIME = 60;	// タイムの最大値
+const int	MAX_TIME = 120;	// タイムの最大値
 }// namespaceはここまで
 
  //==================================================
@@ -61,28 +62,31 @@ void UninitAnswer(void)
 void UpdateAnswer(void)
 {
 	if (s_bMax)
-	{
+	{// 最大値になった
 		s_nTime++;
 
 		if (s_nTime >= MAX_TIME)
-		{
+		{// 時間が来た
 			if (s_bAnswer)
-			{
+			{// 正解
 				s_bMax = false;
 				s_nTime = 0;
 				s_bAnswer = true;
-
-				// ゲーム画面の背景ゲージ(黄色)の増加
-				IncreaseGaugeGame();
 
 				// ゲーム状態の設定
 				SetGameState(GAMESTATE_RESET);
 
 				// 矩形の色の設定
-				SetColorRectangle(GetBG(), GetColor(COLOR_WHITE));
+				SetColorRectangle(GetIdxBG(0), GetColor(COLOR_WHITE));
+
+				// ゲージのUIの変更
+				ChangeGaugeUI();
+
+				// 押せの描画するかどうか
+				SetDrawPushPlayer(false);
 			}
 			else
-			{
+			{// 不正解
 				s_bMax = true;
 				s_nTime = 0;
 				s_bAnswer = false;
@@ -108,7 +112,7 @@ void DrawAnswer(void)
 void SetAnswer(int nNowLight)
 {
 	if (GetColorLight(nNowLight) == GetColorPlayer(nNowLight))
-	{
+	{// 正解
 		if ((GetPlayer() + 1) >= GetLight())
 		{// 最大になった
 			s_bMax = true;
@@ -117,11 +121,14 @@ void SetAnswer(int nNowLight)
 		}
 	}
 	else
-	{
+	{// 不正解
 		PlaySound(SOUND_LABEL_SE_MISS);
 		s_nTime = 0;
 		s_bMax = true;
 		s_bAnswer = false;
+
+		// 間違った
+		MistakeLight();
 	}
 }
 

@@ -20,26 +20,28 @@ namespace
 {
 const char *s_FileName[] =
 {// テクスチャのパス	
-	"data/TEXTURE/Cursor_Right.png",			// カーソル
-	"data/TEXTURE/Number_004.png",				// 数
-	"data/TEXTURE/Title.png",					// タイトル
-	"data/TEXTURE/Hackathon_TitleUI.png",		// タイトル
-	"data/TEXTURE/Hackathon_GamePopup.png",		// タイトル
-	"data/TEXTURE/Hackathon_ReturnToGame.png",	// タイトル
-	"data/TEXTURE/Hackathon_BackToTitle.png",	// タイトル
-	"data/TEXTURE/Hackathon_Ring.png",			// タイトル
-	"data/TEXTURE/Bg000.png",					// 背景
-	"data/TEXTURE/Bg001.png",					// 背景
-	"data/TEXTURE/Bg002.png",					// 背景
-	"data/TEXTURE/Bg.png",						// 背景
-	"data/TEXTURE/BgMoon.png",					// 背景
-	"data/TEXTURE/effect/effect_000.png",		// エフェクト
-	"data/TEXTURE/effect/effect_001.jpg",		// エフェクト
-	"data/TEXTURE/effect/effect_003.jpg",		// エフェクト
-	"data/TEXTURE/Number_Neon.png",				// ナンバー画像(ネオン)
-	"data/TEXTURE/Method_of_operation_white.png",		// ナンバー画像(ネオン)
-	"data/TEXTURE/Hackathon_YourScore.png",		// 自己スコア
-	"data/TEXTURE/Hackathon_BestScore.png",		// ベストスコア
+	"data/TEXTURE/Cursor_Right.png",				// カーソル
+	"data/TEXTURE/Title.png",						// タイトルロゴ
+	"data/TEXTURE/Hackathon_TitleUI.png",			// 灯す
+	"data/TEXTURE/Hackathon_GamePopup.png",			// チュートリアル
+	"data/TEXTURE/Hackathon_ReturnToGame.png",		// ゲームに戻る
+	"data/TEXTURE/Hackathon_BackToTitle.png",		// タイトルに戻る
+	"data/TEXTURE/Hackathon_Ring.png",				// ライトの枠
+	"data/TEXTURE/Bg000.png",						// 星
+	"data/TEXTURE/Bg001.png",						// 家
+	"data/TEXTURE/Bg002.png",						// 背景
+	"data/TEXTURE/BgMoon.png",						// 月
+	"data/TEXTURE/end.png",							// やめる
+	"data/TEXTURE/play.png",						// 遊ぶ
+	"data/TEXTURE/Learn.png",						// 覚えろ
+	"data/TEXTURE/Push.png",						// 押せ
+	"data/TEXTURE/effect/effect_000.png",			// エフェクト
+	"data/TEXTURE/effect/effect_001.jpg",			// エフェクト
+	"data/TEXTURE/effect/effect_003.jpg",			// エフェクト
+	"data/TEXTURE/Number_Neon.png",					// ナンバー画像(ネオン)
+	"data/TEXTURE/Method_of_operation_white.png",	// 操作説明
+	"data/TEXTURE/Hackathon_YourScore.png",			// 自己スコア
+	"data/TEXTURE/Hackathon_BestScore.png",			// ベストスコア
 };
 }// namespaceはここまで
 

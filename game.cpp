@@ -32,6 +32,7 @@
 #include "answer.h"
 #include "tutorial.h"
 #include "utility.h"
+#include "ui.h"
 
 #include <assert.h>
 
@@ -43,13 +44,7 @@ namespace
 GAMESTATE	s_gameState = GAMESTATE_NONE;	// ゲームの状態
 int			s_nCounterState;				// 状態管理カウンター
 bool		s_bPause = false;				// ポーズ中かどうか [してる  : true してない  : false]
-int			s_nIdxMoon;						// 背景の矩形のインデックス
-int			s_nGaugeIdxGray;				// ゲージのインデックスの保管
-int			s_nGaugeIdxYellow;				// ゲージのインデックスの保管
-int			s_nTime;						// タイム
-float		s_fGaugeAlphaGray;				// 現在のゲージのアルファ値
-float		s_fGaugeAlphaYellow;			// 現在のゲージのアルファ値
-float		s_fGaugeWidth;					// ゲージの幅（黄色）
+int			s_nIdxMethod;					// 操作説明の矩形のインデックス
 }// namesapceはここまで
 
 //--------------------------------------------------
@@ -57,37 +52,25 @@ float		s_fGaugeWidth;					// ゲージの幅（黄色）
 //--------------------------------------------------
 void InitGame(void)
 {
-	s_nTime = 0;
-	s_fGaugeAlphaGray = 0.3f;
-	s_fGaugeAlphaYellow = 0.3f;
-
 	// ゲージの初期化
 	InitGauge();
 
-	// ゲージの設定
-	s_nGaugeIdxGray = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_GRAY), SCREEN_WIDTH, SCREEN_HEIGHT, GAUGE_LEFT);
-
-	// ゲージの設定(黄色)
-	s_nGaugeIdxYellow = SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), GetColor(COLOR_YELLOW), 0.0f, SCREEN_HEIGHT, GAUGE_LEFT);
-
-	// ゲージの色の設定(灰色)
-	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlphaGray));
-
-	// ゲージの色の設定(黄色)
-	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
+	// ゲージのUIの設定
+	SetGaugeUI();
 
 	// 背景の初期化
 	InitBG();
 
-	D3DXCOLOR col = GetColor(COLOR_GRAY);
-	col.a = 0.75f;
+	{// レーン
+		D3DXCOLOR col = GetColor(COLOR_GRAY);
+		col.a = 0.75f;
 
-	s_fGaugeWidth = 0.0f;
+		// ゲージの設定
+		SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.35f, 0.0f), col, SCREEN_WIDTH, 100.0f, GAUGE_LEFT);
 
-	// ゲージの設定
-	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.35f, 0.0f), col, SCREEN_WIDTH, 100.0f, GAUGE_LEFT);
-	// ゲージの設定
-	SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), col, SCREEN_WIDTH, 100.0f, GAUGE_LEFT);
+		// ゲージの設定
+		SetGauge(D3DXVECTOR3(0.0f, SCREEN_HEIGHT * 0.5f, 0.0f), col, SCREEN_WIDTH, 100.0f, GAUGE_LEFT);
+	}
 
 	// 数の初期化
 	InitNumber();
@@ -110,6 +93,19 @@ void InitGame(void)
 	// エフェクトの初期化
 	InitEffect();
 
+	// 月の背景の初期化
+	InitMoonBG();
+
+	{// 操作説明
+		// 矩形の設定
+		s_nIdxMethod = SetRectangle(TEXTURE_Method);
+
+		D3DXVECTOR3 pos(SCREEN_WIDTH - 100.0f, 95.0f, 0.0f);
+		D3DXVECTOR3 size(155.0f, 155.0f, 0.0f);
+
+		SetPosRectangle(s_nIdxMethod, pos, size);
+	}
+
 	// メニューの初期化
 	InitMenu();
 
@@ -119,37 +115,14 @@ void InitGame(void)
 	// ポーズの初期化
 	InitPause();
 
-	// チュートリアルの初期化
-	InitTutorial();
-
-	{// 月
-	 // 矩形の設定
-		s_nIdxMoon = SetRectangle(TEXTURE_BG_MOON);
-
-		D3DXVECTOR3 size = D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
-		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);
-
-		// 矩形の位置の設定
-		SetPosRectangle(s_nIdxMoon, pos, size);
-	}
-
-	//サウンド開始
+	// サウンド開始
 	PlaySound(SOUND_LABEL_BGM_GAME);
 
-	s_gameState = GAMESTATE_START;	// 何もしていない状態に設定
+	s_gameState = GAMESTATE_SAMPLE;	// サンプル状態に設定
 
 	s_nCounterState = 0;	// カウンターの初期化
 
 	s_bPause = false;	// ポーズ解除
-
-	{
-		int nIdx = SetRectangle(TEXTURE_Method);
-
-		D3DXVECTOR3 pos(SCREEN_WIDTH - 100.0f, 95.0f, 0.0f);
-		D3DXVECTOR3 size(155.0f, 155.0f, 0.0f);
-
-		SetPosRectangle(nIdx, pos, size);
-	}
 }
 
 //--------------------------------------------------
@@ -160,9 +133,6 @@ void UninitGame(void)
 	// サウンドの停止
 	StopSound();
 
-	// チュートリアルの終了
-	UninitTutorial();
-
 	// 背景の終了
 	UninitBG();
 
@@ -172,7 +142,7 @@ void UninitGame(void)
 	// 数の終了
 	UninitNumber();
 
-	// ポーズの終了
+	// タイムの終了
 	UninitTime();
 
 	// ポーズの終了
@@ -198,6 +168,9 @@ void UninitGame(void)
 
 	// アンサーの終了
 	UninitAnswer();
+
+	// 使うのを止める
+	StopUseRectangle(s_nIdxMethod);
 }
 
 //--------------------------------------------------
@@ -207,6 +180,16 @@ void UpdateGame(void)
 {
 	if (GetKeyboardTrigger(DIK_P) || GetJoypadTrigger(JOYKEY_START,0))
 	{// Pキーが押された
+		if (GetFade() != FADE_NONE)
+		{// フェードしてる
+			return;
+		}
+
+		if (GetAnswer())
+		{// 最大値になった
+			return;
+		}
+
 		if (s_gameState == GAMESTATE_PLAYER)
 		{// 通常状態の時
 			s_bPause = !s_bPause;
@@ -235,6 +218,15 @@ void UpdateGame(void)
 		// カーソルの更新
 		UpdateCursor();
 
+		// ゲージのUIの更新
+		UpdateGaugeUI();
+
+		// 月のエフェクトの更新
+		UpdateEffectMoonUI();
+
+		// エフェクトの更新
+		UpdateEffect();
+
 		return;
 	}
 
@@ -259,41 +251,17 @@ void UpdateGame(void)
 	// メニューの更新
 	UpdateMenu();
 
-	// エフェクトの更新
-	UpdateEffect();
-
 	// タイムの更新
 	UpdateTime();
 
-	// チュートリアルの更新
-	UpdateTutorial();
+	// ゲージのUIの更新
+	UpdateGaugeUI();
 
-	s_nTime++;
+	// 月のエフェクトの更新
+	UpdateEffectMoonUI();
 
-	float fCurve = CosCurve(s_nTime, 0.01f);
-	s_fGaugeAlphaGray = Curve(fCurve, 0.3f, 0.6f);
-
-	fCurve = CosCurve(s_nTime, 0.01f);
-
-	s_fGaugeAlphaYellow = Curve(fCurve, 0.3f, 1.0f);
-
-	// ゲージの色の設定(灰色)
-	SetColorGauge(s_nGaugeIdxGray, D3DXCOLOR(GetColor(COLOR_GRAY).r, GetColor(COLOR_GRAY).g, GetColor(COLOR_GRAY).b, s_fGaugeAlphaGray));
-
-	// ゲージの色の設定(黄色)
-	SetColorGauge(s_nGaugeIdxYellow, D3DXCOLOR(GetColor(COLOR_YELLOW).r, GetColor(COLOR_YELLOW).g, GetColor(COLOR_YELLOW).b, s_fGaugeAlphaYellow));
-
-	{// 月エフェクト
-		D3DXVECTOR3 pos(140.5f, 90.5f, 0.0f);
-		D3DXCOLOR col = GetColor(COLOR_WHITE);
-
-		col.b = 0.1f;
-
-		if (s_nTime % 45 == 0)
-		{
-			SetEffect(pos, EFFECT_TYPE_003, col);
-		}
-	}
+	// エフェクトの更新
+	UpdateEffect();
 }
 
 //--------------------------------------------------
@@ -341,13 +309,4 @@ void SetEnablePause(bool bPause)
 bool GetEnablePause(void)
 {
 	return s_bPause;
-}
-
-//--------------------------------------------------
-// ゲーム画面の背景ゲージ(黄色)の増加
-//--------------------------------------------------
-void IncreaseGaugeGame(void)
-{
-	s_fGaugeWidth += SCREEN_WIDTH / 16.0f;
-	SetSizeGauge(s_nGaugeIdxYellow, s_fGaugeWidth, SCREEN_HEIGHT);
 }

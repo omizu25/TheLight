@@ -49,4 +49,9 @@ int GetColorLight(int nNowLight);
 //--------------------------------------------------
 void SetDrawLight(int nNowLight);
 
+//--------------------------------------------------
+// ŠÔˆá‚Á‚½
+//--------------------------------------------------
+void MistakeLight(void);
+
 #endif // !_LIGHT_H_

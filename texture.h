@@ -13,27 +13,29 @@
 typedef enum
 {
 	TEXTURE_Cursor_Right = 0,	// カーソル
-	TEXTURE_Number_004,			// 数
-	TEXTURE_TITLE_LOGO,			// タイトルロゴ	
-	TEXTURE_TITLE_UI,
-	TEXTURE_TITLE_GamePopup,
-	TEXTURE_BackToTitle,
-	TEXTURE_ReturnToGame,
-	TEXTURE_Hackathon_Ring,
-	TEXTURE_BG_0,					// 背景
-	TEXTURE_BG_1,			// 背景
-	TEXTURE_BG_2,						// 背景
-	TEXTURE_BG,						// 背景
-	TEXTURE_BG_MOON,						// 背景
-	TEXTURE_effect_000,
-	TEXTURE_effect_001,
-	TEXTURE_effect_002,
+	TEXTURE_TITLE_LOGO,			// タイトルロゴ
+	TEXTURE_TITLE_UI,			// 灯す
+	TEXTURE_TITLE_GamePopup,	// チュートリアル
+	TEXTURE_BackToTitle,		// ゲームに戻る
+	TEXTURE_ReturnToGame,		// タイトルに戻る
+	TEXTURE_Hackathon_Ring,		// ライトの枠
+	TEXTURE_BG_0,				// 星
+	TEXTURE_BG_1,				// 家
+	TEXTURE_BG_2,				// 背景
+	TEXTURE_BG_MOON,			// 月
+	TEXTURE_end,				// やめる
+	TEXTURE_play,				// 遊ぶ
+	TEXTURE_Learn,				// 覚えろ
+	TEXTURE_Push,				// 押せ
+	TEXTURE_effect_000,			// エフェクト
+	TEXTURE_effect_001,			// エフェクト
+	TEXTURE_effect_002,			// エフェクト
 	TEXTURE_Number_Neon,		// ナンバー画像(ネオン)
-	TEXTURE_Method,
-	TEXTURE_YourScore,		//自己スコア
-	TEXTURE_BestScore,		//ベストスコア
+	TEXTURE_Method,				// 操作説明
+	TEXTURE_YourScore,			// 自己スコア
+	TEXTURE_BestScore,			// ベストスコア
 	TEXTURE_MAX,
-	TEXTURE_NONE,			// 使用しない
+	TEXTURE_NONE,				// 使用しない
 }TEXTURE;
 
 //==================================================

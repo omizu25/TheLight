@@ -191,8 +191,7 @@ void Input(void)
 		return;
 	}
 
-	if (GetKeyboardTrigger(DIK_W) || GetKeyboardTrigger(DIK_NUMPAD5) ||
-		GetJoypadTrigger(JOYKEY_CROSS_UP,0) || GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_UP,0))
+	if (GetMoveKeyTrigger(MOVE_KEY_UP))
 	{// Wキーが押されたかどうか
 		// 選択肢の色の初期化
 		InitColorOption();
@@ -208,8 +207,7 @@ void Input(void)
 		// サウンドの再生
 		PlaySound(SOUND_LABEL_SE_SELECT);
 	}
-	else if (GetKeyboardTrigger(DIK_S) || GetKeyboardTrigger(DIK_NUMPAD2) ||
-		GetJoypadTrigger(JOYKEY_CROSS_DOWN,0) || GetJoypadStickTrigger(JOYKEY_LEFT_STICK, JOYKEY_STICK_DOWN,0))
+	else if (GetMoveKeyTrigger(MOVE_KEY_DOWN))
 	{// Sキーが押されたかどうか
 		// 選択肢の色の初期化
 		InitColorOption();

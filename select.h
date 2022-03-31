@@ -71,6 +71,14 @@ int SetSelect(const SelectArgument &menu);
 void SetColorSelect(int nIdxSelect, int nIdxOption, COLOR color);
 
 //--------------------------------------------------
+// セレクトのテクスチャの変更
+// 引数1  : int nIdxSelect / セレクトのインデックス
+// 引数2  : int nIdxOption / 選択肢のインデックス
+// 引数3  : TEXTURE texture / テクスチャ
+//--------------------------------------------------
+void ChangeTextuteSelect(int nIdxSelect, int nIdxOption, TEXTURE texture);
+
+//--------------------------------------------------
 // メニューのリセット
 // 引数  : int nIdx / セレクトのインデックス
 //--------------------------------------------------

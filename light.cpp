@@ -22,6 +22,7 @@
 #include "game.h"
 #include "effect.h"
 #include "player.h"
+#include "time.h"
 
 #include <assert.h>
 
@@ -30,10 +31,12 @@
 //==================================================
 namespace
 {
-const int	MAX_LIGHT = 16;		// ライトの最大数
-const int	MAX_TIME = 60;		// タイムの最大値
-const int	REPEAT_TIME = 30;	// タイムの繰り返し
-const float	LIGHT_SIZE = 50.0f;	// ライトのサイズ
+const int	MAX_LIGHT = 16;			// ライトの最大数
+const int	MAX_TIME = 90;			// タイムの最大値
+const int	REPEAT_TIME = 30;		// タイムの繰り返し
+const float	LIGHT_SIZE = 50.0f;		// ライトのサイズ
+const float	LEARN_WIDTH = 120.0f;	// 覚えろの幅
+const float	LEARN_HEIGHT = 80.0f;	// 覚えろの高さ
 
 typedef enum
 {
@@ -52,6 +55,7 @@ namespace
 {
 int		s_nNowLight;				// ライトの現在数
 int		s_nMaxLight;				// ライトの最大数
+int		s_nIdxLearn;				// 覚えろの矩形のインデックス
 int		s_nIdxSelect;				// メニューの配列のインデックス
 int		s_nIdxFrame;				// 枠の配列のインデックス
 int		s_nTime;					// タイム
@@ -81,11 +85,22 @@ void InitLight(void)
 	s_nNowLight = 0;
 	s_nMaxLight = 1;
 
+	{// 覚えろ
+		// 矩形の設定
+		s_nIdxLearn = SetRectangle(TEXTURE_Learn);
+
+		D3DXVECTOR3 size = D3DXVECTOR3(LEARN_WIDTH, LEARN_HEIGHT, 0.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(SCREEN_WIDTH - (LEARN_WIDTH * 0.5f), SCREEN_HEIGHT * 0.35f, 0.0f);
+
+		// 矩形の位置の設定
+		SetPosRectangle(s_nIdxLearn, pos, size);
+	}
+
 	{// 枠
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH;
+		select.fRight = SCREEN_WIDTH - LEARN_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.35f;
 		select.fBottom = SCREEN_HEIGHT * 0.35f;
 		select.fWidth = LIGHT_SIZE;
@@ -111,7 +126,7 @@ void InitLight(void)
 		SelectArgument select;
 		select.nNumUse = MAX_LIGHT;
 		select.fLeft = 0.0f;
-		select.fRight = SCREEN_WIDTH;
+		select.fRight = SCREEN_WIDTH - LEARN_WIDTH;
 		select.fTop = SCREEN_HEIGHT * 0.35f;
 		select.fBottom = SCREEN_HEIGHT * 0.35f;
 		select.fWidth = LIGHT_SIZE;
@@ -150,6 +165,8 @@ void InitLight(void)
 //--------------------------------------------------
 void UninitLight(void)
 {
+	// 使うのを止める
+	StopUseRectangle(s_nIdxLearn);
 }
 
 //--------------------------------------------------
@@ -182,26 +199,38 @@ void UpdateLight(void)
 		{// 増え切った
 			if (s_bMax)
 			{
-				for (int i = 0; i < MAX_LIGHT; i++)
+				if (s_nTime >= MAX_TIME)
 				{
-					// セレクトの描画するかどうか
-					SetDrawSelect(s_nIdxSelect, i, false);
+					for (int i = 0; i < MAX_LIGHT; i++)
+					{
+						// セレクトの描画するかどうか
+						SetDrawSelect(s_nIdxSelect, i, false);
+					}
+
+					for (int i = 0; i < s_nNowLight; i++)
+					{
+						// セレクトの描画するかどうか
+						SetDrawSelect(s_nIdxFrame, i, true);
+					}
+
+					// ゲーム状態の設定
+					SetGameState(GAMESTATE_PLAYER);
+
+					// 矩形の描画するかどうか
+					SetDrawRectangle(s_nIdxLearn, false);
+
+					// 押せの描画するかどうか
+					SetDrawPushPlayer(true);
+					
+					// 枠の設定
+					SetFramePlayer(0);
 				}
-
-				for (int i = 0; i < s_nNowLight; i++)
-				{
-					// セレクトの描画するかどうか
-					SetDrawSelect(s_nIdxFrame, i, true);
-				}
-
-				// ゲーム状態の設定
-				SetGameState(GAMESTATE_PLAYER);
-
-				// 枠の設定
-				SetFramePlayer(0);
 			}
-
-			s_bMax = true;
+			else
+			{
+				s_nTime = 0;
+				s_bMax = true;
+			}
 		}
 		break;
 
@@ -209,6 +238,12 @@ void UpdateLight(void)
 		s_nNowLight = 0;
 		s_nMaxLight++;
 		s_nTime = 0;
+
+		if (s_nMaxLight > MAX_LIGHT)
+		{
+			// モードの変更
+			ChangeMode(MODE_RESULT);
+		}
 
 		for (int i = 0; i < MAX_LIGHT; i++)
 		{
@@ -221,6 +256,9 @@ void UpdateLight(void)
 		// 描画のリセット
 		ResetDrawLight();
 
+		// 矩形の描画するかどうか
+		SetDrawRectangle(s_nIdxLearn, true);
+
 		break;
 
 	case GAMESTATE_PLAYER:	// プレイヤー状態
@@ -232,8 +270,6 @@ void UpdateLight(void)
 		assert(false);
 		break;
 	}
-
-	
 }
 
 //--------------------------------------------------
@@ -271,6 +307,21 @@ void SetDrawLight(int nNowLight)
 
 	// エフェクトの設定
 	SetEffect(GetPosSelect(s_nIdxSelect, nNowLight), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, nNowLight));
+}
+
+//--------------------------------------------------
+// 間違った
+//--------------------------------------------------
+void MistakeLight(void)
+{
+	for (int i = (GetPlayer() + 1); i < s_nMaxLight; i++)
+	{
+		// セレクトの描画するかどうか
+		SetDrawSelect(s_nIdxSelect, i, true);
+
+		// エフェクトの設定
+		SetEffect(GetPosSelect(s_nIdxSelect, i), EFFECT_TYPE_000, GetColSelect(s_nIdxSelect, i));
+	}
 }
 
 namespace
