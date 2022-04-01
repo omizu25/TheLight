@@ -19,7 +19,10 @@ typedef enum
 	EFFECT_TYPE_000 = 0,		// プレイヤーの跳躍
 	EFFECT_TYPE_001,			// プレイヤーの移動
 	EFFECT_TYPE_002,			// プレイヤーの移動
-	EFFECT_TYPE_003,			// プレイヤーの移動
+	EFFECT_TYPE_003,			// 広がる円
+	EFFECT_TYPE_004_1,			// 正解時のエフェクトパーツ1(花火)
+	EFFECT_TYPE_004_2,			// 正解時のエフェクトパーツ2(花火)
+	EFFECT_TYPE_004_3,			// 正解時のエフェクトパーツ3(花火)
 	MAX_EFFECT_TYPE
 }EFFECT_TYPE;
 

@@ -262,6 +262,23 @@ void UpdateGame(void)
 
 	// エフェクトの更新
 	UpdateEffect();
+
+	if (GetKeyboardTrigger(DIK_1))
+	{
+		SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.2f, SCREEN_HEIGHT, 0.0f), EFFECT_TYPE_004_1, GetColor(COLOR_RED));
+	}
+	if (GetKeyboardTrigger(DIK_2))
+	{
+		SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.4f, SCREEN_HEIGHT, 0.0f), EFFECT_TYPE_004_1, GetColor(COLOR_BLUE));
+	}
+	if (GetKeyboardTrigger(DIK_3))
+	{
+		SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.6f, SCREEN_HEIGHT, 0.0f), EFFECT_TYPE_004_1, GetColor(COLOR_GREEN));
+	}
+	if (GetKeyboardTrigger(DIK_4))
+	{
+		SetEffect(D3DXVECTOR3(SCREEN_WIDTH * 0.8f, SCREEN_HEIGHT, 0.0f), EFFECT_TYPE_004_1, GetColor(COLOR_YELLOW));
+	}
 }
 
 //--------------------------------------------------
