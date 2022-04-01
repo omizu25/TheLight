@@ -172,7 +172,7 @@ void UpdateEffect(void)
 			if (pEffect->nLife == 10)
 			{
 				pEffect->bUse = false;
-				for (int i = 0; i < 10; i++)
+				for (int j = 0; j < 10; j++)
 				{
 					//SetEffect(pEffect->pos, EFFECT_TYPE_004_3, pEffect->col);
 				}
