@@ -160,7 +160,7 @@ void UpdateEffect(void)
 			if (pEffect->move.y >= -0.5f)
 			{
 				pEffect->bUse = false;
-				for (int i = 0; i < 45; i++)
+				for (int j = 0; j < 145; j++)
 				{
 					SetEffect(pEffect->pos, EFFECT_TYPE_004_2, pEffect->col);
 				}
@@ -298,16 +298,21 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col)
 			pEffect->nLife = pEffect->nMaxLife;
 			break;
 		case  EFFECT_TYPE_004_2:		// 花火２
+		{
 			// 加算処理に切り替え
 			SetAddRectangle(pEffect->nIdx, true);
 			// 矩形のテクスチャの変更
 			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
 			pEffect->pos = pos;
-			pEffect->move.x = FloatRandam(10.0f, -10.0f);
-			pEffect->move.y = FloatRandam(10.0f, -10.0f);
-			pEffect->fRaduus = 15.0f;
+			pEffect->move.x = FloatRandam(1.0f, -1.0f);
+			pEffect->move.y = FloatRandam(1.0f, -1.0f);
+			D3DXVec3Normalize(&pEffect->move, &pEffect->move);
+			float fRandam = FloatRandam(0.8f, 0.1f);
+			pEffect->move *= fRandam * 10.0f;
+			pEffect->fRaduus = fRandam * 15.0f;
 			pEffect->nMaxLife = 40;
 			pEffect->nLife = pEffect->nMaxLife;
+		}
 			break;
 		case  EFFECT_TYPE_004_3:		// 花火３
 			// 矩形のテクスチャの変更
