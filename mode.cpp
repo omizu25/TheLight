@@ -13,7 +13,7 @@
 #include "mode.h"
 #include "title.h"
 #include "rectangle.h"
-#include "fanangle.h"
+#include "fan.h"
 #include "texture.h"
 #include "tutorial.h"
 #include "ranking.h"
@@ -46,7 +46,7 @@ void InitMode(void)
 	InitRectangle();
 
 	// 円形の初期化
-	InitFanangle();
+	InitFan();
 
 	// ランキングのロード
 	LoadRanking();
@@ -76,7 +76,7 @@ void UninitMode(void)
 	UninitRectangle();
 
 	// 円形の終了
-	UninitFanangle();
+	UninitFan();
 
 	// テクスチャの終了
 	UninitTexture();
@@ -201,11 +201,11 @@ void SetMode(void)
 	// 矩形の初期化
 	InitRectangle();
 
-	// 矩形の終了
-	UninitFanangle();
+	// 円形の終了
+	UninitFan();
 
-	// 矩形の初期化
-	InitFanangle();
+	// 円形の初期化
+	InitFan();
 
 	s_mode = s_modeNext;	// 現在の画面(モード)を切り替える
 	

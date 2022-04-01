@@ -11,7 +11,7 @@
 #include "main.h"
 #include "ui.h"
 #include "rectangle.h"
-#include "fanangle.h"
+#include "fan.h"
 #include "texture.h"
 #include "mode.h"
 #include "color.h"

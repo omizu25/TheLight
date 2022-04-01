@@ -14,7 +14,7 @@
 #include "input.h"
 #include "sound.h"
 #include "rectangle.h"
-#include "fanangle.h"
+#include "fan.h"
 #include "pause.h"
 #include "menu.h"
 #include "number.h"
@@ -290,7 +290,7 @@ void DrawGame(void)
 	DrawRectangle();
 
 	// ‰~Œ`‚Ì•`‰æ
-	DrawFanangle();
+	DrawFan();
 }
 
 //--------------------------------------------------
