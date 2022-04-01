@@ -36,7 +36,7 @@ typedef struct
 	int nLife;			// 寿命
 	int nIdx;			// RectAngel
 	EFFECT_TYPE type;	// パーティクルの種類
-	bool bUse;			// 使用しているかどうかe
+	bool bUse;			// 使用しているかどうか
 }Effect;
 
 }
@@ -152,7 +152,43 @@ void UpdateEffect(void)
 				pEffect->bUse = false;
 			}
 			break;
+		case EFFECT_TYPE_004_1:		// プレイヤーの移動
+			pEffect->move.y -= pEffect->move.y * 0.2f;	// 半径の拡大
+
+			pEffect->move.x = sinf(nCnt * 0.8f) * 5.0f;	// 移動
+
+			if (pEffect->move.y >= -0.5f)
+			{
+				pEffect->bUse = false;
+				for (int i = 0; i < 45; i++)
+				{
+					SetEffect(pEffect->pos, EFFECT_TYPE_004_2, pEffect->col);
+				}
+			}
+			break;
+		case EFFECT_TYPE_004_2:		// プレイヤーの移動
+			pEffect->nLife--;							// 体力の更新
+
+			if (pEffect->nLife == 10)
+			{
+				pEffect->bUse = false;
+				for (int i = 0; i < 10; i++)
+				{
+					//SetEffect(pEffect->pos, EFFECT_TYPE_004_3, pEffect->col);
+				}
+			}
+			break;
+		case EFFECT_TYPE_004_3:		// プレイヤーの移動
+			pEffect->nLife--;							// 体力の更新
+			pEffect->col.a -= (float)1.0f / pEffect->nMaxLife;			// 透明度の更新
+
+			if (pEffect->nLife <= 0)
+			{
+				pEffect->bUse = false;
+			}
+			break;
 		default:
+			assert(false);
 			break;
 		}
 
@@ -200,6 +236,10 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col)
 			continue;
 		}
 
+		int nIdx = pEffect->nIdx;
+		ZeroMemory(&s_aEffect[i], sizeof(s_aEffect[0]));
+		pEffect->nIdx = nIdx;
+
 		pEffect->bUse = true;
 		pEffect->type = type;
 		pEffect->col = col;
@@ -210,14 +250,11 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col)
 			// 矩形のテクスチャの変更
 			SetAddRectangle(pEffect->nIdx, true);
 			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_002);
-			////SetAddRectangle(pEffect->nIdx, true);
-			////ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
 			pEffect->pos = pos;
 			pEffect->col.a = 1.0f;
 			pEffect->fRaduus = 50.0f;
 			pEffect->nMaxLife = 30;
 			pEffect->nLife = pEffect->nMaxLife;
-			//SetEffect(pEffect->pos,EFFECT_TYPE_001,GetColor(COLOR_WHITE));
 			break;
 		case  EFFECT_TYPE_001:		// プレイヤーの移動
 			// 矩形のテクスチャの変更
@@ -230,7 +267,7 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col)
 			pEffect->nLife = pEffect->nMaxLife;
 			break;
 		case  EFFECT_TYPE_002:		// プレイヤーの移動
-									// 矩形のテクスチャの変更
+			// 矩形のテクスチャの変更
 			SetAddRectangle(pEffect->nIdx, true);
 			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
 			pEffect->pos = pos;
@@ -247,6 +284,40 @@ void SetEffect(D3DXVECTOR3 pos, EFFECT_TYPE type, D3DXCOLOR col)
 			pEffect->pos = pos;
 			pEffect->fRaduus = 40.0f;
 			pEffect->nMaxLife = 170;
+			pEffect->nLife = pEffect->nMaxLife;
+			break;
+		case  EFFECT_TYPE_004_1:		// 花火１
+			// 加算処理に切り替え
+			SetAddRectangle(pEffect->nIdx, true);
+			// 矩形のテクスチャの変更
+			SetAddRectangle(pEffect->nIdx, true);
+			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
+			pEffect->pos = pos;
+			pEffect->move.y = -100.0f;
+			pEffect->fRaduus = 30.0f;
+			pEffect->nLife = pEffect->nMaxLife;
+			break;
+		case  EFFECT_TYPE_004_2:		// 花火２
+			// 加算処理に切り替え
+			SetAddRectangle(pEffect->nIdx, true);
+			// 矩形のテクスチャの変更
+			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
+			pEffect->pos = pos;
+			pEffect->move.x = FloatRandam(10.0f, -10.0f);
+			pEffect->move.y = FloatRandam(10.0f, -10.0f);
+			pEffect->fRaduus = 15.0f;
+			pEffect->nMaxLife = 40;
+			pEffect->nLife = pEffect->nMaxLife;
+			break;
+		case  EFFECT_TYPE_004_3:		// 花火３
+			// 矩形のテクスチャの変更
+			SetAddRectangle(pEffect->nIdx, true);
+			ChangeTextureRectangle(pEffect->nIdx, TEXTURE_effect_000);
+			pEffect->pos = pos;
+			pEffect->move.x = FloatRandam(10.0f, -10.0f);
+			pEffect->move.y = FloatRandam(10.0f, -10.0f);
+			pEffect->fRaduus = 10.0f;
+			pEffect->nMaxLife = 20;
 			pEffect->nLife = pEffect->nMaxLife;
 			break;
 		default:
