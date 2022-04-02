@@ -36,7 +36,7 @@ const int	MAX_TIME = 90;			// タイムの最大値
 const int	REPEAT_TIME = 30;		// タイムの繰り返し
 const float	LIGHT_SIZE = 50.0f;		// ライトのサイズ
 const float	LEARN_WIDTH = 120.0f;	// 覚えろの幅
-const float	LEARN_HEIGHT = 80.0f;	// 覚えろの高さ
+const float	LEARN_HEIGHT = 60.0f;	// 覚えろの高さ
 
 typedef enum
 {

@@ -37,7 +37,7 @@ const int	MAX_TIME = 5;			// タイムの最大値
 const int	MAX_LIGHT = 16;			// ライトの最大数
 const float	LIGHT_SIZE = 50.0f;		// ライトのサイズ
 const float	PUSH_WIDTH = 120.0f;	// 押せの幅
-const float	PUSH_HEIGHT = 80.0f;	// 押せの高さ
+const float	PUSH_HEIGHT = 60.0f;	// 押せの高さ
 
 typedef enum
 {

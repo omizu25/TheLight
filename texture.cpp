@@ -31,10 +31,10 @@ const char *s_FileName[] =
 	"data/TEXTURE/Bg001.png",						// â∆
 	"data/TEXTURE/Bg002.png",						// îwåi
 	"data/TEXTURE/BgMoon.png",						// åé
-	"data/TEXTURE/end.png",							// Ç‚ÇﬂÇÈ
-	"data/TEXTURE/play.png",						// óVÇ‘
-	"data/TEXTURE/Learn.png",						// äoÇ¶ÇÎ
-	"data/TEXTURE/Push.png",						// âüÇπ
+	"data/TEXTURE/Hackathon_End.png",				// Ç‚ÇﬂÇÈ
+	"data/TEXTURE/Hackathon_PlayAgain.png",			// óVÇ‘
+	"data/TEXTURE/Hackathon_Learn.png",				// äoÇ¶ÇÎ
+	"data/TEXTURE/Hackathon_Push.png",				// âüÇπ
 	"data/TEXTURE/Hackathon_Direction_Red.png",		// ê‘
 	"data/TEXTURE/Hackathon_Direction_Green.png",	// óŒ
 	"data/TEXTURE/Hackathon_Direction_Blue.png",	// ê¬

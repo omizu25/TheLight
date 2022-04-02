@@ -104,28 +104,6 @@ void UpdateTime(void)
 		// 加算
 		AddTime(-1);
 
-		switch (s_nTime)
-		{
-		case 5:
-			s_col = GetColor(COLOR_GREEN);
-			break;
-		case 4:
-		case 3:
-			s_col = GetColor(COLOR_YELLOW);
-			break;
-		case 2:
-		case 1:
-			s_col = GetColor(COLOR_RED);
-			break;
-		default:
-			break;
-		}
-
-		s_col.a = 0.5f;
-
-		// 円形の色の設定
-		SetColorFan(s_nIdxTime, s_col);
-
 		if (s_nTime <= 0)
 		{// 制限時間が来た
 			// モードの変更
@@ -154,7 +132,7 @@ void SetTime(int nTime)
 	// リセット
 	ResetDrawFan(s_nIdxTime);
 
-	s_col = GetColor(COLOR_GREEN);
+	s_col = GetColor(COLOR_WHITE);
 
 	s_col.a = 0.5f;
 
