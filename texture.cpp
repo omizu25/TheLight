@@ -23,7 +23,7 @@ const char *s_FileName[] =
 	"data/TEXTURE/Cursor_Right.png",				// カーソル
 	"data/TEXTURE/Title.png",						// タイトルロゴ
 	"data/TEXTURE/Hackathon_TitleUI.png",			// 灯す
-	"data/TEXTURE/Hackathon_GamePopup.png",			// チュートリアル
+	"data/TEXTURE/Hackathon_Tutorial_03.png",		// チュートリアル
 	"data/TEXTURE/Hackathon_ReturnToGame.png",		// ゲームに戻る
 	"data/TEXTURE/Hackathon_BackToTitle.png",		// タイトルに戻る
 	"data/TEXTURE/Hackathon_Ring.png",				// ライトの枠
